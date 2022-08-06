@@ -1,0 +1,27 @@
+[
+	{
+		"id": "yt",
+		"href": "https://www.youtube.com/c/Maniva777",
+		"title": "Subscribe my Channel - Maniva"
+	},
+	{
+		"id": "ig",
+		"href": "https://www.instagram.com/iva_mana5/",
+		"title": "Follow me on Instagram"
+	},
+	{
+		"id": "mj",
+		"href": "https://mojapp.in/@iva16",
+		"title": "Check out me on Moj"
+	},
+	{
+		"id": "gm",
+		"href": "mailto:ivachatterjee5@gmail.com",
+		"title": "Mail Me for promotion"
+	},
+	{
+		"id": "fb",
+		"href": "https://www.facebook.com/iva.chatterjee.39",
+		"title": "Connect me on FaceBook"
+	}
+]
