@@ -81,7 +81,7 @@ const Home: NextPage = () => {
 						</Link>
 					</div>
 				</section>
-				<section className="flex flex-col items-center cursor-pointer my-8">
+				<section className="flex flex-col items-center my-8">
 					{linksData?.map(({ id, ...rest }) => (
 						<TextLink key={id} {...rest} />
 					))}
