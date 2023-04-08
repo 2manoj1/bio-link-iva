@@ -15,7 +15,7 @@ import linksData from "../data/linksiva.json";
 const container = "md:container md:mx-auto lg:max-w-4xl px-4";
 
 const imgURL =
-	"https://instagram.fblr2-1.fna.fbcdn.net/v/t51.2885-19/176042962_1450678971769407_6363789580747292538_n.jpg?stp=dst-jpg_s320x320&_nc_ht=instagram.fblr2-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=mtdukPDOHf8AX9uu-uy&edm=ABfd0MgBAAAA&ccb=7-5&oh=00_AT_iC0kqlJxaeU4y6yTxNF2a9xapF47L68umUBNkaKbI7g&oe=62F50A09&_nc_sid=7bff83";
+	"/fv.jpeg";
 const name = "Iva Chatterjee";
 
 const getLinkById = (id: string) => {
