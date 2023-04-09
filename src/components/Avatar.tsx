@@ -8,8 +8,11 @@ const Avatar = ({ url, alt }: { url: string; alt: string }) => {
 					className="rounded-full object-cover "
 					src={url}
 					alt={alt}
+					width={96}
+					height={96}
 					fill
 					sizes="100vw"
+					loading="eager"
 				/>
 			</div>
 		</div>
