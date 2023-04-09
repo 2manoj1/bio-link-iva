@@ -5,6 +5,10 @@ const nextConfig = {
 	images: {
 		domains: ["instagram.fblr2-1.fna.fbcdn.net"],
 	},
+	i18n: {
+		locales: ["en"],
+		defaultLocale: "en",
+	},
 };
 
 module.exports = nextConfig;

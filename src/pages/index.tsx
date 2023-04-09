@@ -14,22 +14,23 @@ import linksData from "../data/linksiva.json";
 
 const container = "md:container md:mx-auto lg:max-w-4xl px-4";
 
-const imgURL =
-	"/fv.jpeg";
+const imgURL = "/fv.jpeg";
 const name = "Iva Chatterjee";
 
 const getLinkById = (id: string) => {
 	return linksData?.find(({ id: itemId }) => itemId === id)?.href ?? "";
 };
 
+const titleText = `Bio Link - ${name}`;
+
 const Home: NextPage = () => {
 	return (
 		<div className="bg-cover bg-center bg-no-repeat bg-fixed bg-[url('/neon.jpeg')] h-full min-h-screen text-[#CEEDFF]">
 			<Head>
-				<title>Bio Link - {name}</title>
+				<title>{titleText}</title>
 				<meta
 					name="description"
-					content={`Bio Link - ${name} - My Youtube Channel is Maniva. Please Subscribe that.`}
+					content={`${titleText} - My Youtube Channel is Maniva. Please Subscribe that.`}
 				/>
 				<meta
 					name="keywords"
@@ -47,37 +48,29 @@ const Home: NextPage = () => {
 					</div>
 					<h1 className="uppercase tracking-wide">{name}</h1>
 					<div className="flex gap-2 mt-2 items-center">
-						<Link href={getLinkById("fb")} passHref>
-							<a target="_blank">
-								<RiFacebookCircleFill
-									className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
-									size="1.75rem"
-								/>
-							</a>
+						<Link href={getLinkById("fb")} target="_blank">
+							<RiFacebookCircleFill
+								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
+								size="1.75rem"
+							/>
 						</Link>
-						<Link href={getLinkById("yt")} passHref>
-							<a target="_blank">
-								<RiYoutubeFill
-									className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
-									size="1.75rem"
-								/>
-							</a>
+						<Link href={getLinkById("yt")} target="_blank">
+							<RiYoutubeFill
+								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
+								size="1.75rem"
+							/>
 						</Link>
-						<Link href={getLinkById("ig")} passHref>
-							<a target="_blank">
-								<RiInstagramFill
-									className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
-									size="1.75rem"
-								/>
-							</a>
+						<Link href={getLinkById("ig")} target="_blank">
+							<RiInstagramFill
+								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
+								size="1.75rem"
+							/>
 						</Link>
-						<Link href={getLinkById("gm")} passHref>
-							<a target="_blank">
-								<MdOutgoingMail
-									className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
-									size="1.75rem"
-								/>
-							</a>
+						<Link href={getLinkById("gm")} target="_blank">
+							<MdOutgoingMail
+								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
+								size="1.75rem"
+							/>
 						</Link>
 					</div>
 				</section>
@@ -92,12 +85,11 @@ const Home: NextPage = () => {
 					<span className="flex items-center gap-2">
 						Made By <SiCodersrank className=" align-baseline" color="red" />
 					</span>
-					<Link href="https://www.linkedin.com/in/manoj-mukherjee/" passHref>
-						<a
-							className="text-sky-500 cursor-pointer hover:-translate-y-0 hover:scale-110 duration-700 ease-in-out"
-							target="_blank">
-							Manoj Mukherjee
-						</a>
+					<Link
+						href="https://www.linkedin.com/in/manoj-mukherjee/"
+						target="_blank"
+						className="text-sky-500 cursor-pointer hover:-translate-y-0 hover:scale-110 duration-700 ease-in-out">
+						Manoj Mukherjee
 					</Link>
 				</div>
 			</footer>
