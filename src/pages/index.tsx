@@ -48,25 +48,31 @@ const Home: NextPage = () => {
 					</div>
 					<h1 className="uppercase tracking-wide">{name}</h1>
 					<div className="flex gap-2 mt-2 items-center">
-						<Link href={getLinkById("fb")} target="_blank">
+						<Link
+							href={getLinkById("fb")}
+							target="_blank"
+							aria-label="Facebook">
 							<RiFacebookCircleFill
 								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
 								size="1.75rem"
 							/>
 						</Link>
-						<Link href={getLinkById("yt")} target="_blank">
+						<Link href={getLinkById("yt")} target="_blank" aria-label="Youtube">
 							<RiYoutubeFill
 								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
 								size="1.75rem"
 							/>
 						</Link>
-						<Link href={getLinkById("ig")} target="_blank">
+						<Link
+							href={getLinkById("ig")}
+							target="_blank"
+							aria-label="Instagram">
 							<RiInstagramFill
 								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
 								size="1.75rem"
 							/>
 						</Link>
-						<Link href={getLinkById("gm")} target="_blank">
+						<Link href={getLinkById("gm")} target="_blank" aria-label="Gmail">
 							<MdOutgoingMail
 								className="cursor-pointer hover:-translate-y-0 hover:scale-125 duration-700 ease-in-out"
 								size="1.75rem"
