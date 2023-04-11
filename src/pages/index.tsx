@@ -25,7 +25,7 @@ const titleText = `Bio Link - ${name}`;
 
 const Home: NextPage = () => {
 	return (
-		<div className="bg-cover bg-center bg-no-repeat bg-fixed bg-[url('/neon.jpeg')] h-full min-h-screen text-[#CEEDFF] flex flex-col">
+		<div className="bg-cover bg-center bg-no-repeat bg-fixed bg-[url('/neon.jpeg')] h-full min-h-screen text-[#CEEDFF] flex flex-col overflow-hidden">
 			<Head>
 				<title>{titleText}</title>
 				<meta
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className={`${container} flex-1`}>
-				<section className="flex flex-col items-center pt-2 md:pt-4">
+				<section className="flex flex-col items-center pt-4">
 					<div>
 						<Avatar url={imgURL} alt="" />
 					</div>
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
 						</Link>
 					</div>
 				</section>
-				<section className="flex flex-col items-center my-2 md:my-3">
+				<section className="flex flex-col items-center my-4">
 					{linksData?.map(({ id, ...rest }) => (
 						<TextLink key={id} {...rest} />
 					))}
