@@ -10,7 +10,6 @@ const Avatar = ({ url, alt }: { url: string; alt: string }) => {
 					alt={alt}
 					width={96}
 					height={96}
-					fill
 					sizes="100vw"
 					loading="eager"
 				/>
