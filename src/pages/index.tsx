@@ -37,7 +37,15 @@ const Home: NextPage = () => {
 					content={`Maniva, ${name.split("")[0]}, ${name}, Instagram`}
 				/>
 				<meta name="author" content={name} />
-				<meta property="og:image" content={imgURL} />
+				<meta property="og:title" content="Visit my Bio Link - Maniva" />
+				<meta
+					property="og:description"
+					content={`${titleText} - My Youtube Channel is Maniva. Please Subscribe that.`}
+				/>
+				<meta
+					property="og:image"
+					content={`https://www.maniva.co.in${imgURL}`}
+				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
