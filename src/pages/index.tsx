@@ -30,7 +30,7 @@ const Home: NextPage = () => {
 				<title>{titleText}</title>
 				<meta
 					name="description"
-					content={`${titleText} - My Youtube Channel is Maniva. Please Subscribe that.`}
+					content={`${titleText} - My YT Channel is Maniva. Please Subscribe that.`}
 				/>
 				<meta
 					name="keywords"
