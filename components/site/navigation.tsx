@@ -9,7 +9,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { creator, navItems } from "@/lib/brand-data";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./theme-toggle";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -23,7 +22,7 @@ export function Navigation() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--border-soft)] bg-[var(--nav-bg)] text-[var(--text-strong)] backdrop-blur-xl">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-3 md:px-8">
+      <nav className="mx-auto flex h-16 max-w-[1500px] items-center justify-between px-5 sm:px-6 md:px-10 xl:px-12">
         <Link className="group flex items-center gap-3" href="/">
           <span className="relative block size-10 overflow-hidden rounded-full border border-[var(--gold)]/50 bg-[var(--ivory)]">
             <Image
@@ -39,9 +38,6 @@ export function Navigation() {
             <span className="block text-sm font-semibold tracking-wide">
               {creator.name}
             </span>
-            <span className="block text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">
-              Bengaluru
-            </span>
           </span>
         </Link>
 
@@ -50,7 +46,7 @@ export function Navigation() {
             <Link
               key={item.href}
               className={cn(
-                "rounded-full px-4 py-2 text-sm text-[var(--text-muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text-strong)]",
+                "rounded-full px-4 py-2 text-sm text-[var(--text-muted)] transition duration-300 ease-luxury hover:bg-[var(--surface)] hover:text-[var(--text-strong)]",
                 pathname === item.href &&
                   "bg-[var(--surface)] text-[var(--text-strong)]",
               )}
@@ -62,10 +58,9 @@ export function Navigation() {
         </div>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <Button
             asChild
-            className="hidden h-10 rounded-full bg-[var(--text-strong)] px-4 text-sm font-semibold text-[var(--page)] hover:bg-[var(--gold)] hover:text-[var(--matte)] md:inline-flex"
+            className="hidden h-10 rounded-full bg-[var(--text-strong)] px-5 text-sm font-semibold text-[var(--page)] transition duration-300 ease-luxury hover:bg-[var(--gold)] hover:text-[var(--matte)] md:inline-flex"
           >
             <Link href="/contact">Partnership Inquiry</Link>
           </Button>
@@ -102,7 +97,7 @@ export function Navigation() {
               <span>
                 <span className="block text-sm font-semibold">{creator.name}</span>
                 <span className="block text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
-                  Bengaluru Lifestyle
+                  Soft Luxury
                 </span>
               </span>
             </Link>
@@ -118,7 +113,7 @@ export function Navigation() {
             </Button>
           </div>
 
-          <div className="relative mt-6 aspect-[16/10] overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface)] shadow-2xl shadow-black/10">
+          <div className="relative mt-6 aspect-[16/10] overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface)] shadow-luxury-md">
             <Image
               alt="Iva Chatterjee at a rooftop experience"
               className="object-cover object-[50%_30%]"
@@ -132,12 +127,12 @@ export function Navigation() {
                 Iva’s world
               </p>
               <p className="mt-2 font-serif text-3xl leading-none text-stone-50">
-                Bengaluru rooftops, stays, and city rituals.
+                Cafés, rooftops, stays, and city nights.
               </p>
             </div>
           </div>
 
-          <div className="mt-5 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] px-4 shadow-2xl shadow-black/10">
+          <div className="mt-5 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] px-4 shadow-luxury-md">
             {allItems.map((item) => (
               <Link
                 key={item.href}
@@ -154,16 +149,16 @@ export function Navigation() {
             ))}
           </div>
 
-          <div className="mt-5 rounded-md bg-[var(--surface-contrast)] p-5 text-[var(--page)] shadow-2xl shadow-black/15">
+          <div className="mt-5 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 text-[var(--text-strong)] shadow-luxury-md">
             <p className="font-serif text-3xl leading-tight">
-              Collaboration begins with the experience, not the post.
+              Make the experience feel worth saving.
             </p>
             <Button
               asChild
               className="mt-5 h-12 w-full rounded-full bg-[var(--gold)] text-[var(--matte)] hover:bg-[var(--ivory)]"
             >
               <Link href="/contact" onClick={() => setOpen(false)}>
-                Start Partnership Inquiry
+                Start Inquiry
               </Link>
             </Button>
           </div>

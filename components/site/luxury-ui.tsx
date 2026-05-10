@@ -22,7 +22,12 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-7xl px-4 md:px-8", className)}>
+    <div
+      className={cn(
+        "mx-auto w-full max-w-[1500px] px-5 sm:px-6 md:px-10 xl:px-12",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -42,18 +47,18 @@ export function EditorialHeader({
   return (
     <Reveal
       className={cn(
-        "max-w-3xl",
+        "max-w-4xl",
         align === "center" && "mx-auto text-center",
       )}
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--gold)]">
+      <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--gold)]">
         {eyebrow}
       </p>
-      <h1 className="mt-4 text-balance font-serif text-4xl leading-[0.98] text-[var(--text-strong)] sm:text-5xl md:text-7xl">
+      <h1 className="mt-5 max-w-5xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] sm:text-6xl md:text-8xl xl:text-[7rem]">
         {title}
       </h1>
       {description ? (
-        <p className="mt-6 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)] md:text-lg">
+        <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)] md:text-lg md:leading-9">
           {description}
         </p>
       ) : null}
@@ -71,15 +76,15 @@ export function SectionHeader({
   description?: string;
 }) {
   return (
-    <Reveal className="max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[var(--gold)]">
+    <Reveal className="max-w-4xl">
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">
         {eyebrow}
       </p>
-      <h2 className="mt-4 text-balance font-serif text-3xl leading-tight text-[var(--text-strong)] sm:text-4xl md:text-6xl">
+      <h2 className="mt-4 max-w-4xl text-balance font-serif text-4xl font-medium leading-[0.96] text-[var(--text-strong)] sm:text-5xl md:text-6xl xl:text-7xl">
         {title}
       </h2>
       {description ? (
-        <p className="mt-5 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)]">
+        <p className="mt-6 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)]">
           {description}
         </p>
       ) : null}
@@ -100,11 +105,11 @@ export function CTAButton({
     <Button
       asChild
       className={cn(
-        "h-auto min-h-12 rounded-full px-6 text-sm font-semibold shadow-sm",
+        "h-auto min-h-12 rounded-full px-6 text-sm font-semibold shadow-luxury-sm transition duration-500 ease-luxury hover:-translate-y-0.5",
         variant === "ivory" &&
-          "bg-[var(--text-strong)] text-[var(--page)] hover:bg-[var(--gold)] hover:text-[var(--matte)]",
+          "border border-[var(--gold)]/70 bg-[var(--gold)] text-[var(--matte)] shadow-gold-glow hover:bg-[var(--text-strong)] hover:text-[var(--page)]",
         variant === "outline" &&
-          "border border-[var(--border-soft)] bg-transparent text-[var(--text-strong)] hover:border-[var(--gold)] hover:bg-[var(--surface)] hover:text-[var(--text-strong)]",
+          "border border-[var(--gold)]/45 bg-[var(--gold)]/10 text-[var(--text-strong)] backdrop-blur-md hover:border-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--matte)]",
         variant === "ghost" &&
           "text-[var(--text-body)] hover:bg-[var(--surface)] hover:text-[var(--text-strong)]",
       )}
@@ -125,10 +130,12 @@ export function StatGrid({
       {stats.map((stat) => (
         <StaggerItem
           key={stat.label}
-          className="rounded-xl border border-[var(--border-soft)] bg-[var(--surface)]/86 p-5 shadow-xl shadow-black/5"
+          className="border-t border-[var(--border-soft)] py-5 md:border-l md:border-t-0 md:py-2 md:pl-6"
         >
-          <p className="text-sm text-[var(--text-muted)]">{stat.label}</p>
-          <p className="mt-3 text-3xl font-semibold text-[var(--text-strong)]">
+          <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+            {stat.label}
+          </p>
+          <p className="mt-3 font-serif text-4xl font-medium leading-none text-[var(--text-strong)]">
             {stat.value}
           </p>
           <p className="mt-3 text-xs uppercase tracking-[0.18em] text-[var(--gold)]">
@@ -154,22 +161,24 @@ export function ImageCard({
   meta?: string;
 }) {
   const content = (
-    <article className="group relative min-h-[420px] overflow-hidden rounded-xl border border-[var(--border-soft)] bg-stone-950 shadow-2xl shadow-black/15">
+    <article className="group cinematic-vignette relative min-h-[460px] overflow-hidden rounded-md border border-[var(--border-soft)] bg-stone-950 shadow-luxury-lg">
       <Image
         alt={title}
-        className="object-cover transition duration-700 group-hover:scale-105"
+        className="object-cover transition duration-[900ms] ease-luxury group-hover:scale-[1.035]"
         fill
         sizes="(min-width: 768px) 33vw, 100vw"
         src={image}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 p-5">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/18 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6">
         {meta ? (
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--gold)]">
             {meta}
           </p>
         ) : null}
-        <h3 className="text-2xl font-semibold text-stone-50">{title}</h3>
+        <h3 className="font-serif text-3xl font-medium leading-tight text-stone-50">
+          {title}
+        </h3>
         <p className="mt-2 text-sm leading-6 text-stone-300">{subtitle}</p>
       </div>
     </article>
@@ -194,15 +203,15 @@ export function FeatureBand({
   reverse?: boolean;
 }) {
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-[var(--spacing-editorial-section)]">
       <Container
         className={cn(
-          "grid gap-10 md:grid-cols-2 md:items-center",
+          "grid gap-8 md:grid-cols-2 md:items-center lg:gap-14",
           reverse && "md:[&>*:first-child]:order-2",
         )}
       >
         <Reveal>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-[var(--border-soft)]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-md border border-[var(--border-soft)] shadow-luxury-md">
             <Image
               alt={title}
               className="object-cover"
@@ -249,41 +258,5 @@ export function ProgressRow({
         />
       </div>
     </div>
-  );
-}
-
-export function NewsletterBlock() {
-  return (
-    <section className="border-y border-[var(--border-soft)] bg-[var(--surface-muted)]/50 py-16">
-      <Container className="grid gap-8 md:grid-cols-[1fr_0.8fr] md:items-center">
-        <SectionHeader
-          eyebrow="Private List"
-          title="Iva’s private city list."
-          description="A quiet note for beautiful cafés, boutique stays, new city finds, and collaboration updates from Iva."
-        />
-        <Reveal>
-          <form className="rounded-2xl border border-[var(--border-soft)] bg-[var(--surface)] p-3 shadow-xl shadow-black/5">
-            <label className="sr-only" htmlFor="newsletter-email">
-              Email address
-            </label>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <input
-                className="min-h-12 flex-1 rounded-xl border border-[var(--border-soft)] bg-[var(--page)] px-4 text-sm text-[var(--text-strong)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--gold)]"
-                id="newsletter-email"
-                name="email"
-                placeholder="brand@company.com"
-                type="email"
-              />
-              <Button
-                className="h-auto min-h-12 rounded-xl bg-[var(--text-strong)] px-5 text-sm font-semibold text-[var(--page)] hover:bg-[var(--gold)] hover:text-[var(--matte)]"
-                type="button"
-              >
-                Request Access
-              </Button>
-            </div>
-          </form>
-        </Reveal>
-      </Container>
-    </section>
   );
 }

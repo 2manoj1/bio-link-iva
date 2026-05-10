@@ -19,7 +19,8 @@ export async function generateMetadata({
   if (!area) {
     return makeMetadata({
       title: "Bengaluru Guide",
-      description: "Bengaluru lifestyle, café, rooftop, and hospitality stories from Iva Chatterjee.",
+      description:
+        "Bengaluru cafés, rooftops, stays, and city nights through Iva Chatterjee's soft luxury lens.",
       path: "/bengaluru-guide",
     });
   }

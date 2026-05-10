@@ -5,15 +5,14 @@ import { Container } from "./luxury-ui";
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--border-soft)] bg-[var(--surface)] py-12 text-[var(--text-body)]">
+    <footer className="border-t border-[var(--border-soft)] bg-[var(--surface)] py-14 text-[var(--text-body)] md:py-16">
       <Container>
-        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
+        <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr_0.8fr] lg:gap-14">
           <div>
             <p className="font-serif text-3xl text-[var(--text-strong)]">{creator.name}</p>
             <p className="mt-4 max-w-md text-sm leading-7 text-[var(--text-body)]">
-              {creator.positioning} A personal luxury lifestyle space for
-              Bengaluru cafés, boutique stays, elevated fashion, and beautiful
-              city moments.
+              {creator.positioning} A personal luxury space for cafés, stays,
+              fashion, beauty, and city moments that feel worth saving.
             </p>
           </div>
           <div>
@@ -50,7 +49,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 flex flex-col justify-between gap-4 border-t border-[var(--border-soft)] pt-6 text-xs text-[var(--text-muted)] md:flex-row">
-          <p>© 2026 Iva Chatterjee. Premium lifestyle creator.</p>
+          <p>© 2026 Iva Chatterjee. Soft luxury lifestyle creator.</p>
           <div className="flex gap-4">
             <a href={creator.instagramUrl} rel="noreferrer" target="_blank">
               Instagram

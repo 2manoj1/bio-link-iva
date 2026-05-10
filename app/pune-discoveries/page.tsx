@@ -8,7 +8,7 @@ const market = markets.find((item) => item.name === "Pune")!;
 export const metadata: Metadata = makeMetadata({
   title: "Pune Discoveries",
   description:
-    "Pune cafés, refined weekend discoveries, calm city gems, and lifestyle notes from Iva Chatterjee.",
+    "Pune cafés, calm weekend discoveries, city gems, and lifestyle notes from Iva Chatterjee.",
   path: "/pune-discoveries",
   keywords: market.keywords,
 });

@@ -6,7 +6,7 @@ import { makeMetadata } from "@/lib/brand-data";
 export const metadata: Metadata = makeMetadata({
   title: "Blog",
   description:
-    "Lifestyle notes by Iva Chatterjee covering Bengaluru cafés, rooftop experiences, boutique stays, Goa escapes, and creator-led brand stories.",
+    "Lifestyle notes by Iva Chatterjee covering cafés, rooftops, boutique stays, travel, fashion, and beautiful city plans.",
   path: "/blog",
   keywords: [
     "Bengaluru luxury cafés",

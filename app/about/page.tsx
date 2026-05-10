@@ -6,7 +6,7 @@ import { makeMetadata } from "@/lib/brand-data";
 export const metadata: Metadata = makeMetadata({
   title: "About",
   description:
-    "Meet Iva Chatterjee, a Bengaluru-based lifestyle creator sharing cafés, stays, fashion, and city moments with a polished personal style.",
+    "Meet Iva Chatterjee, a Bengaluru-based Bengali lifestyle creator with a soft eye for style, music, beauty, and cinematic city moments.",
   path: "/about",
 });
 

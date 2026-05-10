@@ -3,7 +3,6 @@ import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
 import { Footer } from "@/components/site/footer";
 import { JsonLd } from "@/components/site/json-ld";
 import { Navigation } from "@/components/site/navigation";
-import { ThemeScript } from "@/components/site/theme-script";
 import { creator, siteUrl } from "@/lib/brand-data";
 import "./globals.css";
 
@@ -25,11 +24,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Iva Chatterjee | Bengaluru Lifestyle Creator",
+    default: "Iva Chatterjee | Luxury Lifestyle Creator",
     template: "%s | Iva Chatterjee",
   },
   description:
-    "Iva Chatterjee shares her personal world of Bengaluru cafés, rooftops, boutique stays, fashion moments, and beautiful city plans.",
+    "Iva Chatterjee shares cafés, rooftops, boutique stays, fashion moments, and city nights through a soft luxury lens.",
   metadataBase: new URL(siteUrl),
   keywords: [
     "Bengaluru lifestyle creator",
@@ -40,9 +39,9 @@ export const metadata: Metadata = {
     "luxury staycation Bangalore",
   ],
   openGraph: {
-    title: "Iva Chatterjee | Bengaluru Lifestyle Creator",
+    title: "Iva Chatterjee | Luxury Lifestyle Creator",
     description:
-      "Cafés, boutique stays, elevated fashion, and beautiful Bengaluru lifestyle moments.",
+      "Cafés, boutique stays, fashion, beauty, and city nights through Iva’s soft luxury lens.",
     type: "website",
     url: siteUrl,
   },
@@ -60,7 +59,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">
-        <ThemeScript />
         <JsonLd
           data={{
             "@context": "https://schema.org",

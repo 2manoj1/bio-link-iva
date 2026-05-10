@@ -6,7 +6,7 @@ import { makeMetadata } from "@/lib/brand-data";
 export const metadata: Metadata = makeMetadata({
   title: "Media Kit",
   description:
-    "Media kit for Iva Chatterjee with audience demographics, campaign showcases, content performance, and collaboration categories.",
+    "Media kit for Iva Chatterjee with audience insights, loved content, brand categories, and collaboration details.",
   path: "/media-kit",
 });
 

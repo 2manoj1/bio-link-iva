@@ -6,7 +6,7 @@ import { makeMetadata } from "@/lib/brand-data";
 export const metadata: Metadata = makeMetadata({
   title: "Collaborations",
   description:
-    "Paid collaboration opportunities with Iva Chatterjee for cafés, boutique hotels, fashion, restaurants, wellness, and lifestyle brands.",
+    "Paid collaborations with Iva Chatterjee for cafés, boutique hotels, fashion, beauty, restaurants, wellness, and lifestyle brands.",
   path: "/collaborations",
 });
 

@@ -6,7 +6,7 @@ import { makeMetadata } from "@/lib/brand-data";
 export const metadata: Metadata = makeMetadata({
   title: "Contact",
   description:
-    "Contact Iva Chatterjee for paid lifestyle collaborations across Bengaluru, Goa, Mumbai, Pune, and selective stay partnerships.",
+    "Contact Iva Chatterjee for paid collaborations across cafés, stays, fashion, beauty, restaurants, wellness, and travel.",
   path: "/contact",
 });
 

@@ -8,7 +8,7 @@ const market = markets.find((item) => item.name === "Bengaluru")!;
 export const metadata: Metadata = makeMetadata({
   title: "Bengaluru Guide",
   description:
-    "Iva Chatterjee's Bengaluru guide for cafés, rooftops, couple plans, boutique stays, and beautiful city moments.",
+    "Iva Chatterjee's Bengaluru guide for cafés, rooftops, couple plans, boutique stays, and city nights worth saving.",
   path: "/bengaluru-guide",
   keywords: market.keywords,
 });

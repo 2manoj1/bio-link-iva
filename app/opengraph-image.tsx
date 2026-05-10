@@ -31,13 +31,13 @@ export default function Image() {
             textTransform: "uppercase",
           }}
         >
-          Bengaluru Lifestyle Creator
+          Luxury Lifestyle Creator
         </div>
         <div style={{ marginTop: 24, maxWidth: 900, fontSize: 88, lineHeight: 0.9 }}>
           Iva Chatterjee
         </div>
         <div style={{ marginTop: 28, maxWidth: 760, fontSize: 34, color: "#c9b89f" }}>
-          Cafés, stays, fashion, and beautiful city moments.
+          Soft luxury, cafés, stays, fashion, and city nights.
         </div>
       </div>
     ),

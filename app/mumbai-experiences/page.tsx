@@ -8,7 +8,7 @@ const market = markets.find((item) => item.name === "Mumbai")!;
 export const metadata: Metadata = makeMetadata({
   title: "Mumbai Experiences",
   description:
-    "Mumbai cafés, hospitality, fashion-forward city energy, and selective lifestyle stories from Iva Chatterjee.",
+    "Mumbai cafés, hotel moments, fashion-forward city energy, and selective lifestyle stories from Iva Chatterjee.",
   path: "/mumbai-experiences",
   keywords: market.keywords,
 });
