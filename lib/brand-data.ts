@@ -14,7 +14,7 @@ export const creator = {
   instagramUrl: "https://www.instagram.com/iva_mana5/",
   youtubeUrl: "https://www.youtube.com/@Maniva777",
   facebookPageUrl: "https://www.facebook.com/maniva777",
-  websiteUrl: "https://maniva.co.in",
+  websiteUrl: "https://iva.manojmukherjee.co.in",
   profileImage: "/iva/editorial-saree-portrait.jpeg",
   heroImage: "/iva/rooftop-blue-evening.jpeg",
 };
