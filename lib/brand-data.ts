@@ -16,7 +16,7 @@ export const creator = {
   facebookPageUrl: "https://www.facebook.com/maniva777",
   websiteUrl: "https://maniva.co.in",
   profileImage: "/iva/editorial-saree-portrait.jpeg",
-  heroImage: "/iva/rooftop-pool-campaign.jpeg",
+  heroImage: "/iva/rooftop-blue-evening.jpeg",
 };
 
 export const ivaImages = {
@@ -96,7 +96,7 @@ export const markets = [
 ];
 
 export const stats = [
-  { label: "Instagram", value: "48K+", note: "Community" },
+  { label: "Instagram", value: "50K+", note: "Followers" },
   { label: "YouTube", value: "16K+", note: "Maniva channel" },
   { label: "Loved Reel", value: "179K", note: "Highest reach" },
   { label: "Profile Activity", value: "+68.5%", note: "Growing interest" },
@@ -128,53 +128,83 @@ export const topContent = [
 
 export const visualStories = [
   {
-    title: "Heritage Hospitality",
+    title: "Heritage Saree Check-in",
     category: "Cultural Luxury",
+    mood: "Old-world service, modern styling, warm arrival frames.",
+    format: "Carousel + Reel",
+    signal: "Save-worthy stay",
     image: ivaImages.heritageSaree,
   },
   {
-    title: "Poolside Rooftop Mood",
+    title: "Poolside Golden Hour",
     category: "Staycation",
+    mood: "Resort light, soft glam, and a weekend plan that feels easy to book.",
+    format: "Reel Storyline",
+    signal: "Couple escape",
     image: ivaImages.poolsidePink,
   },
   {
-    title: "Styled Saree Portrait",
+    title: "Saree Editorial Drop",
     category: "Elevated Fashion",
+    mood: "Polished Indianwear with creator-first portrait energy.",
+    format: "Photo Set",
+    signal: "Fashion cue",
     image: ivaImages.editorialSaree,
   },
   {
-    title: "The Bear House Retail",
+    title: "Retail Fit Check",
     category: "Premium Retail",
+    mood: "A shopping day styled like a best-friend recommendation.",
+    format: "Try-on Reel",
+    signal: "179K loved reel",
     image: ivaImages.bearHouseRetail,
   },
   {
-    title: "Rooftop Bar Night",
+    title: "Rooftop After Dark",
     category: "Nightlife",
+    mood: "Blue-hour cocktails, city lights, and a table people want to send.",
+    format: "Night Reel",
+    signal: "Date-night save",
     image: ivaImages.rooftopBar,
   },
   {
-    title: "Hilton Chef Table",
+    title: "Chef Table Close-up",
     category: "Hospitality",
+    mood: "Menu details, chef moments, and the trust signals behind a premium table.",
+    format: "Dining Edit",
+    signal: "Luxury dining",
     image: ivaImages.hiltonChef,
   },
   {
-    title: "Rooftop Blue Hour",
+    title: "Blue Hour Couple Plan",
     category: "Couple Experience",
+    mood: "Soft city skyline, dressed-up energy, and a plan built for two.",
+    format: "Mini Guide",
+    signal: "Bengaluru mood",
     image: ivaImages.rooftopBlue,
   },
   {
-    title: "DoubleTree Arrival",
+    title: "Hotel Arrival Moment",
     category: "Boutique Stay",
+    mood: "Lobby details, check-in polish, and the first frame of a staycation.",
+    format: "Story Set",
+    signal: "Stay partner",
     image: ivaImages.doubletreeArrival,
   },
   {
-    title: "Pink Café Cocktail",
+    title: "Pink Café Ritual",
     category: "Luxury Café",
+    mood: "Pretty tables, playful color, and the kind of café Gen Z saves fast.",
+    format: "Cafe Reel",
+    signal: "Aesthetic find",
     image: ivaImages.pinkCafe,
   },
   {
-    title: "Fine Dining Table",
+    title: "Fine Dining Details",
     category: "Premium Dining",
+    mood: "Table styling, plating, and quiet luxury for slower evenings.",
+    format: "Table Story",
+    signal: "Premium menu",
     image: ivaImages.fineDining,
   },
 ];
