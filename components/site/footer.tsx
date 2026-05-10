@@ -19,7 +19,7 @@ export function Footer() {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
               Platform
             </p>
-            <div className="mt-4 grid gap-2">
+            <nav aria-label="Footer Platform Navigation" className="mt-4 grid gap-2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -29,13 +29,13 @@ export function Footer() {
                   {item.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
               Markets
             </p>
-            <div className="mt-4 grid gap-2">
+            <nav aria-label="Footer Markets Navigation" className="mt-4 grid gap-2">
               {markets.slice(0, 5).map((market) => (
                 <Link
                   key={market.name}
@@ -45,20 +45,20 @@ export function Footer() {
                   {market.name}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
         <div className="mt-10 flex flex-col justify-between gap-4 border-t border-[var(--border-soft)] pt-6 text-xs text-[var(--text-muted)] md:flex-row">
           <p>© 2026 Iva Chatterjee. Soft luxury lifestyle creator.</p>
-          <div className="flex gap-4">
-            <a href={creator.instagramUrl} rel="noreferrer" target="_blank">
+          <nav aria-label="Social Links" className="flex gap-4">
+            <a href={creator.instagramUrl} rel="noreferrer" target="_blank" aria-label="Iva Chatterjee Instagram">
               Instagram
             </a>
-            <a href={creator.youtubeUrl} rel="noreferrer" target="_blank">
+            <a href={creator.youtubeUrl} rel="noreferrer" target="_blank" aria-label="Iva Chatterjee YouTube">
               YouTube
             </a>
-            <a href={`mailto:${creator.email}`}>Brand Contact</a>
-          </div>
+            <a href={`mailto:${creator.email}`} aria-label="Contact Iva Chatterjee">Brand Contact</a>
+          </nav>
         </div>
       </Container>
     </footer>

@@ -47,20 +47,19 @@ import {
 } from "./luxury-ui";
 import { InquiryFunnel } from "./inquiry-funnel";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
-
 export function HomeExperience() {
   return (
     <PageShell>
       <section className="relative overflow-hidden bg-stone-950 text-stone-50 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed]">
         <Image
-          alt=""
+          alt={`${creator.name} - Luxury Lifestyle Creator in Bengaluru`}
           className="object-cover object-[58%_36%] brightness-[0.84] contrast-[1.08] saturate-[0.92] md:object-[62%_34%]"
           fill
           priority
           sizes="100vw"
           src={creator.heroImage}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,169,106,0.18),transparent_30%),linear-gradient(180deg,rgba(17,16,14,0.08),rgba(17,16,14,0.9))] md:bg-[radial-gradient(circle_at_74%_18%,rgba(201,169,106,0.16),transparent_30%),linear-gradient(90deg,rgba(17,16,14,0.94),rgba(53,39,29,0.64),rgba(17,16,14,0.18))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,169,106,0.10),transparent_35%),linear-gradient(180deg,rgba(17,16,14,0.02),rgba(17,16,14,0.45))] md:bg-[radial-gradient(circle_at_74%_18%,rgba(201,169,106,0.10),transparent_35%),linear-gradient(90deg,rgba(17,16,14,0.55),rgba(53,39,29,0.28),rgba(17,16,14,0.05))]" />
         <Container className="relative grid min-h-[calc(100svh-4rem)] gap-10 pb-12 pt-24 md:pb-16 md:pt-28 lg:grid-cols-[1.02fr_0.68fr] lg:items-end">
           <div className="max-w-4xl">
             <EditorialHeader
@@ -427,7 +426,7 @@ export function AboutExperience() {
     <PageShell>
       <section className="relative overflow-hidden py-[var(--spacing-editorial-section)]">
         <Image
-          alt=""
+          alt="Iva Chatterjee - Bengaluru based Bengali lifestyle creator in a saree"
           className="object-cover object-[42%_18%] opacity-45 scale-105 saturate-[0.9] md:opacity-60"
           fill
           priority

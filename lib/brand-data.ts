@@ -130,7 +130,7 @@ export const visualStories = [
     title: "Heritage Saree Check-in",
     category: "Cultural Luxury",
     mood: "A heritage stay, a saree moment, and an arrival that feels special.",
-    format: "Carousel + Reel",
+    format: "Stories + Reel",
     signal: "Save-worthy stay",
     image: ivaImages.heritageSaree,
   },
@@ -486,37 +486,70 @@ export function makeMetadata({
   description,
   path = "/",
   keywords = [],
+  image = "/opengraph-image",
 }: {
   title: string;
   description: string;
   path?: string;
   keywords?: string[];
+  image?: string;
 }): Metadata {
   const url = `${siteUrl}${path}`;
+  const fullTitle = `${title} | ${creator.name}`;
 
   return {
-    title,
+    title: fullTitle,
     description,
     keywords: [
       "Iva Chatterjee",
-      "Bengaluru lifestyle creator",
-      "Bangalore premium experiences",
+      "Luxury Lifestyle Creator",
+      "Bengaluru Luxury Creator",
+      "High-end Lifestyle Influencer",
+      "Premium Brand Collaborations",
+      "Luxury Beauty Creator",
+      "Boutique Hospitality Influencer",
       ...keywords,
     ],
-    alternates: { canonical: url },
+    authors: [{ name: creator.name }],
+    creator: creator.name,
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: path,
+    },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
-      url,
-      siteName: "Iva Chatterjee",
+      url: path,
+      siteName: creator.name,
       type: "website",
-      images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+      locale: "en_IN",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: fullTitle,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
-      images: ["/opengraph-image"],
+      creator: creator.handle,
+      images: [image],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
+

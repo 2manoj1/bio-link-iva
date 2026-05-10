@@ -8,16 +8,12 @@ const staticRoutes = [
   "/collaborations",
   "/bengaluru-guide",
   "/goa-escapes",
-  "/goa-escapes/boutique-stays",
   "/mumbai-experiences",
-  "/mumbai-experiences/cafes",
   "/pune-discoveries",
-  "/pune-discoveries/cafes",
   "/media-kit",
   "/contact",
   "/links",
   "/blog",
-  "/editorial",
   "/premium-experiences",
 ];
 
@@ -33,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteUrl}${route}`,
     lastModified: now,
     changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" ? 1 : route.includes("media-kit") ? 0.9 : 0.7,
+    priority: route === "" ? 1 : 0.8,
   }));
 }
+

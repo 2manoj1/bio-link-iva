@@ -16,31 +16,55 @@ export default function Image() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
-          background: "#11100e",
-          color: "#f3ecdf",
-          padding: 72,
+          background: "#fdfcf9",
+          padding: 80,
           fontFamily: "serif",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
         <div
           style={{
-            color: "#c8a96a",
-            fontSize: 28,
-            letterSpacing: 8,
-            textTransform: "uppercase",
+            position: "absolute",
+            top: -100,
+            right: -100,
+            width: 600,
+            height: 600,
+            background: "#f3ecdf",
+            borderRadius: "50%",
+            opacity: 0.5,
           }}
-        >
-          Luxury Lifestyle Creator
+        />
+        
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div
+            style={{
+              color: "#c8a96a",
+              fontSize: 24,
+              letterSpacing: 10,
+              textTransform: "uppercase",
+              marginBottom: 40,
+            }}
+          >
+            Luxury Lifestyle · Bengaluru
+          </div>
+          
+          <div style={{ fontSize: 120, lineHeight: 0.85, color: "#11100e", marginBottom: 40 }}>
+            Iva Chatterjee
+          </div>
+          
+          <div style={{ fontSize: 32, color: "#555", maxWidth: 700, lineHeight: 1.4 }}>
+            Exploring beautiful cafés, boutique hospitality, fashion moments, and city nights through a soft luxury lens.
+          </div>
         </div>
-        <div style={{ marginTop: 24, maxWidth: 900, fontSize: 88, lineHeight: 0.9 }}>
-          Iva Chatterjee
-        </div>
-        <div style={{ marginTop: 28, maxWidth: 760, fontSize: 34, color: "#c9b89f" }}>
-          Soft luxury, cafés, stays, fashion, and city nights.
+
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <div style={{ width: 40, height: 1, background: "#c8a96a" }} />
+          <div style={{ color: "#c8a96a", fontSize: 20, letterSpacing: 4 }}>@IVA_MANA5</div>
         </div>
       </div>
     ),
     size,
   );
 }
+
