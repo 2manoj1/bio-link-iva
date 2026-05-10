@@ -85,7 +85,7 @@ export const markets = [
   },
   {
     name: "Kolkata",
-    href: "/premium-experiences#kolkata",
+    href: "/kolkata-experiences",
     role: "Selective Heritage",
     positioning:
       "Heritage stays, cultural dining, and stories with old-world charm.",
@@ -108,6 +108,7 @@ export const topContent = [
     category: "Fashion",
     views: "179K",
     image: ivaImages.bearHouseRetail,
+    href: "https://www.instagram.com/reel/DYEM8CpxKdj",
   },
   {
     title: "Marriott Rooftop Evening",
@@ -115,6 +116,7 @@ export const topContent = [
     category: "Rooftop",
     views: "141K",
     image: ivaImages.rooftopBar,
+    href: "https://www.instagram.com/reel/DXf_JOMEQlB",
   },
   {
     title: "Hilton Poolside Staycation",
@@ -122,7 +124,106 @@ export const topContent = [
     category: "Staycation",
     views: "102K",
     image: ivaImages.rooftopPool,
+    href: "https://www.instagram.com/reel/DW6CUOaEX4t",
   },
+];
+
+export const trustedBrands = [
+  {
+    name: "Amazon",
+    focus: "Fashion & lifestyle",
+    metric: "Global consumer giant",
+  },
+  {
+    name: "Air India",
+    focus: "Travel campaigns",
+    metric: "Trusted airline brand",
+  },
+  {
+    name: "Hilton",
+    focus: "Luxury stays",
+    metric: "Premium hospitality leader",
+  },
+  {
+    name: "Hyatt Centric",
+    focus: "Staycations",
+    metric: "Modern luxury positioning",
+  },
+  {
+    name: "Sheraton",
+    focus: "Hotel collabs",
+    metric: "International hotel reputation",
+  },
+  {
+    name: "JW Marriott",
+    focus: "Luxury dining",
+    metric: "Elite hospitality image",
+  },
+  {
+    name: "Maybelline",
+    focus: "Beauty launches",
+    metric: "Globally loved makeup",
+  },
+  {
+    name: "Bioderma",
+    focus: "Sensitive skincare",
+    metric: "Dermatologist trusted skincare",
+  },
+  {
+    name: "CeraVe",
+    focus: "Hydration skincare",
+    metric: "Science backed skincare",
+  },
+  {
+    name: "Garnier",
+    focus: "Face care",
+    metric: "Mass market beauty",
+  },
+  {
+    name: "Colgate",
+    focus: "Oral care",
+    metric: "Trusted household essential",
+  },
+  {
+    name: "Pond's",
+    focus: "Daily skincare",
+    metric: "Legacy beauty brand",
+  },
+  {
+    name: "Palmolive",
+    focus: "Body care",
+    metric: "Everyday personal care",
+  },
+  {
+    name: "Pizza Hut",
+    focus: "Food collabs",
+    metric: "Globally recognized chain",
+  },
+  {
+    name: "Swiggy",
+    focus: "Lifestyle campaigns",
+    metric: "Leading delivery platform",
+  },
+  {
+    name: "WOW",
+    focus: "Haircare & skincare",
+    metric: "Popular wellness brand",
+  },
+  {
+    name: "Zouk",
+    focus: "Bags & fashion",
+    metric: "Modern Indian lifestyle",
+  },
+  {
+    name: "Nutriorg",
+    focus: "Wellness products",
+    metric: "Natural wellness leader",
+  },
+  {
+    name: "Fixderma",
+    focus: "Derm skincare",
+    metric: "Trusted skin solutions",
+  }
 ];
 
 export const visualStories = [

@@ -33,6 +33,7 @@ import {
   markets,
   stats,
   topContent,
+  trustedBrands,
   visualStories,
 } from "@/lib/brand-data";
 import {
@@ -152,6 +153,7 @@ export function HomeExperience() {
             {topContent.map((item) => (
               <StaggerItem key={item.title}>
                 <ImageCard
+                  href={item.href}
                   image={item.image}
                   meta={`${item.views} views · ${item.category}`}
                   subtitle={`${item.city} moment`}
@@ -163,10 +165,71 @@ export function HomeExperience() {
         </Container>
       </section>
 
+      <BrandTrustCarousel />
+
       <VisualStoriesSection />
       <MarketSection />
       <InquiryFunnel />
     </PageShell>
+  );
+}
+
+export function BrandTrustCarousel() {
+  return (
+    <section className="bg-[var(--surface-muted)]/70 py-[var(--spacing-editorial-section)] text-[var(--text-strong)]">
+      <Container>
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between select-none">
+          <div>
+            <SectionHeader
+              eyebrow="Trusted By"
+              title="Brands that choose Iva for authentic reach."
+              description="A carefully selected lineup of partner campaigns and 130+ partnerships showing how genuine storytelling and premium taste build trust with her audience."
+            />
+          </div>
+        </div>
+
+        <div className="mt-10 overflow-hidden rounded-[2rem] border border-[var(--border-soft)] bg-[var(--surface)] p-4 shadow-luxury-sm">
+          <Carousel
+            className="relative"
+            opts={{ align: "start", containScroll: "trimSnaps", dragFree: true }}
+          >
+            <CarouselContent className="-ml-4">
+              {trustedBrands.map((brand) => (
+                <CarouselItem
+                  key={brand.name}
+                  className="basis-[92%] pl-4 sm:basis-[55%] lg:basis-[32%]"
+                >
+                  <div className="mx-auto min-h-full max-w-[96vw] overflow-hidden rounded-[1.75rem] border border-white/10 bg-stone-950/95 p-6 shadow-lg shadow-black/10 select-none sm:max-w-none">
+                    <div className="flex items-start gap-4">
+                      <div className="grid h-16 w-16 place-items-center rounded-3xl bg-[var(--gold)]/15 text-[var(--gold)] font-semibold uppercase tracking-[0.22em] shadow-[0_10px_40px_rgba(0,0,0,0.12)]">
+                        {brand.name
+                          .split(" ")
+                          .map((word) => word[0])
+                          .join("")
+                          .slice(0, 2)}
+                      </div>
+                      <div>
+                        <p className="text-sm uppercase tracking-[0.24em] text-[var(--gold)]">
+                          {brand.name}
+                        </p>
+                        <p className="mt-2 max-w-[11rem] text-sm leading-6 text-[var(--text-body)]">
+                          {brand.focus}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="mt-6 text-sm leading-6 text-[var(--text-body)]">
+                      {brand.metric}
+                    </p>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-3 top-1/2 hidden md:inline-flex" />
+            <CarouselNext className="right-3 top-1/2 hidden md:inline-flex" />
+          </Carousel>
+        </div>
+      </Container>
+    </section>
   );
 }
 
@@ -607,6 +670,7 @@ export function CollaborationExperience() {
           </Stagger>
         </Container>
       </section>
+      <BrandTrustCarousel />
       <InquiryFunnel />
     </PageShell>
   );
@@ -765,6 +829,7 @@ export function MediaKitExperience() {
               <StaggerItem key={item.title}>
                 <ImageCard
                   image={item.image}
+                  href={item.href}
                   meta={`${item.views} views`}
                   subtitle={item.category}
                   title={item.title}

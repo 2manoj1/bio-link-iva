@@ -186,7 +186,17 @@ export function ImageCard({
 
   if (!href) return content;
 
-  return <Link href={href}>{content}</Link>;
+  const isExternal = href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:");
+
+  return (
+    <Link
+      href={href}
+      target={isExternal ? "_blank" : "_self"}
+      rel={isExternal ? "noreferrer noopener" : undefined}
+    >
+      {content}
+    </Link>
+  );
 }
 
 export function FeatureBand({

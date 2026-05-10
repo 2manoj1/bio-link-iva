@@ -3,6 +3,15 @@
 import type { FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { collaborationTypes } from "@/lib/brand-data";
 import { Container, SectionHeader } from "./luxury-ui";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
@@ -52,62 +61,64 @@ export function InquiryFunnel() {
               onSubmit={handleSubmit}
             >
               <div className="grid gap-4 md:grid-cols-2">
-                <label className="grid gap-2 text-sm font-medium">
-                  Brand name
-                  <input
-                    className="min-h-12 rounded-md border border-[var(--border-soft)] bg-[var(--page)] px-4 text-[var(--text-strong)] outline-none transition focus:border-[var(--gold)]"
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium">Brand name</label>
+                  <Input
+                    className="min-h-12 w-full"
                     name="brandName"
                     placeholder="Boutique hotel, café, label"
                     required
                   />
-                </label>
-                <label className="grid gap-2 text-sm font-medium">
-                  Market
-                  <select
-                    className="min-h-12 rounded-md border border-[var(--border-soft)] bg-[var(--page)] px-4 text-[var(--text-strong)] outline-none transition focus:border-[var(--gold)]"
-                    name="market"
-                    required
-                  >
-                    <option>Bengaluru</option>
-                    <option>Goa</option>
-                    <option>Mumbai</option>
-                    <option>Pune</option>
-                    <option>Kolkata, stay partnership only</option>
-                  </select>
-                </label>
+                </div>
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium">Market</label>
+                  <Select name="market" required>
+                    <SelectTrigger className="min-h-12 w-full">
+                      <SelectValue placeholder="Select market" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Bengaluru">Bengaluru</SelectItem>
+                      <SelectItem value="Goa">Goa</SelectItem>
+                      <SelectItem value="Mumbai">Mumbai</SelectItem>
+                      <SelectItem value="Pune">Pune</SelectItem>
+                      <SelectItem value="Kolkata, stay partnership only">Kolkata, stay partnership only</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <label className="mt-4 grid gap-2 text-sm font-medium">
-                What should Iva experience?
-                <textarea
-                  className="min-h-36 rounded-md border border-[var(--border-soft)] bg-[var(--page)] px-4 py-3 text-[var(--text-strong)] outline-none transition focus:border-[var(--gold)]"
+              <div className="mt-4 grid gap-2">
+                <label className="text-sm font-medium">What should Iva experience?</label>
+                <Textarea
+                  className="min-h-36 w-full"
                   name="details"
                   placeholder="Share the place, product, launch window, story idea, and paid collaboration range."
                   required
                 />
-              </label>
+              </div>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <label className="grid gap-2 text-sm font-medium">
-                  Brand email
-                  <input
-                    className="min-h-12 rounded-md border border-[var(--border-soft)] bg-[var(--page)] px-4 text-[var(--text-strong)] outline-none transition focus:border-[var(--gold)]"
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium">Brand email</label>
+                  <Input
+                    className="min-h-12 w-full"
                     name="brandEmail"
                     placeholder="partnerships@brand.com"
                     required
                     type="email"
                   />
-                </label>
-                <label className="grid gap-2 text-sm font-medium">
-                  Collaboration type
-                  <select
-                    className="min-h-12 rounded-md border border-[var(--border-soft)] bg-[var(--page)] px-4 text-[var(--text-strong)] outline-none transition focus:border-[var(--gold)]"
-                    name="collaborationType"
-                    required
-                  >
-                    <option>Paid collaboration</option>
-                    <option>Launch or event invite</option>
-                    <option>Stay or travel feature</option>
-                  </select>
-                </label>
+                </div>
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium">Collaboration type</label>
+                  <Select name="collaborationType" required>
+                    <SelectTrigger className="min-h-12 w-full">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Paid collaboration">Paid collaboration</SelectItem>
+                      <SelectItem value="Launch or event invite">Launch or event invite</SelectItem>
+                      <SelectItem value="Stay or travel feature">Stay or travel feature</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <Button
                 className="mt-5 h-auto min-h-12 w-full rounded-full bg-[var(--text-strong)] px-6 text-sm font-semibold text-[var(--page)] transition duration-300 ease-luxury hover:bg-[var(--gold)] hover:text-[var(--matte)]"
