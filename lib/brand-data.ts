@@ -110,14 +110,14 @@ export const topContent = [
     image: ivaImages.bearHouseRetail,
   },
   {
-    title: "Nazaara Rooftop Evening",
+    title: "Marriott Rooftop Evening",
     city: "Bengaluru",
     category: "Rooftop",
     views: "141K",
     image: ivaImages.rooftopBar,
   },
   {
-    title: "Poolside Staycation Moment",
+    title: "Hilton Poolside Staycation",
     city: "Bengaluru",
     category: "Staycation",
     views: "102K",
