@@ -16,7 +16,7 @@ import { collaborationTypes } from "@/lib/brand-data";
 import { Container, SectionHeader } from "./luxury-ui";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
 
-const whatsappNumber = "918892525120";
+const whatsappNumber = "918431716703"; // Iva's WhatsApp number in international format without the '+' sign
 const contactEmail = "ivachatterjee5@gmail.com";
 
 export function InquiryFunnel() {
