@@ -238,7 +238,7 @@ export function VisualStoriesSection() {
   const worldSignals = [
     { label: "Instagram-first", value: "Saveable", icon: Camera },
     { label: "Personal taste", value: "Iva’s lens", icon: Sparkles },
-    { label: "Creator reach", value: "50K+ IG", icon: TrendingUp },
+    { label: "Creator reach", value: "58K+ IG", icon: TrendingUp },
   ];
 
   return (

@@ -95,9 +95,9 @@ export const markets = [
 ];
 
 export const stats = [
-  { label: "Instagram", value: "50K+", note: "Style-led audience" },
+  { label: "Instagram", value: "58K+", note: "Style-led audience" },
   { label: "YouTube", value: "16K+", note: "Maniva community" },
-  { label: "Loved Reel", value: "179K", note: "Most-loved moment" },
+  { label: "Loved Reel", value: "318K", note: "Most-loved moment" },
   { label: "Profile Activity", value: "+68.5%", note: "Rising interest" },
 ];
 
@@ -106,7 +106,7 @@ export const topContent = [
     title: "The Bear House Shopping Day",
     city: "Bengaluru",
     category: "Fashion",
-    views: "179K",
+    views: "318K",
     image: ivaImages.bearHouseRetail,
     href: "https://www.instagram.com/reel/DYEM8CpxKdj",
   },
@@ -256,7 +256,7 @@ export const visualStories = [
     category: "Premium Retail",
     mood: "A shopping day that feels styled, easy, and best-friend honest.",
     format: "Try-on Reel",
-    signal: "179K loved reel",
+    signal: "318K loved reel",
     image: ivaImages.bearHouseRetail,
   },
   {
