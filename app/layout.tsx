@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
 import { Footer } from "@/components/site/footer";
 import { JsonLd } from "@/components/site/json-ld";
 import { Navigation } from "@/components/site/navigation";
+import { Analytics } from "@vercel/analytics/react";
 import { creator, siteUrl } from "@/lib/brand-data";
 import "./globals.css";
 
@@ -130,6 +131,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
+          <Analytics />
       </body>
     </html>
   );
