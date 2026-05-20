@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     "luxury staycation Bangalore",
   ],
   openGraph: {
-    title: "Iva Chatterjee | Luxury Lifestyle Creator",
+    title: "Iva Chatterjee | Bangalore Influencer & Digital Creator",
     description:
-      "Exploring beautiful cafés, boutique stays, fashion, beauty and city nights through a soft luxury lens.",
+      "Beauty, food, travel, lifestyle, cafés, hotels, fashion, and city nights through a polished Bangalore lens.",
     type: "website",
     url: siteUrl,
     siteName: "Iva Chatterjee",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Iva Chatterjee | Luxury Lifestyle Creator",
+        alt: "Iva Chatterjee | Bangalore Influencer & Digital Creator",
       },
     ],
   },
@@ -106,13 +106,16 @@ export default function RootLayout({
               url: siteUrl,
               image: `${siteUrl}${creator.profileImage}`,
               description: creator.description,
-              jobTitle: "Luxury Lifestyle & Experience Creator",
+              jobTitle: "Bangalore Influencer and Digital Creator",
               knowsAbout: [
-                "Luxury Lifestyle",
-                "Boutique Hospitality",
+                "Beauty",
+                "Food",
+                "Travel",
+                "Lifestyle",
                 "Fine Dining",
                 "Fashion",
-                "Bengaluru Culture",
+                "Bangalore Culture",
+                "Boutique Hospitality",
               ],
               address: {
                 "@type": "PostalAddress",
@@ -148,5 +151,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

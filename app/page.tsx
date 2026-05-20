@@ -4,10 +4,13 @@ import { HomeExperience } from "@/components/site/page-sections";
 import { makeMetadata } from "@/lib/brand-data";
 
 export const metadata: Metadata = makeMetadata({
-  title: "Luxury Lifestyle Creator",
+  title: "Bangalore Influencer & Digital Creator",
   description:
-    "Iva Chatterjee shares cafés, rooftops, boutique stays, fashion moments, and city nights through a soft luxury lens.",
+    "Iva Chatterjee shares beauty, food, travel, lifestyle, cafés, hotels, fashion moments, and city nights through a polished Bangalore lens.",
   keywords: [
+    "Iva Chatterjee Bangalore influencer",
+    "Bangalore digital creator",
+    "beauty food travel lifestyle creator",
     "Bengaluru lifestyle creator",
     "Bengaluru luxury cafés",
     "Bangalore premium experiences",

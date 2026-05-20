@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { blogPosts } from "@/lib/blog";
 import { editorial, neighborhoods, siteUrl } from "@/lib/brand-data";
 
 const staticRoutes = [
@@ -25,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     ...staticRoutes,
     ...neighborhoods.map((area) => `/bengaluru-guide/${area.slug}`),
+    ...blogPosts.map((story) => `/blog/${story.slug}`),
     ...editorial.map((story) => `/editorial/${story.slug}`),
   ];
 
@@ -35,4 +37,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === "" ? 1 : 0.8,
   }));
 }
-

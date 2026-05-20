@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({});
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+});
 
 export default withMDX(nextConfig);

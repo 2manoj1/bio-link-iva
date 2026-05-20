@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { permanentRedirect } from "next/navigation";
 
-import { EditorialExperience } from "@/components/site/page-sections";
 import { makeMetadata } from "@/lib/brand-data";
 
 export const metadata: Metadata = makeMetadata({
@@ -11,5 +11,5 @@ export const metadata: Metadata = makeMetadata({
 });
 
 export default function EditorialPage() {
-  return <EditorialExperience />;
+  permanentRedirect("/blog");
 }

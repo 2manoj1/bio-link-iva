@@ -26,11 +26,12 @@ import {
 import {
   collaborationTypes,
   creator,
-  demographics,
   editorial,
   experiencePillars,
+  instagramProfile,
   ivaImages,
   markets,
+  mediaKit,
   stats,
   topContent,
   trustedBrands,
@@ -48,12 +49,13 @@ import {
 } from "./luxury-ui";
 import { InquiryFunnel } from "./inquiry-funnel";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
+import { blogPosts } from "@/lib/blog";
 export function HomeExperience() {
   return (
     <PageShell>
       <section className="relative overflow-hidden bg-stone-950 text-stone-50 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed]">
         <Image
-          alt={`${creator.name} - Luxury Lifestyle Creator in Bengaluru`}
+          alt={`${creator.name} - ${creator.title} in Bengaluru`}
           className="object-cover object-[58%_36%] brightness-[0.84] contrast-[1.08] saturate-[0.92] md:object-[62%_34%]"
           fill
           priority
@@ -183,7 +185,7 @@ export function BrandTrustCarousel() {
             <SectionHeader
               eyebrow="Trusted By"
               title="Brands that choose Iva for authentic reach."
-              description="A carefully selected lineup of partner campaigns and 130+ partnerships showing how genuine storytelling and premium taste build trust with her audience."
+              description="A growing collaboration footprint across beauty, food, travel, lifestyle, hospitality, salons, fashion events, and Bengaluru weekend culture."
             />
           </div>
         </div>
@@ -238,7 +240,11 @@ export function VisualStoriesSection() {
   const worldSignals = [
     { label: "Instagram-first", value: "Saveable", icon: Camera },
     { label: "Personal taste", value: "Iva’s lens", icon: Sparkles },
-    { label: "Creator reach", value: "58K+ IG", icon: TrendingUp },
+    {
+      label: "Creator reach",
+      value: `${instagramProfile.followers} IG`,
+      icon: TrendingUp,
+    },
   ];
 
   return (
@@ -394,8 +400,8 @@ export function PillarsSection() {
 }
 
 export function BlogPreviewSection() {
-  const featured = editorial[0];
-  const secondary = editorial.slice(1, 4);
+  const featured = blogPosts[0];
+  const secondary = blogPosts.slice(1, 4);
 
   return (
     <section className="bg-[var(--surface-muted)]/70 py-[var(--spacing-editorial-section)] text-[var(--text-strong)]">
@@ -422,7 +428,7 @@ export function BlogPreviewSection() {
           <Reveal>
             <Link
               className="group block overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface)] shadow-luxury-md"
-              href={`/editorial/${featured.slug}`}
+              href={`/blog/${featured.slug}`}
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
@@ -452,7 +458,7 @@ export function BlogPreviewSection() {
               <StaggerItem key={story.slug}>
                 <Link
                   className="grid gap-4 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-4 transition hover:border-[var(--gold)] sm:grid-cols-[140px_1fr]"
-                  href={`/editorial/${story.slug}`}
+                  href={`/blog/${story.slug}`}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
                     <Image
@@ -748,98 +754,429 @@ export function CityExperience({
 }
 
 export function MediaKitExperience() {
+  const mediaKitHighlights = [
+    ...mediaKit.insights.map((item, index) => ({
+      ...item,
+      icon: [TrendingUp, Sparkles, Camera][index] ?? TrendingUp,
+    })),
+    {
+      label: "Bengaluru",
+      value: "1.3%",
+      note: "Home-city signal",
+      icon: MapPin,
+    },
+  ];
+  const audienceHighlights = [
+    {
+      label: "Instagram followers",
+      value: instagramProfile.followers,
+      note: "Current profile audience",
+    },
+    {
+      label: "Published posts",
+      value: instagramProfile.posts,
+      note: "Always-on creator library",
+    },
+    {
+      label: "Youth-led audience",
+      value: "72.3%",
+      note: "13-24 combined audience",
+    },
+    {
+      label: "India core market",
+      value: "96.8%",
+      note: "Views audience by country",
+    },
+    {
+      label: "Profile visits",
+      value: mediaKit.profileActivity[1].value,
+      note: `${mediaKit.profileActivity[1].note} vs previous window`,
+    },
+    {
+      label: "Profile activity",
+      value: mediaKit.profileActivity[0].value,
+      note: `${mediaKit.profileActivity[0].note} vs previous window`,
+    },
+  ];
+  const brandFit = mediaKit.brandFit;
+  const collaborationMenu = mediaKit.collaborationMenu;
+
   return (
     <PageShell>
-      <section className="py-[var(--spacing-editorial-section)]">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-end lg:gap-14">
-            <EditorialHeader
-              eyebrow="Media Kit"
-              title="A personal brand with real influence."
-              description="A clear look at Iva’s audience, strongest content, city presence, and best-fit brand categories."
-            />
-            <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm">
-              <p className="text-sm text-[var(--text-muted)]">Brand contact</p>
+      <section className="relative overflow-hidden border-b border-[var(--border-soft)] bg-stone-950 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed]">
+        <Image
+          alt="Iva Chatterjee media kit portrait"
+          className="object-cover object-[50%_18%] opacity-54 saturate-[0.92] md:object-[56%_24%] md:opacity-72"
+          fill
+          priority
+          sizes="100vw"
+          src={ivaImages.heritageSaree}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(201,169,106,0.16),transparent_32%),linear-gradient(180deg,rgba(17,16,14,0.18),rgba(17,16,14,0.92)),linear-gradient(90deg,rgba(17,16,14,0.96),rgba(17,16,14,0.64),rgba(17,16,14,0.22))]" />
+        <Container className="relative grid gap-7 pb-8 pt-20 sm:pt-24 md:min-h-[68vh] md:pb-10 md:pt-24 lg:grid-cols-[1fr_0.68fr] lg:items-end">
+          <div>
+            <Reveal className="max-w-4xl">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--gold)] sm:text-xs sm:tracking-[0.32em]">
+                Media Kit
+              </p>
+              <h1 className="mt-4 max-w-3xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] min-[380px]:text-6xl sm:text-7xl md:text-[5.9rem] xl:text-[6.7rem]">
+                A premium creator brand ready for the right partners.
+              </h1>
+              <p className="mt-5 max-w-lg text-sm leading-7 text-[var(--text-body)] sm:text-base sm:leading-8">
+                Iva turns beauty, food, travel, lifestyle, hotels, cafes, and
+                city experiences into moments people save, share, and remember.
+                Premium, but still personal.
+              </p>
+              <div className="mt-6 grid max-w-xl gap-2 sm:grid-cols-2">
+                {mediaKit.brandPromise.map((item) => (
+                  <div
+                    className="border-l border-[var(--gold)]/55 bg-white/[0.04] px-3 py-2 text-xs leading-5 text-[var(--text-body)] backdrop-blur-md sm:text-sm sm:leading-6"
+                    key={item}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.08} className="mt-6 grid gap-3 sm:flex">
               <a
-                className="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-[var(--text-strong)]"
-                href={`mailto:${creator.email}`}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-5 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)] sm:px-6"
+                href={`mailto:${creator.email}?subject=Media%20Kit%20%26%20Collaboration%20Inquiry`}
               >
-                <Mail className="size-4 text-[var(--gold)]" />
-                {creator.email}
+                <Mail className="size-4" />
+                Request collaboration
+              </a>
+              <a
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-white hover:text-stone-950 sm:px-6"
+                href={creator.instagramUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <AtSign className="size-4" />
+                Follow Instagram
               </a>
             </Reveal>
           </div>
-          <div className="mt-10">
-            <StatGrid stats={stats} />
+
+          <Reveal delay={0.12}>
+            <div className="rounded-md border border-white/15 bg-black/38 p-4 shadow-luxury-lg backdrop-blur-xl sm:p-5">
+              <div className="flex items-center gap-3">
+                <BadgeCheck className="size-5 text-[var(--gold)]" />
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--champagne)]">
+                  Last 30 days
+                </p>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-[var(--text-body)]">
+                {mediaKit.dashboardWindow} · {mediaKit.source}
+              </p>
+              <div className="mt-5 grid gap-3">
+                {mediaKitHighlights.map(({ label, value, note, icon: Icon }) => (
+                  <div
+                    className="grid grid-cols-[auto_1fr_auto] items-center gap-3 border-t border-white/12 pt-3"
+                    key={label}
+                  >
+                    <Icon className="size-4 text-[var(--gold)]" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)] sm:text-[11px]">
+                        {label}
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-[var(--text-body)] sm:text-sm sm:leading-6">
+                        {note}
+                      </p>
+                    </div>
+                    <p className="font-serif text-3xl leading-none text-[var(--text-strong)]">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      <section className="py-12 sm:py-16">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+            <SectionHeader
+              eyebrow="Why Partner Now"
+              title="Iva makes a brand feel like a plan, not an ad."
+              description="The strongest opportunity is to enter early, while the brand still feels close, trusted, and selective. The numbers show momentum; the creative world gives that momentum a premium shape."
+            />
+            <div className="grid gap-4">
+              <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
+                  Best current opportunity
+                </p>
+                <p className="mt-4 font-serif text-4xl leading-tight text-[var(--text-strong)] sm:text-5xl">
+                  Own a category in Iva’s world before it becomes crowded.
+                </p>
+                <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {audienceHighlights.map((stat) => (
+                    <div
+                      className="border-t border-[var(--border-soft)] pt-4"
+                      key={stat.label}
+                    >
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                        {stat.label}
+                      </p>
+                      <p className="mt-2 font-serif text-4xl leading-none text-[var(--text-strong)]">
+                        {stat.value}
+                      </p>
+                      <p className="mt-2 text-xs uppercase tracking-[0.16em] text-[var(--gold)]">
+                        {stat.note}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+              <Stagger className="grid gap-3 md:grid-cols-3">
+                {mediaKit.whyBrandsCare.map((item) => (
+                  <StaggerItem
+                    className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-4 shadow-luxury-sm transition-[transform,border-color,box-shadow] duration-500 ease-luxury hover:-translate-y-0.5 hover:border-[var(--gold)]/45 hover:shadow-luxury-md"
+                    key={item.title}
+                  >
+                    <Sparkles className="mb-4 size-4 text-[var(--gold)]" />
+                    <h2 className="font-serif text-3xl leading-tight text-[var(--text-strong)]">
+                      {item.title}
+                    </h2>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-body)]">
+                      {item.text}
+                    </p>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-[var(--surface-muted)]/55 py-[var(--spacing-editorial-breath)]">
-        <Container className="grid gap-6 lg:grid-cols-3">
-          <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-6 shadow-luxury-sm lg:col-span-2">
-            <h2 className="text-2xl font-semibold text-[var(--text-strong)]">
-              Audience Demographics
-            </h2>
-            <div className="mt-6 grid gap-8 md:grid-cols-2">
-              <div className="space-y-5">
-                {demographics.age.map((item) => (
-                  <ProgressRow key={item.label} {...item} />
-                ))}
+      <section className="py-14 sm:py-[var(--spacing-editorial-breath)]">
+        <Container className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+          <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
+            <div className="flex flex-col gap-2 border-b border-[var(--border-soft)] pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
+                  Instagram Followers
+                </p>
+                <h2 className="mt-3 font-serif text-4xl leading-tight text-[var(--text-strong)] sm:text-5xl">
+                  Age range
+                </h2>
               </div>
-              <div className="space-y-5">
-                {demographics.gender.map((item) => (
-                  <ProgressRow key={item.label} {...item} />
-                ))}
-              </div>
+              <p className="text-sm leading-6 text-[var(--text-muted)]">
+                {mediaKit.reportingWindow}
+              </p>
             </div>
-          </Reveal>
-          <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-6 shadow-luxury-sm">
-            <h2 className="text-2xl font-semibold text-[var(--text-strong)]">
-              City Distribution
-            </h2>
             <div className="mt-6 space-y-5">
-              {demographics.geography.map((item) => (
+              {mediaKit.audience.age.map((item) => (
                 <ProgressRow key={item.label} {...item} />
               ))}
             </div>
-          </Reveal>
-          <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-6 shadow-luxury-sm lg:col-span-3">
-            <h2 className="text-2xl font-semibold text-[var(--text-strong)]">
-              Content Performance
-            </h2>
-            <div className="mt-6 grid gap-6 md:grid-cols-3">
-              {demographics.content.map((item) => (
-                <ProgressRow key={item.label} {...item} />
+            <div className="mt-8 grid gap-3 border-t border-[var(--border-soft)] pt-5 sm:grid-cols-3">
+              {[
+                ["13-24", "72.3%", "youth audience"],
+                ["25-34", "19.7%", "young millennials"],
+                ["India", "96.8%", "country reach"],
+              ].map(([label, value, note]) => (
+                <div key={label}>
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                    {label}
+                  </p>
+                  <p className="mt-2 font-serif text-4xl leading-none text-[var(--text-strong)]">
+                    {value}
+                  </p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.16em] text-[var(--gold)]">
+                    {note}
+                  </p>
+                </div>
               ))}
             </div>
           </Reveal>
+
+          <div className="grid gap-4">
+            <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
+              <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">
+                Gender split
+              </h2>
+              <div className="mt-6 space-y-5">
+                {mediaKit.audience.gender.map((item) => (
+                  <ProgressRow key={item.label} {...item} />
+                ))}
+              </div>
+            </Reveal>
+            <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
+              <div className="flex items-center gap-3">
+                <MapPin className="size-4 text-[var(--gold)]" />
+                <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">
+                  City pull
+                </h2>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-[var(--text-body)]">
+                Bengaluru is the home-city story. Delhi, Kolkata, and Mumbai
+                add useful premium-market spread for hospitality, fashion,
+                beauty, and food campaigns.
+              </p>
+              <div className="mt-6 grid gap-2">
+                {mediaKit.audience.topCities.map((item) => (
+                  <div
+                    className="flex items-center justify-between gap-4 border-t border-[var(--border-soft)] py-3"
+                    key={item.label}
+                  >
+                    <p className="text-sm font-medium text-[var(--text-strong)]">
+                      {item.label}
+                    </p>
+                    <p className="rounded-full border border-[var(--gold)]/35 bg-[var(--gold)]/10 px-3 py-1 text-xs font-semibold text-[var(--gold)]">
+                      {item.value.toFixed(1)}%
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
+              <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">
+                Country reach
+              </h2>
+              <div className="mt-6 space-y-5">
+                {mediaKit.audience.topCountries.map((item) => (
+                  <ProgressRow key={item.label} {...item} />
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </Container>
       </section>
 
-      <section className="py-[var(--spacing-editorial-section)]">
+      <section className="border-y border-[var(--border-soft)] bg-[var(--surface-muted)]/55 py-12 sm:py-16">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+            <SectionHeader
+              eyebrow="Partnership System"
+              title="A clear offer, without making the work feel like an ad."
+              description="A brand gets three clear answers fast: what Iva can make desirable, where she fits, and what the collaboration can include."
+            />
+            <div className="grid gap-4">
+              <Stagger className="grid gap-3">
+                {mediaKit.partnershipAngles.map((item) => (
+                  <StaggerItem
+                    className="grid gap-4 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:grid-cols-[0.34fr_0.66fr] sm:items-start"
+                    key={item.title}
+                  >
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
+                        {item.label}
+                      </p>
+                      <h2 className="mt-3 font-serif text-3xl leading-tight text-[var(--text-strong)] sm:text-4xl">
+                        {item.title}
+                      </h2>
+                    </div>
+                    <p className="text-sm leading-7 text-[var(--text-body)]">
+                      {item.text}
+                    </p>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+
+              <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
+                  Best-fit categories
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {brandFit.map((item) => (
+                    <span
+                      className="inline-flex items-center gap-2 rounded-full border border-[var(--border-soft)] bg-[var(--surface-muted)]/50 px-4 py-2 text-sm leading-6 text-[var(--text-body)]"
+                      key={item}
+                    >
+                      <ShieldCheck className="size-4 text-[var(--gold)]" />
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </Reveal>
+
+              <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
+                  Instagram highlight proof
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {mediaKit.collaborationHighlights.map((item) => (
+                    <span
+                      className="rounded-full border border-[var(--border-soft)] bg-[var(--surface-muted)]/50 px-4 py-2 text-sm leading-6 text-[var(--text-body)]"
+                      key={item}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </Reveal>
+
+              <Stagger className="grid gap-3 md:grid-cols-3">
+                {collaborationMenu.map((item) => (
+                  <StaggerItem
+                    className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm"
+                    key={item.title}
+                  >
+                    <h3 className="font-serif text-3xl leading-tight text-[var(--text-strong)]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-body)]">
+                      {item.text}
+                    </p>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-12 sm:py-16">
         <Container>
           <SectionHeader
             eyebrow="Loved Content"
-            title="High-performing moments that still feel personal."
-            description="Reach matters most when the work feels credible, warm, and natural to Iva’s audience."
+            title="Proof that the right mood can travel."
+            description="The latest performance examples show why Iva is useful for brands: fashion retail, rooftops, staycations, and visual experiences can all become watchable."
           />
-          <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
-            {topContent.map((item) => (
+          <Stagger className="mt-8 grid gap-4 md:grid-cols-3">
+            {mediaKit.performanceProof.map((item) => (
               <StaggerItem key={item.title}>
-                <ImageCard
-                  image={item.image}
-                  href={item.href}
-                  meta={`${item.views} views`}
-                  subtitle={item.category}
-                  title={item.title}
-                />
+                <article className="group relative min-h-[430px] overflow-hidden rounded-md border border-[var(--border-soft)] bg-stone-950 shadow-luxury-lg sm:min-h-[470px]">
+                  <Image
+                    alt={item.title}
+                    className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.025]"
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    src={item.image}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md">
+                    {item.value} views
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
+                      {item.note}
+                    </p>
+                    <h3 className="mt-3 font-serif text-4xl leading-tight text-white">
+                      {item.title}
+                    </h3>
+                  </div>
+                </article>
               </StaggerItem>
             ))}
           </Stagger>
+          <Reveal className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <a
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-6 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)]"
+              href={`mailto:${creator.email}?subject=Media%20Kit%20%26%20Collaboration%20Inquiry`}
+            >
+              <Mail className="size-4" />
+              Email the team
+            </a>
+            <CTAButton href="/contact" variant="outline">
+              Start a brief
+            </CTAButton>
+          </Reveal>
         </Container>
       </section>
-      <InquiryFunnel />
     </PageShell>
   );
 }
@@ -901,10 +1238,10 @@ export function EditorialExperience() {
             description="City notes, café picks, stay stories, and small moments written in a personal voice."
           />
           <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
-            {editorial.map((story) => (
+            {blogPosts.map((story) => (
               <StaggerItem key={story.slug}>
                 <ImageCard
-                  href={`/editorial/${story.slug}`}
+                  href={`/blog/${story.slug}`}
                   image={story.image}
                   meta={`${story.category} · ${story.readTime}`}
                   subtitle={story.excerpt}
@@ -950,38 +1287,178 @@ export function PremiumExperiences() {
 }
 
 export function ContactExperience() {
+  const contactSignals = [
+    { label: "Based in", value: "Bengaluru", note: "Open to travel stories" },
+    { label: "Best for", value: "Paid collabs", note: "Places, stays, beauty, fashion" },
+    { label: "Reach us", value: "Email", note: "Briefs, dates, and budgets" },
+  ];
+  const partnershipFit = [
+    "A stay that feels warm, pretty, and worth saving",
+    "A cafe, rooftop, or table I would actually tell a friend about",
+    "Beauty, fashion, or lifestyle products that fit my everyday mood",
+    "A launch or experience with a real story behind it",
+  ];
+  const process = [
+    {
+      step: "01",
+      title: "Send the plan",
+      text: "Tell us the place, product, date, city, budget, and what you want people to feel.",
+    },
+    {
+      step: "02",
+      title: "We check the fit",
+      text: "If it feels natural for Iva’s audience, we shape the content direction and deliverables.",
+    },
+    {
+      step: "03",
+      title: "Iva shares it her way",
+      text: "The final story stays soft, useful, and personal. It should feel like a recommendation, not a hard sell.",
+    },
+  ];
+
   return (
     <PageShell>
-      <section className="py-[var(--spacing-editorial-section)]">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
-            <EditorialHeader
-              eyebrow="Contact"
-              title="Put your brand inside a beautiful moment."
-              description="For paid collaborations with cafés, stays, fashion, beauty, restaurants, wellness, and lifestyle brands that fit Iva’s world."
-            />
-            <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-6 shadow-luxury-sm">
-              <div className="flex items-center gap-3">
-                <BadgeCheck className="size-5 text-[var(--gold)]" />
-                <p className="font-semibold text-[var(--text-strong)]">
-                  Paid brand collaborations only.
-                </p>
-              </div>
-              <p className="mt-5 text-sm leading-7 text-[var(--text-body)]">
-                Best-fit partners include cafés, boutique hotels, restaurants,
-                fashion labels, beauty brands, wellness spaces, and lifestyle
-                products she can share with natural warmth.
+      <section className="relative overflow-visible border-b border-[var(--border-soft)] bg-stone-950 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed] md:overflow-hidden">
+        <Image
+          alt="Iva Chatterjee luxury collaboration contact"
+          className="object-cover object-[56%_18%] opacity-62 saturate-[0.9] sm:object-[52%_28%] md:opacity-70"
+          fill
+          priority
+          sizes="100vw"
+          src={ivaImages.rooftopBlue}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,16,14,0.28),rgba(17,16,14,0.92)),linear-gradient(90deg,rgba(17,16,14,0.92),rgba(17,16,14,0.66),rgba(17,16,14,0.28))]" />
+        <Container className="relative grid gap-8 pb-8 pt-20 sm:pb-10 sm:pt-24 md:min-h-[calc(100svh-4rem)] md:pb-16 md:pt-28 lg:grid-cols-[1fr_0.78fr] lg:items-end">
+          <div className="max-w-5xl">
+            <Reveal>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[var(--gold)] sm:text-xs sm:tracking-[0.32em]">
+                Partnerships
               </p>
+              <h1 className="mt-4 max-w-5xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] min-[380px]:text-6xl sm:mt-5 sm:text-7xl md:text-8xl xl:text-[8rem]">
+                Let your brand enter Iva’s world.
+              </h1>
+              <p className="mt-5 max-w-2xl text-pretty text-sm leading-7 text-[var(--text-body)] sm:text-base sm:leading-8 md:mt-7 md:text-lg md:leading-9">
+                For paid collaborations with places, products, and experiences
+                Iva can share with warmth, taste, and honesty.
+              </p>
+            </Reveal>
+            <Reveal delay={0.08} className="mt-6 grid gap-3 sm:mt-8 sm:flex sm:flex-row">
               <a
-                className="mt-6 inline-flex min-h-12 items-center rounded-full bg-[var(--text-strong)] px-6 text-sm font-semibold text-[var(--page)] transition hover:bg-[var(--gold)] hover:text-[var(--matte)]"
-                href={`mailto:${creator.email}`}
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-5 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)] sm:w-auto sm:px-6"
+                href={`mailto:${creator.email}?subject=Paid%20Collaboration%20Inquiry%20for%20Iva`}
               >
-                Email {creator.email}
+                <Mail className="size-4" />
+                Email the team
               </a>
+              <Link
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:border-white/40 hover:bg-white hover:text-stone-950 sm:w-auto sm:px-6"
+                href="/media-kit"
+              >
+                View media kit
+                <ArrowRight className="size-4" />
+              </Link>
             </Reveal>
           </div>
+
+          <Reveal delay={0.12} className="lg:justify-self-end">
+            <div className="rounded-md border border-white/15 bg-black/38 p-4 shadow-luxury-lg backdrop-blur-xl sm:p-5 md:p-6">
+              <div className="flex items-center gap-3">
+                <BadgeCheck className="size-5 text-[var(--gold)]" />
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--champagne)] sm:text-sm sm:tracking-[0.18em]">
+                  Collaboration desk
+                </p>
+              </div>
+              <a
+                className="mt-5 block max-w-full break-all font-serif text-2xl leading-tight text-white transition hover:text-[var(--champagne)] min-[380px]:text-[1.75rem] sm:break-words sm:text-4xl sm:[overflow-wrap:anywhere]"
+                href={`mailto:${creator.email}`}
+              >
+                {creator.email}
+              </a>
+              <p className="mt-4 text-sm leading-7 text-[var(--text-body)]">
+                Send the brief, date, city, deliverables, and budget range.
+                We will reply if it feels like the right fit.
+              </p>
+              <div className="mt-5 grid gap-3">
+                {contactSignals.map((signal) => (
+                  <div
+                    className="grid gap-2 border-t border-white/12 pt-4 sm:grid-cols-[1fr_auto] sm:gap-4"
+                    key={signal.label}
+                  >
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                        {signal.label}
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-[var(--text-body)]">
+                        {signal.note}
+                      </p>
+                    </div>
+                    <p className="font-serif text-2xl leading-none text-[var(--text-strong)] sm:text-right sm:text-3xl">
+                      {signal.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </Container>
       </section>
+
+      <section className="py-14 sm:py-[var(--spacing-editorial-breath)]">
+        <Container className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-14">
+          <SectionHeader
+            eyebrow="Best Fit"
+            title="The kind of work Iva says yes to."
+            description="The best collaborations feel easy to believe: a beautiful place, a thoughtful product, or a plan her audience would genuinely want to save."
+          />
+          <Stagger className="grid gap-4 sm:grid-cols-2">
+            {partnershipFit.map((item) => (
+              <StaggerItem
+                className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-4 shadow-luxury-sm transition-[transform,border-color,box-shadow] duration-500 ease-luxury hover:-translate-y-0.5 hover:border-[var(--gold)]/45 hover:shadow-luxury-md sm:p-5"
+                key={item}
+              >
+                <Sparkles className="mb-5 size-5 text-[var(--gold)]" />
+                <p className="font-serif text-2xl leading-tight text-[var(--text-strong)] min-[380px]:text-3xl">
+                  {item}
+                </p>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </Container>
+      </section>
+
+      <section className="border-y border-[var(--border-soft)] bg-[var(--surface-muted)]/55 py-14 sm:py-[var(--spacing-editorial-breath)]">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+            <SectionHeader
+              eyebrow="Collaboration Flow"
+              title="Simple, clear, and still personal."
+            />
+            <Reveal className="max-w-xl text-sm leading-7 text-[var(--text-body)] lg:justify-self-end">
+              A good brief helps us move faster. The final content should still
+              feel like Iva found something worth sharing.
+            </Reveal>
+          </div>
+          <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
+            {process.map((item) => (
+              <StaggerItem
+                className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6"
+                key={item.step}
+              >
+                <p className="font-serif text-4xl leading-none text-[var(--gold)]/85 sm:text-5xl">
+                  {item.step}
+                </p>
+                <h2 className="mt-5 font-serif text-3xl leading-tight text-[var(--text-strong)] sm:mt-6 sm:text-4xl">
+                  {item.title}
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-[var(--text-body)]">
+                  {item.text}
+                </p>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </Container>
+      </section>
+
       <InquiryFunnel />
     </PageShell>
   );

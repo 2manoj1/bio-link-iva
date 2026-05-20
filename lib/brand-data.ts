@@ -5,11 +5,12 @@ export const siteUrl = "https://iva.manojmukherjee.co.in";
 export const creator = {
   name: "Iva Chatterjee",
   handle: "@iva_mana5",
+  username: "iva_mana5",
   title: "Luxury Lifestyle Creator",
-  positioning: "Soft luxury, city nights, and places worth saving.",
+  positioning: "Beauty, food, travel, and lifestyle through a polished Bangalore lens.",
   description:
-    "Iva shares beautiful cafés, rooftops, boutique stays, fashion moments, and city nights through a soft luxury lens.",
-  location: "Bengaluru, India",
+    "Iva Chatterjee is a Bangalore digital creator sharing beauty, food, travel, lifestyle, cafe, hotel, fashion, and city experiences with a soft luxury point of view.",
+  location: "Bengaluru (Bangalore), India",
   email: "ivachatterjee5@gmail.com",
   instagramUrl: "https://www.instagram.com/iva_mana5/",
   youtubeUrl: "https://www.youtube.com/@Maniva777",
@@ -17,6 +18,42 @@ export const creator = {
   websiteUrl: "https://iva.manojmukherjee.co.in",
   profileImage: "/iva/editorial-saree-portrait.jpeg",
   heroImage: "/iva/rooftop-blue-evening.jpeg",
+};
+
+export const instagramProfile = {
+  username: "iva_mana5",
+  displayName: "Iva Chatterjee | Bangalore Influencer",
+  category: "Digital creator",
+  posts: "812",
+  followers: "58.9K",
+  following: "961",
+  profileLine: "Beauty | Food | Travel | Lifestyle",
+  birthday: "23 March",
+  location: "Bangalore",
+  identity: "Bong",
+  collaborationCta: "DM or mail for paid collaboration",
+  contentPillars: ["Beauty", "Food", "Travel", "Lifestyle"],
+  collaborationHighlights: [
+    "Furniture Collab",
+    "Salon Collab",
+    "Hilton",
+    "Food Collab",
+    "Collab & Concert",
+    "Fashion Collab",
+    "Resort Collab",
+    "Fashion Show",
+  ],
+  recentCollaborationSignals: [
+    "Hair Masters Luxury Salon",
+    "Hilton Manyata",
+    "The Bier Library",
+    "Swiggy Giftables",
+    "Tipsy Bull",
+    "Nandhana Palace",
+    "Long Boat Brewing Co.",
+    "Estee Lauder at Sephora",
+    "Michael Kors",
+  ],
 };
 
 export const ivaImages = {
@@ -95,10 +132,10 @@ export const markets = [
 ];
 
 export const stats = [
-  { label: "Instagram", value: "58K+", note: "Style-led audience" },
+  { label: "Instagram", value: instagramProfile.followers, note: "Followers" },
+  { label: "Posts", value: instagramProfile.posts, note: "Always-on creator" },
   { label: "YouTube", value: "16K+", note: "Maniva community" },
-  { label: "Loved Reel", value: "318K", note: "Most-loved moment" },
-  { label: "Profile Activity", value: "+68.5%", note: "Rising interest" },
+  { label: "Loved Reel", value: "319K", note: "Most-loved moment" },
 ];
 
 export const topContent = [
@@ -106,7 +143,7 @@ export const topContent = [
     title: "The Bear House Shopping Day",
     city: "Bengaluru",
     category: "Fashion",
-    views: "318K",
+    views: "319K",
     image: ivaImages.bearHouseRetail,
     href: "https://www.instagram.com/reel/DYEM8CpxKdj",
   },
@@ -145,6 +182,11 @@ export const trustedBrands = [
     metric: "Premium hospitality leader",
   },
   {
+    name: "Hilton Manyata",
+    focus: "Dining & hospitality",
+    metric: "Recent hotel and dining story",
+  },
+  {
     name: "Hyatt Centric",
     focus: "Staycations",
     metric: "Modern luxury positioning",
@@ -163,6 +205,16 @@ export const trustedBrands = [
     name: "Maybelline",
     focus: "Beauty launches",
     metric: "Globally loved makeup",
+  },
+  {
+    name: "Estee Lauder",
+    focus: "Premium beauty",
+    metric: "Personalized beauty experience",
+  },
+  {
+    name: "Sephora",
+    focus: "Beauty retail",
+    metric: "Phoenix Marketcity Bangalore activation",
   },
   {
     name: "Bioderma",
@@ -203,6 +255,46 @@ export const trustedBrands = [
     name: "Swiggy",
     focus: "Lifestyle campaigns",
     metric: "Leading delivery platform",
+  },
+  {
+    name: "Michael Kors",
+    focus: "Fashion launch",
+    metric: "New collection event signal",
+  },
+  {
+    name: "Hair Masters",
+    focus: "Salon & self-care",
+    metric: "Luxury salon collaboration",
+  },
+  {
+    name: "The Bier Library",
+    focus: "Food & nightlife",
+    metric: "Bengaluru weekend plan",
+  },
+  {
+    name: "Tipsy Bull",
+    focus: "Bengaluru nightlife",
+    metric: "Multi-outlet bar story",
+  },
+  {
+    name: "Nandhana Palace",
+    focus: "Food discovery",
+    metric: "Bengaluru dining story",
+  },
+  {
+    name: "Long Boat Brewing Co.",
+    focus: "Brewery experience",
+    metric: "Food and ambience reel",
+  },
+  {
+    name: "Sanfe",
+    focus: "Beauty & personal care",
+    metric: "Affiliate-ready product content",
+  },
+  {
+    name: "Pee Safe",
+    focus: "Personal care",
+    metric: "Concert lifestyle integration",
   },
   {
     name: "WOW",
@@ -256,7 +348,7 @@ export const visualStories = [
     category: "Premium Retail",
     mood: "A shopping day that feels styled, easy, and best-friend honest.",
     format: "Try-on Reel",
-    signal: "318K loved reel",
+    signal: "319K loved reel",
     image: ivaImages.bearHouseRetail,
   },
   {
@@ -311,21 +403,23 @@ export const visualStories = [
 
 export const demographics = {
   age: [
-    { label: "18-24", value: 41.0 },
-    { label: "13-17", value: 27.8 },
-    { label: "25-34", value: 21.8 },
-    { label: "35-44", value: 6.0 },
+    { label: "13-17", value: 30.8 },
+    { label: "18-24", value: 41.5 },
+    { label: "25-34", value: 19.7 },
+    { label: "35-44", value: 5.2 },
+    { label: "45-54", value: 1.6 },
+    { label: "55-64", value: 0.5 },
+    { label: "65+", value: 0.8 },
   ],
   gender: [
     { label: "Men", value: 75.4 },
     { label: "Women", value: 24.6 },
   ],
   geography: [
-    { label: "India", value: 83.5 },
-    { label: "Bangladesh", value: 6.7 },
-    { label: "United States", value: 0.8 },
-    { label: "Nigeria", value: 0.5 },
-    { label: "Pakistan", value: 0.5 },
+    { label: "India", value: 96.8 },
+    { label: "United States", value: 0.6 },
+    { label: "United Arab Emirates", value: 0.3 },
+    { label: "United Kingdom", value: 0.3 },
   ],
   content: [
     { label: "Reels", value: 48.3, note: "Discovery Engine" },
@@ -334,28 +428,147 @@ export const demographics = {
   ],
 };
 
+export const mediaKit = {
+  reportingWindow: "20 Apr - 19 May",
+  dashboardWindow: "19 Apr - 18 May",
+  source: "Instagram professional dashboard, last 30 days",
+  insights: [
+    { label: "Views", value: "179.3K", note: "Top-of-funnel attention" },
+    { label: "Interactions", value: "36.5K", note: "Audience actions" },
+    { label: "Content shared", value: "107", note: "Always-on output" },
+  ],
+  bengaluruSignal: [
+    { label: "Bengaluru", value: "1.3%", note: "Home-city signal" },
+    { label: "Delhi", value: "1.7%", note: "North India reach" },
+    { label: "Kolkata", value: "1.1%", note: "Cultural connection" },
+    { label: "Mumbai", value: "0.8%", note: "Premium market overlap" },
+  ],
+  profileActivity: [
+    { label: "Profile activity", value: "4,115", note: "+13.0%" },
+    { label: "Profile visits", value: "4,082", note: "+12.5%" },
+  ],
+  audience: {
+    age: demographics.age,
+    gender: demographics.gender,
+    topCities: [
+      { label: "Delhi", value: 1.7 },
+      { label: "Bengaluru", value: 1.3 },
+      { label: "Kolkata", value: 1.1 },
+      { label: "Mumbai", value: 0.8 },
+      { label: "Jahangirpur", value: 0.6 },
+    ],
+    topCountries: demographics.geography,
+  },
+  performanceProof: [
+    {
+      title: "The Bear House shopping day",
+      value: "319K",
+      note: "Fashion retail reel",
+      image: ivaImages.bearHouseRetail,
+    },
+    {
+      title: "Rooftop evening",
+      value: "142K",
+      note: "Hospitality and nightlife",
+      image: ivaImages.rooftopBar,
+    },
+    {
+      title: "Poolside staycation",
+      value: "86K",
+      note: "Hotel and experience story",
+      image: ivaImages.rooftopPool,
+    },
+  ],
+  whyBrandsCare: [
+    {
+      title: "She sells the mood first",
+      text: "Iva makes a place or product feel easy to imagine, not forced. That is why her content works for cafes, hotels, fashion, beauty, and city plans.",
+    },
+    {
+      title: "Strong young India audience",
+      text: "The audience is led by 13-24 and 25-34 viewers, with India as the clear core market. Useful for brands that want aspirational urban attention.",
+    },
+    {
+      title: "Content volume plus taste",
+      text: "107 pieces shared in the latest dashboard window gives brands enough consistency without losing the curated, personal feel.",
+    },
+  ],
+  brandFit: [
+    "Boutique hotels, staycations, and room reveals",
+    "Cafes, rooftops, restaurants, and weekend plans",
+    "Salon, beauty, skincare, and personal-care launches",
+    "Fashion, retail visits, events, concerts, and branded content",
+  ],
+  collaborationMenu: [
+    {
+      title: "Save-worthy Reel",
+      text: "A short experience story with arrival, outfit, details, product or place, and one clear reason to save.",
+    },
+    {
+      title: "Launch Story Set",
+      text: "Fast, warm, direct story coverage for openings, drops, menus, trials, rooms, and limited-time offers.",
+    },
+    {
+      title: "Creator Visit Package",
+      text: "A full visit built for awareness: reel, stories, stills, and a simple CTA that feels natural.",
+    },
+  ],
+  partnershipAngles: [
+    {
+      title: "Make the place feel desirable",
+      label: "Hospitality",
+      text: "Arrival frames, room details, table stories, skyline light, and the small reasons someone saves a stay or dinner plan.",
+    },
+    {
+      title: "Make the product feel wearable",
+      label: "Fashion & Beauty",
+      text: "Soft glam, outfit context, try-on energy, skin-first beauty, and real-life styling that feels aspirational but close.",
+    },
+    {
+      title: "Make the launch feel like a moment",
+      label: "Events & Culture",
+      text: "Openings, drops, concerts, previews, menus, and hosted experiences shaped into quick stories people understand immediately.",
+    },
+  ],
+  profileSnapshot: [
+    { label: "Profile", value: instagramProfile.displayName },
+    { label: "Category", value: instagramProfile.category },
+    { label: "Bio", value: instagramProfile.profileLine },
+    { label: "Collab route", value: instagramProfile.collaborationCta },
+  ],
+  collaborationHighlights: instagramProfile.collaborationHighlights,
+  brandPromise: [
+    "Premium creator presentation",
+    "Warm personal storytelling",
+    "Save-first city recommendations",
+    "Luxury without hard-selling",
+  ],
+};
+
 export const collaborationTypes = [
-  "Beautiful cafés",
-  "Boutique hotels",
-  "Elegant restaurants",
-  "Fashion labels",
-  "Skincare and beauty",
+  "Beauty launches",
+  "Food and cafe stories",
+  "Travel and staycations",
   "Lifestyle products",
-  "Wellness spaces",
-  "Stay and travel partners",
+  "Salon and self-care",
+  "Fashion labels",
+  "Concerts and events",
+  "Furniture and home",
 ];
 
 export const experiencePillars = [
+  "Beauty rituals",
+  "Food discoveries",
+  "Travel diaries",
+  "Lifestyle edits",
   "Beautiful cafés",
   "Rooftop experiences",
   "Boutique hospitality",
   "Elegant staycations",
-  "Premium brunches",
-  "Modern city culture",
-  "Elevated fashion",
-  "Soft luxury lifestyle",
-  "Couple moments",
-  "Hidden city discoveries",
+  "Fashion moments",
+  "Salon days",
+  "Bengali cultural notes",
+  "Bangalore city culture",
 ];
 
 export const neighborhoods = [
@@ -595,7 +808,6 @@ export function makeMetadata({
   keywords?: string[];
   image?: string;
 }): Metadata {
-  const url = `${siteUrl}${path}`;
   const fullTitle = `${title} | ${creator.name}`;
 
   return {
@@ -653,4 +865,3 @@ export function makeMetadata({
     },
   };
 }
-

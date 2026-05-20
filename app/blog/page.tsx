@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
-import { EditorialExperience } from "@/components/site/page-sections";
+import { BlogIndexExperience } from "@/components/site/blog";
 import { makeMetadata } from "@/lib/brand-data";
 
 export const metadata: Metadata = makeMetadata({
-  title: "Blog",
+  title: "Creator Journal",
   description:
-    "Lifestyle notes by Iva Chatterjee covering cafés, rooftops, boutique stays, travel, fashion, and beautiful city plans.",
+    "Iva Chatterjee's editorial creator journal for soft luxury, Bengaluru culture, beautiful cafes, rooftops, fashion, stays, and premium city rituals.",
   path: "/blog",
   keywords: [
     "Bengaluru luxury cafés",
@@ -17,5 +17,5 @@ export const metadata: Metadata = makeMetadata({
 });
 
 export default function BlogPage() {
-  return <EditorialExperience />;
+  return <BlogIndexExperience />;
 }
