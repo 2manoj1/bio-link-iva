@@ -20,6 +20,46 @@ export const creator = {
   heroImage: "/iva/rooftop-blue-evening.jpeg",
 };
 
+export const amazonAffiliate = {
+  label: "Amazon",
+  tag: "ivamana5-21",
+  baseUrl: "https://www.amazon.in/s",
+  storefrontUrl: "https://www.amazon.in/shop/ivamana5",
+};
+
+export const shopQuickLinks = [
+  {
+    label: "Beauty Minis",
+    description: "Small touch-up products for bags, reels, and travel days.",
+    search: "women beauty minis travel size makeup",
+  },
+  {
+    label: "Cafe Outfits",
+    description: "Soft, polished pieces for brunches and dressed-up coffee plans.",
+    search: "women cafe outfit dresses tops",
+  },
+  {
+    label: "Creator Tools",
+    description: "Tripods, lights, and little helpers for filming smoother content.",
+    search: "content creator kit phone tripod light mic",
+  },
+  {
+    label: "Travel Pouches",
+    description: "Pretty organizers for stays, skincare, and weekend packing.",
+    search: "women travel pouch organizer cosmetic bag",
+  },
+  {
+    label: "Soft Home",
+    description: "Candles, tumblers, and desk details for slower reset days.",
+    search: "aesthetic home decor candle glass tumbler",
+  },
+  {
+    label: "Gift Finds",
+    description: "Easy beauty and lifestyle gifts for birthdays and small surprises.",
+    search: "premium gifts for women beauty lifestyle",
+  },
+];
+
 export const instagramProfile = {
   username: "iva_mana5",
   displayName: "Iva Chatterjee | Bangalore Influencer",
@@ -74,6 +114,7 @@ export const navItems = [
   { label: "About", href: "/about" },
   { label: "Collaborations", href: "/collaborations" },
   { label: "Media Kit", href: "/media-kit" },
+  { label: "Shop", href: "/shop" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
@@ -137,6 +178,331 @@ export const stats = [
   { label: "YouTube", value: "16K+", note: "Maniva community" },
   { label: "Loved Reel", value: "319K", note: "Most-loved moment" },
 ];
+
+export const dailyProductShelves = [
+  {
+    title: "Soft Glam Kit",
+    slug: "soft-glam-kit",
+    moment: "For reels, brunches, events, and camera-ready city days.",
+    image: ivaImages.editorialSaree,
+    imagePosition: "50% 12%",
+    products: [
+      {
+        name: "Hydrating skin prep",
+        note: "The kind of base that keeps makeup looking fresh, not heavy.",
+        search: "hydrating primer moisturizer",
+      },
+      {
+        name: "Everyday nude lip",
+        note: "A polished lip shade for cafes, meetings, and soft glam looks.",
+        search: "nude lipstick long lasting women",
+      },
+      {
+        name: "Compact glow palette",
+        note: "One small palette for blush, highlight, and quick touch-ups.",
+        search: "makeup face palette blush highlighter",
+      },
+      {
+        name: "Soft kohl pencil",
+        note: "A quick eye detail for dinner plans, saree looks, and event nights.",
+        search: "smudge proof kajal kohl pencil women",
+      },
+      {
+        name: "Makeup setting spray",
+        note: "Useful for long brunches, shoots, and humid city days.",
+        search: "makeup setting spray long lasting",
+      },
+      {
+        name: "Mini brush set",
+        note: "Small enough for a pouch, polished enough for touch-ups.",
+        search: "mini makeup brush set travel",
+      },
+    ],
+  },
+  {
+    title: "Cafe Day Bag",
+    slug: "cafe-day-bag",
+    moment: "For coffee plans, shopping walks, creator meetings, and light shoot days.",
+    image: ivaImages.pinkCafe,
+    imagePosition: "50% 18%",
+    products: [
+      {
+        name: "Mini sling bag",
+        note: "Small enough for a pretty outfit, useful enough for the day.",
+        search: "women mini sling bag premium",
+      },
+      {
+        name: "Gold hoops",
+        note: "Simple jewelry that makes even a casual cafe look feel styled.",
+        search: "gold plated hoop earrings women",
+      },
+      {
+        name: "Portable perfume",
+        note: "A small fragrance layer before brunch, dinner, or events.",
+        search: "women travel size perfume",
+      },
+      {
+        name: "Neutral hair claw",
+        note: "For soft updos, windy rooftop evenings, and easy cafe days.",
+        search: "neutral hair claw clip women",
+      },
+      {
+        name: "Aesthetic phone case",
+        note: "A small detail that shows up in mirror shots and flatlays.",
+        search: "aesthetic phone case women",
+      },
+      {
+        name: "Tinted sunglasses",
+        note: "For sunny tables, shopping walks, and travel-day photos.",
+        search: "women tinted sunglasses fashion",
+      },
+    ],
+  },
+  {
+    title: "Staycation Essentials",
+    slug: "staycation-essentials",
+    moment: "For hotel check-ins, poolside plans, resort mornings, and weekend escapes.",
+    image: ivaImages.poolsidePink,
+    imagePosition: "50% 20%",
+    products: [
+      {
+        name: "Satin sleep set",
+        note: "Soft, photogenic, and easy to pack for a hotel night.",
+        search: "women satin night suit set",
+      },
+      {
+        name: "Travel toiletry pouch",
+        note: "Keeps skincare, minis, and touch-up products cleanly organized.",
+        search: "travel toiletry pouch women waterproof",
+      },
+      {
+        name: "Poolside cover-up",
+        note: "A light layer for resort breakfasts and sunset pool moments.",
+        search: "women beach cover up resort wear",
+      },
+      {
+        name: "Skincare travel bottles",
+        note: "Keeps favorite products packed cleanly without carrying full sizes.",
+        search: "travel size bottles for skincare",
+      },
+      {
+        name: "Room slipper set",
+        note: "A comfortable little detail for slow hotel mornings.",
+        search: "women soft room slippers",
+      },
+      {
+        name: "Luggage organizer cubes",
+        note: "For separating outfits, beauty pouches, and last-minute extras.",
+        search: "packing cubes travel organizer women",
+      },
+    ],
+  },
+  {
+    title: "Creator Kit",
+    slug: "creator-kit",
+    moment: "For filming reels, mirror shots, cafe corners, and smoother content days.",
+    image: ivaImages.rooftopBlue,
+    imagePosition: "50% 18%",
+    products: [
+      {
+        name: "Phone tripod",
+        note: "A simple upgrade for steady reels, flatlays, and solo shooting.",
+        search: "phone tripod for reels",
+      },
+      {
+        name: "Mini LED light",
+        note: "Helpful when restaurant light is moody but the shot needs clarity.",
+        search: "portable led light for phone video",
+      },
+      {
+        name: "Wireless mic",
+        note: "For voiceovers, hotel room tours, and clean creator audio.",
+        search: "wireless microphone for phone vlogging",
+      },
+      {
+        name: "Phone gimbal",
+        note: "For smoother walk-in shots, outfit videos, and hotel reveals.",
+        search: "phone gimbal stabilizer for reels",
+      },
+      {
+        name: "Power bank",
+        note: "The quiet essential behind long shoot days and event nights.",
+        search: "compact power bank fast charging",
+      },
+      {
+        name: "Acrylic flatlay tray",
+        note: "For product shots, beauty edits, and table details.",
+        search: "acrylic tray for flatlay photography",
+      },
+    ],
+  },
+  {
+    title: "Home Rituals",
+    slug: "home-rituals",
+    moment: "For slower mornings, reset evenings, editing days, and softer self-care.",
+    image: ivaImages.fineDining,
+    imagePosition: "50% 44%",
+    products: [
+      {
+        name: "Scented candle",
+        note: "A small mood-setter for getting ready, journaling, or editing.",
+        search: "luxury scented candle jar",
+      },
+      {
+        name: "Glass coffee tumbler",
+        note: "For iced coffee, matcha, desk days, and aesthetic morning routines.",
+        search: "glass tumbler with straw coffee",
+      },
+      {
+        name: "Silk scrunchies",
+        note: "A gentle everyday detail for hair, travel, and getting-ready reels.",
+        search: "silk scrunchies for women",
+      },
+      {
+        name: "Journal notebook",
+        note: "For content ideas, cafe notes, and small reset lists.",
+        search: "aesthetic journal notebook women",
+      },
+      {
+        name: "Desk mirror",
+        note: "A simple getting-ready piece for makeup and quiet mornings.",
+        search: "aesthetic desk mirror makeup",
+      },
+      {
+        name: "Soft throw blanket",
+        note: "For editing days, home coffee, and a warmer room mood.",
+        search: "soft throw blanket aesthetic",
+      },
+    ],
+  },
+  {
+    title: "Event Night Edit",
+    slug: "event-night-edit",
+    moment: "For launches, concerts, dinner invites, and polished after-dark plans.",
+    image: ivaImages.rooftopBar,
+    imagePosition: "50% 18%",
+    products: [
+      {
+        name: "Statement earrings",
+        note: "The quickest way to make a simple evening look feel styled.",
+        search: "statement earrings women party",
+      },
+      {
+        name: "Evening clutch",
+        note: "Small, structured, and easy for dinners or brand events.",
+        search: "women evening clutch bag",
+      },
+      {
+        name: "Heel cushions",
+        note: "A practical secret for longer event nights.",
+        search: "heel cushion pads for women",
+      },
+      {
+        name: "Body shimmer",
+        note: "A soft glow detail for sleeveless dresses and night shoots.",
+        search: "body shimmer lotion women",
+      },
+      {
+        name: "Fashion tape",
+        note: "For cleaner necklines, saree pleats, and last-minute fixes.",
+        search: "fashion tape for women clothing",
+      },
+      {
+        name: "Mini lint roller",
+        note: "A tiny bag essential before photos and arrivals.",
+        search: "mini lint roller travel",
+      },
+    ],
+  },
+  {
+    title: "Monsoon Cafe Kit",
+    slug: "monsoon-cafe-kit",
+    moment: "For rainy coffee plans, cozy corners, and Bengaluru's softer weather days.",
+    image: ivaImages.fineDining,
+    imagePosition: "50% 44%",
+    products: [
+      {
+        name: "Compact umbrella",
+        note: "Small enough for a tote, useful for sudden city rain.",
+        search: "compact umbrella for women",
+      },
+      {
+        name: "Waterproof tote",
+        note: "For carrying cafe-day essentials without worrying about drizzle.",
+        search: "waterproof tote bag women",
+      },
+      {
+        name: "Light cardigan",
+        note: "A soft layer for cool cafes and evening weather.",
+        search: "women light cardigan neutral",
+      },
+      {
+        name: "Cream blush",
+        note: "Fresh, easy color that still looks soft in cloudy light.",
+        search: "cream blush for women",
+      },
+      {
+        name: "Hair serum",
+        note: "For smoother hair on humid or rainy days.",
+        search: "anti frizz hair serum women",
+      },
+      {
+        name: "Waterproof mascara",
+        note: "A sensible pick for rain, long days, and emotional movies.",
+        search: "waterproof mascara women",
+      },
+    ],
+  },
+  {
+    title: "Festive Saree Details",
+    slug: "festive-saree-details",
+    moment: "For Bengali celebrations, wedding invites, heritage stays, and dressed-up family evenings.",
+    image: ivaImages.heritageSaree,
+    imagePosition: "50% 12%",
+    products: [
+      {
+        name: "Pearl earrings",
+        note: "A classic detail for sarees, soft glam, and family occasions.",
+        search: "pearl earrings women ethnic",
+      },
+      {
+        name: "Bindi set",
+        note: "A tiny detail that completes a traditional look.",
+        search: "bindi set for women",
+      },
+      {
+        name: "Saree shapewear",
+        note: "A smooth base for longer festive days.",
+        search: "saree shapewear women",
+      },
+      {
+        name: "Potli bag",
+        note: "Pretty enough for festive photos, useful enough for essentials.",
+        search: "potli bag women ethnic",
+      },
+      {
+        name: "Hair bun pins",
+        note: "For clean buns, flowers, and traditional styling.",
+        search: "hair bun pins women",
+      },
+      {
+        name: "Gold bangles",
+        note: "A warm finishing touch for saree and kurta looks.",
+        search: "gold plated bangles women",
+      },
+    ],
+  },
+];
+
+export function makeAmazonAffiliateUrl(search: string) {
+  const params = new URLSearchParams({ k: search });
+
+  if (!amazonAffiliate.tag.includes("replace-with")) {
+    params.set("tag", amazonAffiliate.tag);
+  }
+
+  return `${amazonAffiliate.baseUrl}?${params.toString()}`;
+}
 
 export const topContent = [
   {
@@ -289,7 +655,7 @@ export const trustedBrands = [
   {
     name: "Sanfe",
     focus: "Beauty & personal care",
-    metric: "Affiliate-ready product content",
+    metric: "Creator product story",
   },
   {
     name: "Pee Safe",

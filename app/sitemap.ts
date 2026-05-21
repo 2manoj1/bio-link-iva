@@ -17,6 +17,7 @@ const staticRoutes = [
   "/media-kit",
   "/contact",
   "/links",
+  "/shop",
   "/blog",
   "/premium-experiences",
 ];

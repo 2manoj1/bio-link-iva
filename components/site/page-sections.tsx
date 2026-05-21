@@ -2,12 +2,14 @@ import {
   ArrowRight,
   AtSign,
   BadgeCheck,
+  BookOpen,
   Camera,
   Mail,
   MapPin,
   Music,
   Play,
   ShieldCheck,
+  ShoppingBag,
   Sparkles,
   TrendingUp,
 } from "lucide-react";
@@ -139,6 +141,8 @@ export function HomeExperience() {
         </Container>
       </section>
 
+      <OwnedChannelsSection />
+
       <section className="py-[var(--spacing-editorial-section)]">
         <Container>
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
@@ -173,6 +177,79 @@ export function HomeExperience() {
       <MarketSection />
       <InquiryFunnel />
     </PageShell>
+  );
+}
+
+function OwnedChannelsSection() {
+  const channels = [
+    {
+      title: "Read Iva's Notes",
+      text: "Cafe rituals, city edits, stay stories, and the longer thoughts behind the moments she shares.",
+      href: "/blog",
+      image: ivaImages.hiltonChef,
+      cta: "Open Blog",
+      icon: BookOpen,
+      imageClassName: "object-cover object-[50%_50%]",
+    },
+    {
+      title: "Shop Iva's Shelf",
+      text: "Beauty, travel, cafe-day, creator, and home finds curated from Iva's everyday world.",
+      href: "/shop",
+      image: ivaImages.fineDining,
+      cta: "Open Shop",
+      icon: ShoppingBag,
+      imageClassName: "object-cover object-[50%_42%]",
+    },
+  ];
+
+  return (
+    <section className="border-b border-[var(--border-soft)] bg-[var(--surface-muted)]/45 py-[var(--spacing-editorial-breath)]">
+      <Container>
+        <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+          <SectionHeader
+            eyebrow="Iva's World"
+            title="Read the mood. Shop the details."
+            description="Two easy ways to stay inside Iva's world: longer notes for plans worth saving, and product shelves for the small things followers ask about."
+          />
+          <Stagger className="grid gap-5 md:grid-cols-2">
+            {channels.map(({ title, text, href, image, cta, icon: Icon, imageClassName }) => (
+              <StaggerItem key={title}>
+                <Link
+                  className="group grid min-h-[360px] overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface)] shadow-luxury-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:border-[var(--gold)]/55 hover:shadow-luxury-lg"
+                  href={href}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      alt={title}
+                      className={`${imageClassName} transition duration-700 ease-luxury group-hover:scale-[1.025]`}
+                      fill
+                      sizes="(min-width: 1024px) 32vw, 100vw"
+                      src={image}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-5">
+                      <Icon className="mb-4 size-5 text-[var(--gold)]" />
+                      <h3 className="font-serif text-4xl leading-none text-stone-50">
+                        {title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="flex items-end justify-between gap-5 p-5">
+                    <p className="text-sm leading-7 text-[var(--text-body)]">
+                      {text}
+                    </p>
+                    <span className="inline-flex shrink-0 items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--champagne)]">
+                      {cta}
+                      <ArrowRight className="size-4 transition-transform duration-300 ease-luxury group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </Container>
+    </section>
   );
 }
 
@@ -1208,6 +1285,7 @@ export function LinksExperience() {
           {[
             ["Instagram", creator.instagramUrl],
             ["YouTube: Maniva", creator.youtubeUrl],
+            ["Shop Iva's Products", "/shop"],
             ["Work With Iva", "/contact"],
             ["Media Kit", "/media-kit"],
             ["Bengaluru Guide", "/bengaluru-guide"],
