@@ -6,6 +6,9 @@ import BengaluruRooftopCulture, {
 import IndiranagarEveningEdit, {
   metadata as indiranagarEveningEditMetadata,
 } from "@/content/blog/indiranagar-evening-edit.mdx";
+import BengaluruCafeRitualsIva, {
+  metadata as bengaluruCafeRitualsIvaMetadata,
+} from "@/content/blog/bengaluru-cafe-rituals-iva.mdx";
 import PremiumCafeLanguage, {
   metadata as premiumCafeLanguageMetadata,
 } from "@/content/blog/premium-cafe-language.mdx";
@@ -34,6 +37,10 @@ export type BlogPost = BlogPostMetadata & {
 };
 
 const posts: BlogPost[] = [
+  {
+    ...bengaluruCafeRitualsIvaMetadata,
+    Content: BengaluruCafeRitualsIva,
+  },
   {
     ...softLuxuryDiariesMetadata,
     Content: SoftLuxuryDiaries,
