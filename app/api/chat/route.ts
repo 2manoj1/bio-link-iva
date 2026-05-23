@@ -14,7 +14,7 @@ import {
   setCachedIvaAnswer,
 } from "@/lib/ai/iva-agent";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 export const runtime = "nodejs";
 
 function getVisitorId(request: Request) {
