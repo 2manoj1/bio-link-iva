@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/site/json-ld";
 import { Navigation } from "@/components/site/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { creator, siteUrl } from "@/lib/brand-data";
+import { Chatbot } from "@/components/site/chatbot";
 import "./globals.css";
 
 const inter = Inter({
@@ -146,6 +147,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
+          <Chatbot />
           <Analytics />
       </body>
     </html>
