@@ -139,38 +139,50 @@ export function Chatbot() {
     >
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 16,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              y: 16,
-            }}
-            transition={{
-              duration: 0.2,
-              ease: [0.2, 1, 0.36, 1],
-            }}
-            className={cn(
-              "relative mb-0 sm:mb-4 overflow-hidden",
-              "w-full sm:w-[430px]",
-              "rounded-t-4xl sm:rounded-[34px]",
-              "border border-white/[0.08]",
-              "bg-[#0F0F11]/85",
-              "backdrop-blur-2xl",
-              "shadow-[0_10px_60px_rgba(0,0,0,0.35)]",
-            )}
-          >
+          <>
+            <motion.button
+              aria-label="Close Ask Iva"
+              className="fixed inset-0 z-0 cursor-default touch-none overscroll-none bg-black/45 backdrop-blur-[2px] sm:bg-black/35"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => setOpen(false)}
+              type="button"
+            />
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 16,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: 16,
+              }}
+              transition={{
+                duration: 0.2,
+                ease: [0.2, 1, 0.36, 1],
+              }}
+              className={cn(
+                "relative z-10 mb-0 flex max-h-[100svh] flex-col overflow-hidden sm:mb-4 sm:max-h-[calc(100svh-3rem)]",
+                "w-full sm:w-[430px]",
+                "rounded-t-4xl sm:rounded-[34px]",
+                "border border-white/[0.08]",
+                "bg-[#0F0F11]/85",
+                "backdrop-blur-2xl",
+                "shadow-[0_10px_60px_rgba(0,0,0,0.35)]",
+              )}
+            >
             {/* Premium Glow */}
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(245,212,135,0.12),transparent_40%)]" />
 
             {/* Header */}
-            <div className="relative border-b border-white/[0.06] px-5 py-4">
+            <div className="relative shrink-0 border-b border-white/[0.06] px-5 py-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
                   {/* Luxury Orb */}
@@ -237,10 +249,11 @@ export function Chatbot() {
               ref={scrollRef}
               className={cn(
                 "flex flex-col gap-4 overflow-y-auto px-4 py-4",
-                "h-[60vh]",
-                "min-h-[480px]",
-                "max-h-[720px]",
+                "h-[min(68svh,520px)]",
+                "min-h-0",
+                "max-h-[calc(100svh-9.5rem)]",
                 "sm:min-h-[560px]",
+                "overscroll-contain",
                 "[&::-webkit-scrollbar]:w-1.5",
                 "[&::-webkit-scrollbar-thumb]:bg-white/10",
                 "[&::-webkit-scrollbar-thumb]:rounded-full",
@@ -372,7 +385,7 @@ export function Chatbot() {
                     <div
                       className={cn(
                         "px-4 py-3",
-                        "text-sm leading-7",
+                        "text-sm leading-7 break-words",
                         isAssistant
                           ? [
                               "rounded-3xl rounded-bl-md",
@@ -390,30 +403,60 @@ export function Chatbot() {
                       )}
                     >
                       {isAssistant ? (
-                        <ReactMarkdown
-                          components={{
-                            a: ({ children, ...props }) => (
-                              <a
-                                {...props}
-                                className="font-medium text-[#F5D487] underline underline-offset-4"
-                              >
-                                {children}
-                              </a>
-                            ),
+                        <div className="space-y-2">
+                          <ReactMarkdown
+                            components={{
+                              a: ({ children, ...props }) => (
+                                <a
+                                  {...props}
+                                  target={props.href?.startsWith("http") ? "_blank" : undefined}
+                                  rel={props.href?.startsWith("http") ? "noreferrer" : undefined}
+                                  className="font-medium text-[#F5D487] underline decoration-[#F5D487]/35 underline-offset-4 transition hover:text-white"
+                                >
+                                  {children}
+                                </a>
+                              ),
 
-                            p: ({ children }) => (
-                              <p className="mb-2 last:mb-0">{children}</p>
-                            ),
+                              strong: ({ children }) => (
+                                <strong className="font-semibold text-white">
+                                  {children}
+                                </strong>
+                              ),
 
-                            ul: ({ children }) => (
-                              <ul className="ml-5 list-disc space-y-1">
-                                {children}
-                              </ul>
-                            ),
-                          }}
-                        >
-                          {text}
-                        </ReactMarkdown>
+                              p: ({ children }) => (
+                                <p className="text-zinc-200 last:mb-0">
+                                  {children}
+                                </p>
+                              ),
+
+                              ul: ({ children }) => (
+                                <ul className="my-2 ml-4 list-disc space-y-1.5 marker:text-[#F5D487]">
+                                  {children}
+                                </ul>
+                              ),
+
+                              ol: ({ children }) => (
+                                <ol className="my-2 ml-4 list-decimal space-y-1.5 marker:text-[#F5D487]">
+                                  {children}
+                                </ol>
+                              ),
+
+                              li: ({ children }) => (
+                                <li className="pl-1 text-zinc-200">
+                                  {children}
+                                </li>
+                              ),
+
+                              code: ({ children }) => (
+                                <code className="rounded-md border border-white/[0.08] bg-black/35 px-1.5 py-0.5 font-mono text-[0.9em] text-[#F5D487]">
+                                  {children}
+                                </code>
+                              ),
+                            }}
+                          >
+                            {text}
+                          </ReactMarkdown>
+                        </div>
                       ) : (
                         text
                       )}
@@ -485,7 +528,7 @@ export function Chatbot() {
             </div>
 
             {/* Footer */}
-            <div className="border-t border-white/[0.06] p-3 pb-[calc(env(safe-area-inset-bottom)+12px)]">
+            <div className="shrink-0 border-t border-white/[0.06] p-3 pb-[calc(env(safe-area-inset-bottom)+12px)]">
               <form
                 onSubmit={(event) => {
                   event.preventDefault();
@@ -551,7 +594,8 @@ export function Chatbot() {
                 Powered by AI • Curated by Iva
               </p>
             </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 

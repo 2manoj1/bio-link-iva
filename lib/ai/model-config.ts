@@ -36,7 +36,7 @@ export function getChatModelConfig() {
       generationMode === "generate" ? 1024 : 260,
     ),
     maxRetries: readIntEnv("IVA_CHAT_MAX_RETRIES", 1),
-    retrievalLimit: readIntEnv("IVA_CHAT_RETRIEVAL_LIMIT", family === "gemma" ? 2 : 3),
+    retrievalLimit: readIntEnv("IVA_CHAT_RETRIEVAL_LIMIT", family === "gemma" ? 3 : 5),
     thinkingEnabled,
     providerOptions:
       family === "gemini" && !thinkingEnabled

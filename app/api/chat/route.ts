@@ -9,6 +9,7 @@ import {
   getIvaMaxOutputTokens,
   getIvaMaxRetries,
   getTemplateIvaAnswer,
+  getDirectIvaAnswer,
   getIvaGenerationMode,
   prepareIvaAgentPrompt,
   setCachedIvaAnswer,
@@ -146,6 +147,7 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
             temperature: 0.45,
             maxOutputTokens: getIvaMaxOutputTokens(),
             maxRetries: getIvaMaxRetries(),
+            providerOptions: getIvaGoogleProviderOptions(),
             system,
             prompt,
           });
@@ -241,6 +243,13 @@ export async function POST(request: Request) {
 
   messages = guard.messages;
   const question = guard.question || getLastUserQuestion(messages);
+  const directAnswer = getDirectIvaAnswer(question);
+
+  if (directAnswer) {
+    await setCachedIvaAnswer(question, directAnswer);
+    return streamAnswer(directAnswer, messages);
+  }
+
   const cached = await getCachedIvaAnswer(question);
 
   if (cached) {

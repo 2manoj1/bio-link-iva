@@ -46,8 +46,8 @@ export default function AppleIcon() {
         <img
           alt="Iva Chatterjee"
           src={`${siteUrl}/iva/editorial-saree-portrait.jpeg`}
-          width="180"
-          height="180"
+          width={180}
+          height={180}
           style={{
             objectFit: "cover",
             objectPosition: "top",
