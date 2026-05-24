@@ -80,6 +80,13 @@ const brandList = trustedBrands
 const topContentList = topContent
   .map((item) => `- **${item.title}:** ${item.views} views (${item.category})`)
   .join("\n");
+const multilingualHotelCafePattern =
+  /(হোটেল|ক্যাফে|কাফে|ব্র্যান্ড|কনটেন্ট|কন্টেন্ট|বেঙ্গালুরু|ব্যাঙ্গালোর|कंटेंट|कॉन्टेंट|होटल|कैफे|ब्रांड|बेंगलुरु|बैंगलोर|ಹೋಟೆಲ್|ಕ್ಯಾಫೆ|ಬ್ರ್ಯಾಂಡ್|ಕಂಟೆಂಟ್|ಬೆಂಗಳೂರು)/i;
+const multilingualCollabPattern =
+  /(collab|collaboration|partnership|campaign|ব্র্যান্ড|সহযোগ|কোলাব|পার্টনার|ब्रांड|सहयोग|पार्टनर|कैंपेन|ಬ್ರ್ಯಾಂಡ್|ಸಹಯೋಗ|ಪಾರ್ಟ್ನರ್|ಕ್ಯಾಂಪೇನ್)/i;
+const bengaliScriptPattern = /[\u0980-\u09FF]/;
+const devanagariScriptPattern = /[\u0900-\u097F]/;
+const kannadaScriptPattern = /[\u0C80-\u0CFF]/;
 
 const FAQ_INTENTS: CuratedFaqIntent[] = [
   {
@@ -354,6 +361,68 @@ function normalizeQuestion(question: string) {
     .trim();
 }
 
+function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
+  if (!multilingualHotelCafePattern.test(question) || !multilingualCollabPattern.test(question)) {
+    return null;
+  }
+
+  if (bengaliScriptPattern.test(question)) {
+    return {
+      intentId: "multilingual-hotel-cafe-brand",
+      confidence: 0.94,
+      answer: [
+        "ইভা বেঙ্গালুরুর হোটেল, ক্যাফে বা রেস্তোরাঁ ব্র্যান্ডের জন্য প্রিমিয়াম কিন্তু স্বাভাবিক কনটেন্ট স্টোরি বানাতে পারে।",
+        "",
+        "**যে ধরনের কনটেন্ট ভালো কাজ করবে**",
+        "- Arrival বা venue mood",
+        "- Room reveal, table details, plating এবং ambience",
+        "- Lifestyle moments, outfit context এবং soft glam",
+        "- একটাই পরিষ্কার reason: মানুষ কেন জায়গাটা save বা book করবে",
+        "",
+        `Paid collaboration নিয়ে কথা বলতে হলে ${contactLink} এ email করা ভালো।`,
+      ].join("\n"),
+    };
+  }
+
+  if (devanagariScriptPattern.test(question)) {
+    return {
+      intentId: "multilingual-hotel-cafe-brand",
+      confidence: 0.94,
+      answer: [
+        "Iva Bengaluru के hotel, cafe या restaurant brands के लिए premium लेकिन natural content story बना सकती है.",
+        "",
+        "**Best content angles**",
+        "- Arrival और venue mood",
+        "- Room reveal, table details, plating और ambience",
+        "- Lifestyle moments, outfit context और soft glam",
+        "- एक clear reason कि लोग जगह को क्यों save या book करें",
+        "",
+        `Paid collaboration के लिए ${contactLink} पर email करें.`,
+      ].join("\n"),
+    };
+  }
+
+  if (kannadaScriptPattern.test(question)) {
+    return {
+      intentId: "multilingual-hotel-cafe-brand",
+      confidence: 0.94,
+      answer: [
+        "Iva Bengaluru hotel, cafe ಅಥವಾ restaurant brands ಗಾಗಿ premium ಆದರೆ natural content story ಮಾಡಬಹುದು.",
+        "",
+        "**Best content angles**",
+        "- Arrival ಮತ್ತು venue mood",
+        "- Room reveal, table details, plating ಮತ್ತು ambience",
+        "- Lifestyle moments, outfit context ಮತ್ತು soft glam",
+        "- ಜನರು save ಅಥವಾ book ಮಾಡಬೇಕೆನ್ನಿಸುವ ಒಂದು clear reason",
+        "",
+        `Paid collaboration ಗಾಗಿ ${contactLink} ಗೆ email ಮಾಡಿ.`,
+      ].join("\n"),
+    };
+  }
+
+  return null;
+}
+
 function scoreIntent(intent: CuratedFaqIntent, normalizedQuestion: string) {
   const patternScore = intent.patterns?.some((pattern) => pattern.test(normalizedQuestion)) ? 8 : 0;
   const keywordScore = intent.keywords.reduce(
@@ -365,6 +434,12 @@ function scoreIntent(intent: CuratedFaqIntent, normalizedQuestion: string) {
 }
 
 export function getCuratedFaqAnswer(question: string): CuratedFaqAnswer | null {
+  const multilingualAnswer = getMultilingualFaqAnswer(question);
+
+  if (multilingualAnswer) {
+    return multilingualAnswer;
+  }
+
   const normalizedQuestion = normalizeQuestion(question);
 
   if (!normalizedQuestion) {

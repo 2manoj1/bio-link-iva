@@ -22,19 +22,18 @@ function readBoolEnv(name: string, fallback: boolean) {
 export function getChatModelConfig() {
   const model = process.env.IVA_CHAT_MODEL ?? DEFAULT_MODEL;
   const family = process.env.IVA_CHAT_MODEL_FAMILY ?? (model.includes("gemma") ? "gemma" : "gemini");
-  const generationMode = (process.env.IVA_CHAT_GENERATION_MODE ??
+  const requestedGenerationMode = (process.env.IVA_CHAT_GENERATION_MODE ??
     (family === "gemma" ? "generate" : "stream")) as ChatGenerationMode;
+  const generationMode = requestedGenerationMode === "generate" ? "generate" : "stream";
   const thinkingEnabled = readBoolEnv("IVA_CHAT_THINKING_ENABLED", false);
   const thinkingBudget = readIntEnv("IVA_CHAT_THINKING_BUDGET", 0);
+  const defaultMaxOutputTokens = family === "gemma" ? 2048 : generationMode === "generate" ? 1024 : 260;
 
   return {
     model,
     family,
     generationMode,
-    maxOutputTokens: readIntEnv(
-      "IVA_CHAT_MAX_OUTPUT_TOKENS",
-      generationMode === "generate" ? 1024 : 260,
-    ),
+    maxOutputTokens: readIntEnv("IVA_CHAT_MAX_OUTPUT_TOKENS", defaultMaxOutputTokens),
     maxRetries: readIntEnv("IVA_CHAT_MAX_RETRIES", 1),
     retrievalLimit: readIntEnv("IVA_CHAT_RETRIEVAL_LIMIT", family === "gemma" ? 3 : 5),
     thinkingEnabled,

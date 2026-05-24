@@ -86,6 +86,14 @@ export function setCachedIvaAnswer(question: string, answer: string) {
   return setCachedAnswer(normalizeQuestion(question), answer);
 }
 
+export function isTemplateIvaAnswer(answer: string) {
+  return (
+    answer === FALLBACK_ANSWER ||
+    answer === getTemplateIvaAnswer("limit") ||
+    answer === getTemplateIvaAnswer("missing-key")
+  );
+}
+
 export function getDirectIvaAnswer(question: string) {
   const context = getIvaContextToolResult(question, getRetrievalLimit());
 
@@ -225,7 +233,10 @@ export async function runIvaAgent(messages: UIMessage[]) {
   });
 
   const answer = text.trim() || FALLBACK_ANSWER;
-  await setCachedIvaAnswer(question, answer);
+
+  if (text.trim()) {
+    await setCachedIvaAnswer(question, answer);
+  }
 
   return answer;
 }

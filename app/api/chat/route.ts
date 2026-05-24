@@ -11,6 +11,7 @@ import {
   getTemplateIvaAnswer,
   getDirectIvaAnswer,
   getIvaGenerationMode,
+  isTemplateIvaAnswer,
   prepareIvaAgentPrompt,
   setCachedIvaAnswer,
 } from "@/lib/ai/iva-agent";
@@ -197,7 +198,7 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
         writer.write({ type: "finish-step" });
         writer.write({ type: "finish", finishReason: "stop" });
 
-        if (question && answer.trim()) {
+        if (question && answer.trim() && !isTemplateIvaAnswer(answer.trim())) {
           await setCachedIvaAnswer(question, answer.trim());
         }
       } catch (error) {
