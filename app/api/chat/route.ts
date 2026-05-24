@@ -15,19 +15,26 @@ import { checkChatLimit } from "@/lib/ai/rate-limit";
 import {
   getCachedIvaAnswer,
   getIvaGeminiModel,
+  getIvaGenerationSettings,
   getIvaGoogleProviderOptions,
-  getIvaMaxOutputTokens,
   getIvaMaxRetries,
+  getInstantIvaAnswer,
   getTemplateIvaAnswer,
-  getDirectIvaAnswer,
   getIvaGenerationMode,
   isTemplateIvaAnswer,
   prepareIvaAgentPrompt,
   setCachedIvaAnswer,
 } from "@/lib/ai/iva-agent";
+import { logIvaChatEvent } from "@/lib/ai/observability";
 
 export const maxDuration = 60;
 export const runtime = "nodejs";
+
+function getAiTimeoutMs() {
+  const value = Number(process.env.IVA_CHAT_AI_TIMEOUT_MS ?? 35_000);
+
+  return Number.isFinite(value) && value > 5_000 ? Math.floor(value) : 35_000;
+}
 
 function getVisitorId(request: Request) {
   const forwardedFor = request.headers.get("x-forwarded-for");
@@ -153,49 +160,135 @@ function writeStreamText(
   writer.write({ type: "finish", finishReason: "stop" });
 }
 
+function writeTextDeltas(
+  writer: Parameters<Parameters<typeof createUIMessageStream<UIMessage>>[0]["execute"]>[0]["writer"],
+  id: string,
+  answer: string,
+) {
+  for (const delta of answer.match(/.{1,72}(\s|$)/g) ?? [answer]) {
+    writer.write({ type: "text-delta", id, delta });
+  }
+}
+
+async function resolveOr<T>(promise: PromiseLike<T>, fallback: T) {
+  try {
+    return await promise;
+  } catch {
+    return fallback;
+  }
+}
+
+function createRequestTimeoutSignal(signal: AbortSignal) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort("Iva chat AI timeout");
+  }, getAiTimeoutMs());
+
+  function abortFromRequest() {
+    controller.abort(signal.reason ?? "Request aborted");
+  }
+
+  if (signal.aborted) {
+    abortFromRequest();
+  } else {
+    signal.addEventListener("abort", abortFromRequest, { once: true });
+  }
+
+  return {
+    signal: controller.signal,
+    clear: () => {
+      clearTimeout(timeout);
+      signal.removeEventListener("abort", abortFromRequest);
+    },
+  };
+}
+
 function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
   const stream = createUIMessageStream<UIMessage>({
     originalMessages: messages,
     onError: () => getTemplateIvaAnswer("error"),
     execute: async ({ writer }) => {
+      const startedAt = Date.now();
+      let fallbackAnswer = getTemplateIvaAnswer("error");
+      let openTextId: string | null = null;
+      let streamClosed = false;
+      let clearAiTimeout: (() => void) | null = null;
+
       try {
-        // Build the agent context first, then stream Gemini directly to the UI.
-        const { question, system, prompt } =
-          await prepareIvaAgentPrompt(messages);
+        const prepared = await prepareIvaAgentPrompt(messages);
+        const { question, system, prompt } = prepared;
+        fallbackAnswer = prepared.faqFallbackAnswer || fallbackAnswer;
+
+        if (!prepared.shouldAttemptAi && prepared.faqFallbackAnswer) {
+          logIvaChatEvent("faq_hit", {
+            reason: "low_retrieval_confidence",
+            intent: prepared.faqFallbackIntent,
+            latencyMs: Date.now() - startedAt,
+          });
+          writeStreamText(writer, prepared.faqFallbackAnswer);
+          return;
+        }
+
+        const settings = getIvaGenerationSettings(
+          prepared.creativeMode,
+          prepared.structuredMode,
+        );
+        const timeoutSignal = createRequestTimeoutSignal(abortSignal);
+        clearAiTimeout = timeoutSignal.clear;
 
         if (getIvaGenerationMode() === "generate") {
-          const result = await generateText({
-            model: getIvaGeminiModel(),
-            temperature: 0.45,
-            maxOutputTokens: getIvaMaxOutputTokens(),
-            maxRetries: getIvaMaxRetries(),
-            providerOptions: getIvaGoogleProviderOptions(),
-            system,
-            prompt,
-          });
-          const answer = result.text.trim() || getTemplateIvaAnswer("error");
+          try {
+            logIvaChatEvent("ai_hit", {
+              mode: "generate",
+              creativeMode: prepared.creativeMode,
+              structuredMode: prepared.structuredMode,
+              retrievalConfidence: Number(prepared.retrievalConfidence.toFixed(2)),
+            });
 
-          writeStreamText(writer, answer);
+            const result = await generateText({
+              model: getIvaGeminiModel(),
+              temperature: settings.temperature,
+              maxOutputTokens: settings.maxOutputTokens,
+              maxRetries: getIvaMaxRetries(),
+              providerOptions: getIvaGoogleProviderOptions(),
+              abortSignal: timeoutSignal.signal,
+              system,
+              prompt,
+            });
+            const answer = result.text.trim() || fallbackAnswer;
 
-          if (question && result.text.trim()) {
-            await setCachedIvaAnswer(question, answer);
+            writeStreamText(writer, answer);
+
+            if (question && result.text.trim()) {
+              await setCachedIvaAnswer(question, answer);
+            }
+
+            logIvaChatEvent(result.text.trim() ? "ai_success" : "fallback_usage", {
+              mode: "generate",
+              reason: result.text.trim() ? undefined : "empty_generation",
+              latencyMs: Date.now() - startedAt,
+            });
+          } finally {
+            timeoutSignal.clear();
           }
 
           return;
         }
 
-        console.log("[IVA AI HIT]", {
-          question,
-          timestamp: new Date().toISOString(),
+        logIvaChatEvent("ai_hit", {
+          mode: "stream",
+          creativeMode: prepared.creativeMode,
+          structuredMode: prepared.structuredMode,
+          retrievalConfidence: Number(prepared.retrievalConfidence.toFixed(2)),
         });
 
         const result = streamText({
           model: getIvaGeminiModel(),
-          temperature: 0.45,
-          maxOutputTokens: getIvaMaxOutputTokens(),
+          temperature: settings.temperature,
+          maxOutputTokens: settings.maxOutputTokens,
           maxRetries: getIvaMaxRetries(),
           providerOptions: getIvaGoogleProviderOptions(),
-          abortSignal,
+          abortSignal: timeoutSignal.signal,
           system,
           prompt,
         });
@@ -206,33 +299,63 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
         writer.write({ type: "start" });
         writer.write({ type: "start-step" });
         writer.write({ type: "text-start", id });
+        openTextId = id;
 
         for await (const delta of result.textStream) {
           answer += delta;
           writer.write({ type: "text-delta", id, delta });
         }
 
-        console.log("[IVA AI SUCCESS]");
+        timeoutSignal.clear();
+        clearAiTimeout = null;
+
+        const finishReason = await resolveOr(result.finishReason, "unknown");
+        const usage = await resolveOr(result.usage, null);
 
         if (!answer.trim()) {
-          const fallback = getTemplateIvaAnswer("error");
-          answer = fallback;
-          for (const delta of fallback.match(/.{1,72}(\s|$)/g) ?? [fallback]) {
-            writer.write({ type: "text-delta", id, delta });
-          }
+          answer = fallbackAnswer;
+          writeTextDeltas(writer, id, fallbackAnswer);
+          logIvaChatEvent("fallback_usage", {
+            reason: "empty_stream",
+            intent: prepared.faqFallbackIntent || null,
+            finishReason,
+            latencyMs: Date.now() - startedAt,
+          });
+        } else {
+          logIvaChatEvent("ai_success", {
+            mode: "stream",
+            finishReason,
+            totalTokens: usage?.totalTokens,
+            latencyMs: Date.now() - startedAt,
+          });
         }
 
         writer.write({ type: "text-end", id });
         writer.write({ type: "finish-step" });
         writer.write({ type: "finish", finishReason: "stop" });
+        streamClosed = true;
 
         if (question && answer.trim() && !isTemplateIvaAnswer(answer.trim())) {
           await setCachedIvaAnswer(question, answer.trim());
         }
       } catch (error) {
+        clearAiTimeout?.();
         console.error("Iva chat stream failed", error);
-        console.log("[IVA AI FAILED]");
-        writeStreamText(writer, getTemplateIvaAnswer("error"));
+        logIvaChatEvent("ai_failure", {
+          error,
+          timeout: abortSignal.aborted ? false : Date.now() - startedAt >= getAiTimeoutMs(),
+          latencyMs: Date.now() - startedAt,
+        });
+
+        if (openTextId && !streamClosed) {
+          writeTextDeltas(writer, openTextId, `\n\n${fallbackAnswer}`);
+          writer.write({ type: "text-end", id: openTextId });
+          writer.write({ type: "finish-step" });
+          writer.write({ type: "finish", finishReason: "error" });
+          return;
+        }
+
+        writeStreamText(writer, fallbackAnswer);
       }
     },
   });
@@ -248,6 +371,7 @@ export async function POST(request: Request) {
   const requestCheck = validateChatRequest(request);
 
   if (!requestCheck.ok) {
+    logIvaChatEvent("request_rejected", { status: requestCheck.status });
     return requestCheck.status === 200
       ? streamAnswer(requestCheck.answer, [])
       : Response.json(
@@ -260,6 +384,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     messages = readRequestMessages(body);
   } catch {
+    logIvaChatEvent("request_rejected", { status: 400, reason: "invalid_json" });
     return Response.json(
       { error: "Invalid chat payload." },
       { status: 400, headers: getSecurityHeaders() },
@@ -269,6 +394,7 @@ export async function POST(request: Request) {
   const guard = guardMessages(messages);
 
   if (!guard.ok) {
+    logIvaChatEvent("guard_block", { status: guard.status });
     return guard.status === 200
       ? streamAnswer(guard.answer, messages)
       : Response.json(
@@ -279,22 +405,27 @@ export async function POST(request: Request) {
 
   messages = guard.messages;
   const question = guard.question || getLastUserQuestion(messages);
-  const directAnswer = getDirectIvaAnswer(question);
+  const instantAnswer = getInstantIvaAnswer(question);
 
-  if (directAnswer) {
-    await setCachedIvaAnswer(question, directAnswer);
-    return streamAnswer(directAnswer, messages);
+  if (instantAnswer) {
+    logIvaChatEvent("instant_answer", { intent: instantAnswer.intentId });
+    await setCachedIvaAnswer(question, instantAnswer.answer);
+    return streamAnswer(instantAnswer.answer, messages);
   }
 
   const cached = await getCachedIvaAnswer(question);
 
   if (cached) {
+    logIvaChatEvent("cache_hit");
     return streamAnswer(cached, messages);
   }
 
   const limit = checkChatLimit(getVisitorId(request));
 
   if (limit.limited) {
+    logIvaChatEvent("fallback_usage", {
+      reason: limit.reason === "burst" ? "burst_limit" : "daily_limit",
+    });
     return streamAnswer(
       limit.reason === "burst"
         ? "Please wait a moment before sending another question. This keeps the public chat available for everyone."
@@ -304,6 +435,7 @@ export async function POST(request: Request) {
   }
 
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    logIvaChatEvent("fallback_usage", { reason: "missing_key" });
     return streamAnswer(getTemplateIvaAnswer("missing-key"), messages);
   }
 

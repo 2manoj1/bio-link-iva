@@ -1,6 +1,7 @@
 import "server-only";
 
 import {
+  amazonAffiliate,
   collaborationTypes,
   creator,
   dailyProductShelves,
@@ -94,9 +95,22 @@ const TOKEN_ALIASES: Record<string, string[]> = {
   rooftops: ["rooftop"],
   shop: ["shopping", "products"],
   shopping: ["shop", "products"],
+  skincare: ["beauty"],
+  salon: ["beauty", "selfcare"],
   stay: ["staycation", "hotel"],
   stays: ["staycation", "hotel"],
   staycation: ["stay", "hotel"],
+  hotel: ["stay", "staycation", "hospitality"],
+  hospitality: ["hotel", "staycation", "dining"],
+  fashion: ["outfit", "retail"],
+  outfit: ["fashion", "styling"],
+  event: ["launch", "concert"],
+  events: ["launch", "concert"],
+  launch: ["event", "opening"],
+  furniture: ["home", "lifestyle"],
+  home: ["furniture", "lifestyle"],
+  audience: ["followers", "demographics", "analytics"],
+  followers: ["audience", "media"],
 };
 
 function tokenize(input: string) {
@@ -107,6 +121,28 @@ function tokenize(input: string) {
     .filter((token) => token.length > 2 && !STOP_WORDS.has(token));
 
   return [...new Set(tokens.flatMap((token) => [token, ...(TOKEN_ALIASES[token] ?? [])]))];
+}
+
+function expandMultilingualQuery(query: string) {
+  const hints: string[] = [];
+
+  if (/[\u0980-\u09FF\u0900-\u097F\u0C80-\u0CFF]/.test(query)) {
+    hints.push("iva bengaluru creator lifestyle premium city experiences");
+  }
+
+  if (/(হোটেল|ক্যাফে|কাফে|hotel|cafe|restaurant|होटल|कैफे|रेस्तरां|ಹೋಟೆಲ್|ಕ್ಯಾಫೆ|ರೆಸ್ಟೋರೆಂಟ್)/i.test(query)) {
+    hints.push("hotel cafe restaurant hospitality food rooftop staycation content");
+  }
+
+  if (/(ব্র্যান্ড|কনটেন্ট|কন্টেন্ট|সহযোগ|brand|content|collab|campaign|ब्रांड|कंटेंट|सहयोग|ಬ್ರ್ಯಾಂಡ್|ಕಂಟೆಂಟ್|ಸಹಯೋಗ)/i.test(query)) {
+    hints.push("brand collaboration campaign partnership influencer marketing content strategy");
+  }
+
+  if (/(সৌন্দর্য|ফ্যাশন|beauty|fashion|स्किन|फैशन|ಬ್ಯೂಟಿ|ಫ್ಯಾಷನ್)/i.test(query)) {
+    hints.push("beauty fashion skincare salon soft glam outfit event");
+  }
+
+  return hints.join(" ");
 }
 
 function chunk(
@@ -153,9 +189,19 @@ const performanceSignals = topContent
   .map((item) => `${item.title} (${item.category}, ${item.views})`)
   .join("; ");
 
+const performanceProofSignals = mediaKit.performanceProof
+  .map((item) => `${item.title}: ${item.value} views, ${item.note}`)
+  .join("; ");
+
+const recentBrandSignals = instagramProfile.recentCollaborationSignals
+  .map((item) => item)
+  .join("; ");
+
+const collaborationHighlights = instagramProfile.collaborationHighlights.join("; ");
+
 const storySignals = visualStories
   .slice(0, 10)
-  .map((story) => `${story.title}: ${story.mood}`)
+  .map((story) => `${story.title}: ${story.category}; ${story.mood}; format ${story.format}; signal ${story.signal}`)
   .join("; ");
 
 const marketSignals = markets
@@ -202,6 +248,38 @@ const shopSignals = dailyProductShelves
   )
   .join(" ");
 
+const shopQuickLinkSignals = dailyProductShelves
+  .map(
+    (shelf) =>
+      `${shelf.title}: ${shelf.moment} Full shelf ideas: ${shelf.products
+        .map((product) => `${product.name} - ${product.note}`)
+        .join("; ")}`,
+  )
+  .join(" ");
+
+const audienceFormatSignals = [
+  `Content format split: ${demographics.content.map((item) => `${item.label} ${item.value}% (${item.note})`).join(", ")}.`,
+  `Dashboard window: ${mediaKit.dashboardWindow}; source: ${mediaKit.source}.`,
+  `Bengaluru/home-city signals: ${mediaKit.bengaluruSignal.map((item) => `${item.label} ${item.value}% ${item.note}`).join(", ")}.`,
+  `Profile activity: ${mediaKit.profileActivity.map((item) => `${item.label} ${item.value} (${item.note})`).join(", ")}.`,
+].join(" ");
+
+const profileSnapshotSignals = [
+  `Display profile: ${instagramProfile.displayName}.`,
+  `Category: ${instagramProfile.category}.`,
+  `Bio line: ${instagramProfile.profileLine}.`,
+  `Location: ${instagramProfile.location}; identity note: ${instagramProfile.identity}.`,
+  `Collaboration CTA: ${instagramProfile.collaborationCta}.`,
+  `Core pillars: ${instagramProfile.contentPillars.join(", ")}.`,
+].join(" ");
+
+const neighborhoodSignals = neighborhoods
+  .map(
+    (item) =>
+      `${item.name}: ${item.title}. ${item.description} Keywords: ${item.keywords.join(", ")}.`,
+  )
+  .join(" ");
+
 // Built once per server instance. Retrieval reads this immutable in-memory index.
 export const KNOWLEDGE_BASE = [
   chunk(
@@ -223,6 +301,24 @@ export const KNOWLEDGE_BASE = [
     },
   ),
   chunk(
+    "profile-snapshot",
+    "Public profile snapshot and creator identity",
+    "site:brand-data.instagramProfile",
+    `${profileSnapshotSignals} Use this for questions about Iva's public Instagram identity, creator category, profile bio, location, and core content pillars. Do not invent personal details beyond this public profile context.`,
+    {
+      aliases: [
+        "instagram bio",
+        "profile snapshot",
+        "public profile",
+        "creator category",
+        "iva_mana5",
+        "Bong creator",
+      ],
+      phrases: ["instagram profile", "profile bio", "public profile"],
+      priority: 1.16,
+    },
+  ),
+  chunk(
     "content-pillars",
     "Content creation and lifestyle pillars",
     "site:brand-data.experiencePillars",
@@ -231,6 +327,27 @@ export const KNOWLEDGE_BASE = [
       aliases: ["content strategy", "creator voice", "premium lifestyle", "soft luxury"],
       phrases: ["what content", "content create", "creator voice"],
       priority: 1.15,
+    },
+  ),
+  chunk(
+    "content-answer-playbook",
+    "Answer playbook for what Iva can create",
+    "site:answer-playbook.content",
+    [
+      "When users ask what Iva can create, ground the answer in these usable content types: reels, story sets, stills, creator visits, launch coverage, city guides, outfit-led edits, beauty rituals, food tables, room reveals, rooftop/date-night plans, and product lifestyle moments.",
+      "A strong Iva answer should mention arrival mood, visual details, lifestyle context, one reason to save, and a natural CTA only when collaboration intent is clear.",
+      "Avoid promising guaranteed results, exact posting timelines, prices, or availability in chat.",
+    ].join(" "),
+    {
+      aliases: [
+        "content ideas",
+        "content plan",
+        "creator deliverables",
+        "what can Iva make",
+        "reel story stills",
+      ],
+      phrases: ["what can iva create", "content ideas", "content plan"],
+      priority: 1.24,
     },
   ),
   chunk(
@@ -262,6 +379,28 @@ export const KNOWLEDGE_BASE = [
     },
   ),
   chunk(
+    "collaboration-workflow",
+    "Collaboration workflow and response guidance",
+    "site:answer-playbook.collaborationWorkflow",
+    [
+      "For collaboration questions, answer in a brand-friendly way: clarify the brand category, suggest the best content lane, mention likely formats from the collaboration menu, and route final scope, rates, dates, and approval details to email.",
+      `Contact route: ${creator.email}. Public CTA: ${instagramProfile.collaborationCta}.`,
+      `Collaboration highlights include ${collaborationHighlights}. Recent signals include ${recentBrandSignals}.`,
+    ].join(" "),
+    {
+      aliases: [
+        "brand enquiry",
+        "brand inquiry",
+        "paid collab process",
+        "booking process",
+        "campaign workflow",
+        "how to collaborate",
+      ],
+      phrases: ["brand inquiry", "paid collaboration", "how to collaborate"],
+      priority: 1.22,
+    },
+  ),
+  chunk(
     "partnership-angles",
     "Partnership strategy and premium marketing angles",
     "site:brand-data.mediaKit.partnershipAngles",
@@ -274,6 +413,98 @@ export const KNOWLEDGE_BASE = [
       aliases: ["premium campaign", "creator strategy", "Bangalore marketing", "Bengaluru brand growth"],
       phrases: ["why brands care", "premium creator", "brand strategy"],
       priority: 1.22,
+    },
+  ),
+  chunk(
+    "hospitality-cafe-playbook",
+    "Hotel, cafe, restaurant, rooftop, and hospitality content playbook",
+    "site:answer-playbook.hospitality",
+    [
+      "For hotels, boutique stays, resorts, and staycations, Iva's best story arc is arrival, check-in mood, room reveal, property details, dining, poolside or golden-hour light, and one clear reason to save or book.",
+      "For cafes, restaurants, breweries, rooftops, and food brands, Iva should frame entrance mood, table styling, plating, service cues, ambience, outfit context, and why the place becomes a weekend, date-night, brunch, or friend-plan save.",
+      "Useful brand examples/signals: Hilton, Hilton Manyata, JW Marriott, Hyatt Centric, Sheraton, The Bier Library, Tipsy Bull, Nandhana Palace, Long Boat Brewing Co., Pizza Hut, Swiggy.",
+    ].join(" "),
+    {
+      aliases: [
+        "hotel content",
+        "cafe content",
+        "restaurant content",
+        "rooftop content",
+        "hospitality campaign",
+        "staycation reel",
+        "room reveal",
+        "food reel",
+      ],
+      phrases: ["hotel content", "cafe content", "restaurant content", "room reveal", "rooftop campaign"],
+      priority: 1.38,
+    },
+  ),
+  chunk(
+    "beauty-fashion-playbook",
+    "Beauty, skincare, salon, fashion, and retail content playbook",
+    "site:answer-playbook.beautyFashion",
+    [
+      "For beauty, skincare, makeup, salon, self-care, and personal-care brands, Iva should focus on soft glam, skin-first details, getting-ready rituals, product texture, before/after experience notes when appropriate, and a polished but natural recommendation tone.",
+      "For fashion, retail, Indianwear, events, bags, and outfit-led campaigns, Iva should show outfit context, try-on energy, shopping day mood, event arrival, styling details, and how the product fits real Bengaluru plans.",
+      "Useful brand examples/signals: Maybelline, Estee Lauder, Sephora, Bioderma, CeraVe, Garnier, Pond's, Palmolive, Hair Masters, Michael Kors, Zouk, The Bear House.",
+    ].join(" "),
+    {
+      aliases: [
+        "beauty launch",
+        "skincare launch",
+        "salon collab",
+        "fashion reel",
+        "retail visit",
+        "outfit content",
+        "try-on reel",
+      ],
+      phrases: ["beauty launch", "fashion content", "salon collaboration", "retail visit", "outfit context"],
+      priority: 1.34,
+    },
+  ),
+  chunk(
+    "events-culture-playbook",
+    "Events, concerts, launches, and culture content playbook",
+    "site:answer-playbook.events",
+    [
+      "For events, concerts, openings, launches, previews, and hosted experiences, Iva should make the moment easy to understand fast: arrival, venue energy, key product/place reveal, crowd or ambience, outfit cue, and one clear reason it matters.",
+      "Best use cases include collection launches, menu previews, beauty activations, fashion shows, concerts, nightlife events, hosted tables, and quick city-culture moments.",
+      "Keep the tone warm and editorial, not like a ticketing announcement.",
+    ].join(" "),
+    {
+      aliases: [
+        "event coverage",
+        "concert collab",
+        "launch coverage",
+        "opening night",
+        "fashion show",
+        "brand activation",
+      ],
+      phrases: ["event coverage", "concert collaboration", "launch coverage", "fashion show"],
+      priority: 1.18,
+    },
+  ),
+  chunk(
+    "home-lifestyle-products-playbook",
+    "Lifestyle, home, furniture, wellness, and product content playbook",
+    "site:answer-playbook.productsHome",
+    [
+      "For lifestyle products, furniture, home, wellness, gifting, bags, creator tools, and everyday essentials, Iva should show the product inside a real ritual: getting ready, cafe day bag, staycation packing, home reset, event night, desk/editing day, or travel pouch.",
+      "Product content should feel tactile and useful: what it solves, how it looks in real life, where it fits, and why it is worth saving.",
+      "Useful brand examples/signals include Amazon, Swiggy Giftables, Colgate, Sanfe, Pee Safe, WOW, Nutriorg, Fixderma, Zouk, and furniture/home collaboration highlights.",
+    ].join(" "),
+    {
+      aliases: [
+        "product content",
+        "home collab",
+        "furniture collab",
+        "wellness product",
+        "lifestyle product",
+        "giftables",
+        "creator tools",
+      ],
+      phrases: ["product content", "furniture collaboration", "home content", "lifestyle products"],
+      priority: 1.16,
     },
   ),
   chunk(
@@ -296,6 +527,25 @@ export const KNOWLEDGE_BASE = [
       aliases: ["media kit", "followers", "views", "interactions", "analytics", "insights"],
       phrases: ["media kit", "audience numbers", "followers"],
       priority: 1.2,
+    },
+  ),
+  chunk(
+    "audience-formats",
+    "Audience content formats and media-kit interpretation",
+    "site:brand-data.mediaKit.formats",
+    `${audienceFormatSignals} Interpret this carefully: reels are strongest for discovery, stories are strong for retention and campaign touchpoints, and posts are useful as evergreen proof. Do not overclaim conversions or guaranteed reach.`,
+    {
+      aliases: [
+        "reels stories posts",
+        "format split",
+        "content format",
+        "dashboard insights",
+        "profile visits",
+        "profile activity",
+        "media kit interpretation",
+      ],
+      phrases: ["reels stories", "content format", "profile activity", "dashboard insights"],
+      priority: 1.18,
     },
   ),
   chunk(
@@ -328,6 +578,25 @@ export const KNOWLEDGE_BASE = [
     },
   ),
   chunk(
+    "bengaluru-neighborhood-playbook",
+    "Bengaluru neighborhood content guidance",
+    "site:brand-data.neighborhoods",
+    `${neighborhoodSignals} Use Indiranagar for easy beautiful evenings, cafes, dinner tables, rooftops, and premium experiences. Use Koramangala for modern cafes, weekend energy, couple experiences, and dinner plans. Use HSR for calm cafes, brunch tables, and neighborhood discoveries. Use MG Road for old-city texture, polished evenings, classic Bengaluru charm, and luxury experiences.`,
+    {
+      aliases: [
+        "Indiranagar",
+        "Koramangala",
+        "HSR",
+        "MG Road",
+        "Bangalore neighborhoods",
+        "Bengaluru neighborhoods",
+        "area guide",
+      ],
+      phrases: ["which area", "neighborhood guide", "bengaluru neighborhoods", "bangalore neighborhoods"],
+      priority: 1.26,
+    },
+  ),
+  chunk(
     "markets",
     "Website city and travel content",
     "site:brand-data.markets",
@@ -335,6 +604,30 @@ export const KNOWLEDGE_BASE = [
     {
       aliases: ["city guides", "Goa", "Mumbai", "Pune", "Kolkata", "travel"],
       phrases: ["city content", "travel content"],
+    },
+  ),
+  chunk(
+    "city-market-positioning",
+    "City market positioning for Bengaluru, Goa, Mumbai, Pune, and Kolkata",
+    "site:answer-playbook.markets",
+    [
+      "Bengaluru is the home-city anchor for rooftops, cafes, boutique stays, and city nights.",
+      "Goa works for slow luxury, boutique stays, sunset tables, poolside light, and coastal escapes.",
+      "Mumbai works for sharper city energy, fashion-led cafes, hotel moments, and premium hospitality.",
+      "Pune works for calm cafes, thoughtful menus, and easy weekend discoveries.",
+      "Kolkata works for heritage stays, cultural dining, old-world charm, saree moments, and selective cultural luxury.",
+    ].join(" "),
+    {
+      aliases: [
+        "Goa collaboration",
+        "Mumbai content",
+        "Pune cafes",
+        "Kolkata heritage",
+        "city expansion",
+        "travel markets",
+      ],
+      phrases: ["which cities", "city markets", "travel markets", "goa collaboration"],
+      priority: 1.12,
     },
   ),
   chunk(
@@ -349,10 +642,28 @@ export const KNOWLEDGE_BASE = [
     },
   ),
   chunk(
+    "recent-brand-proof",
+    "Recent brand and collaboration signals",
+    "site:brand-data.instagramProfile.recentCollaborationSignals",
+    `Recent collaboration signals: ${recentBrandSignals}. Collaboration highlights: ${collaborationHighlights}. Trusted-brand spread includes hospitality, beauty, personal care, fashion, food, nightlife, travel, wellness, bags, furniture/home, and lifestyle products. Use this to answer whether Iva has brand proof in a category without claiming contracts beyond the public signals.`,
+    {
+      aliases: [
+        "recent collabs",
+        "recent collaborations",
+        "brand proof",
+        "past work",
+        "worked with",
+        "client examples",
+      ],
+      phrases: ["recent collaborations", "brand proof", "past work", "worked with"],
+      priority: 1.22,
+    },
+  ),
+  chunk(
     "performance",
     "Performance examples",
     "site:brand-data.topContent",
-    performanceSignals,
+    `${performanceSignals}. Media-kit proof: ${performanceProofSignals}. Use these as examples of category fit, not guaranteed future performance.`,
     {
       aliases: ["views", "proof", "top reels", "case studies", "results"],
       phrases: ["performance examples", "top content"],
@@ -377,6 +688,31 @@ export const KNOWLEDGE_BASE = [
     {
       aliases: ["Amazon", "products", "recommendations", "beauty kit", "travel pouch", "creator kit"],
       phrases: ["shop iva", "product recommendations", "amazon"],
+    },
+  ),
+  chunk(
+    "shop-affiliate-details",
+    "Shop, Amazon affiliate, and product shelf guidance",
+    "site:brand-data.shop",
+    [
+      `Shop partner: ${amazonAffiliate.label}. Storefront: ${amazonAffiliate.storefrontUrl}. Affiliate tag: ${amazonAffiliate.tag}.`,
+      shopQuickLinkSignals,
+      "When answering product recommendation questions, keep it practical and style-led. Mention that product links live in the Shop section. Do not imply medical, skin, or financial advice.",
+    ].join(" "),
+    {
+      aliases: [
+        "amazon storefront",
+        "amazon affiliate",
+        "shop links",
+        "beauty minis",
+        "cafe outfit",
+        "staycation essentials",
+        "creator kit",
+        "event night",
+        "monsoon cafe",
+      ],
+      phrases: ["amazon storefront", "shop links", "affiliate", "creator kit", "staycation essentials"],
+      priority: 1.18,
     },
   ),
   ...editorialSignals,
@@ -408,7 +744,7 @@ const DEFAULT_CHUNK_IDS = new Set([
   "collaborations",
   "content-pillars",
 ]);
-const MAX_RETRIEVED_TEXT_CHARS = 820;
+const MAX_RETRIEVED_TEXT_CHARS = 520;
 
 function trimRetrievedText(text: string) {
   const normalized = text.replace(/\s+/g, " ").trim();
@@ -421,7 +757,8 @@ function trimRetrievedText(text: string) {
 }
 
 export function searchKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
-  const queryTokens = tokenize(query);
+  const expandedQuery = `${query} ${expandMultilingualQuery(query)}`.trim();
+  const queryTokens = tokenize(expandedQuery);
   const normalizedQuery = query.toLowerCase().replace(/\s+/g, " ").trim();
 
   if (queryTokens.length === 0) {
@@ -470,11 +807,70 @@ export function searchKnowledgeBase(query: string, limit = 4): RetrievedChunk[] 
   return scored.map(({ item, score }) => toRetrievedChunk(item, Number(score.toFixed(2))));
 }
 
+export function getRetrievalConfidence(chunks: RetrievedChunk[]) {
+  const topScore = chunks[0]?.score ?? 0;
+
+  if (topScore <= 0) {
+    return 0;
+  }
+
+  if (topScore < 1) {
+    return 0.32;
+  }
+
+  return Math.min(0.92, 0.38 + topScore / 18);
+}
+
+function inferMood(item: RetrievedChunk) {
+  const text = `${item.title} ${item.text}`.toLowerCase();
+
+  if (/(hotel|stay|staycation|room|hospitality|resort)/.test(text)) {
+    return "calm, polished, stay-worthy hospitality";
+  }
+
+  if (/(cafe|coffee|restaurant|food|dining|rooftop)/.test(text)) {
+    return "warm table details, golden light, save-worthy city plans";
+  }
+
+  if (/(beauty|fashion|salon|skincare|outfit|event)/.test(text)) {
+    return "modern feminine luxury, soft glam, wearable polish";
+  }
+
+  if (/(audience|followers|views|analytics|demographics)/.test(text)) {
+    return "credible, brand-safe, performance-aware";
+  }
+
+  return "premium Bengaluru lifestyle, personal but editorial";
+}
+
+function inferVisualStyle(item: RetrievedChunk) {
+  const text = `${item.title} ${item.text}`.toLowerCase();
+
+  if (/(hotel|stay|room|resort)/.test(text)) {
+    return "arrival moments, room reveal, slow property details, dining, golden hour";
+  }
+
+  if (/(cafe|restaurant|food|rooftop)/.test(text)) {
+    return "entrance mood, table styling, plating, ambience, one reason to save";
+  }
+
+  if (/(beauty|fashion|salon|event)/.test(text)) {
+    return "skin-first detail, outfit context, try-on energy, polished event cues";
+  }
+
+  return "clean frames, city texture, tasteful details, emotionally useful captions";
+}
+
 export function formatRetrievedKnowledge(chunks: RetrievedChunk[]) {
   return chunks
     .map(
-      (item, index) =>
-        `[${index + 1}] ${item.title}\nSource: ${item.source}\n${trimRetrievedText(item.text)}`,
+      (item) =>
+        [
+          `T: ${item.title}`,
+          `Mood: ${inferMood(item)}`,
+          `Ctx: ${trimRetrievedText(item.text)}`,
+          `Visual: ${inferVisualStyle(item)}`,
+        ].join("\n"),
     )
     .join("\n\n");
 }

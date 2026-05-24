@@ -87,11 +87,12 @@ const multilingualCollabPattern =
 const bengaliScriptPattern = /[\u0980-\u09FF]/;
 const devanagariScriptPattern = /[\u0900-\u097F]/;
 const kannadaScriptPattern = /[\u0C80-\u0CFF]/;
+const WORD_CHAR = "\\p{L}\\p{N}@.+-";
 
 const FAQ_INTENTS: CuratedFaqIntent[] = [
   {
     id: "greeting-help",
-    patterns: [/^(hi|hello|hey|help|who are you)\b/],
+    patterns: [/^(hi|hello|hey|help|who are you)(?:\b|$)/],
     keywords: ["help", "start"],
     answer: [
       "Hi, I am Iva's website concierge.",
@@ -106,7 +107,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "profile",
-    patterns: [/who is iva/, /tell me about iva/, /about iva/, /iva chatterjee/],
+    patterns: [/\bwho is iva\b/, /\btell me about iva\b/, /\babout iva\b/, /\biva chatterjee\b/],
     keywords: ["profile", "bio", "creator", "influencer", "iva", "chatterjee"],
     answer: [
       `**${creator.name}** is a ${creator.title} based in ${creator.location}.`,
@@ -116,7 +117,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "content-pillars",
-    patterns: [/what content/, /content.*create/, /what does.*create/, /niche/],
+    patterns: [/\bwhat content\b/, /\bcontent\b.*\bcreate\b/, /\bwhat does\b.*\bcreate\b/, /\bniche\b/],
     keywords: ["content", "pillars", "niche", "topics", "beauty", "food", "travel", "lifestyle"],
     answer: [
       "Iva's content world is premium, personal, and save-worthy.",
@@ -129,7 +130,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "collaborations",
-    patterns: [/collaborat/, /paid collab/, /brand partnership/, /work with iva/, /campaign/],
+    patterns: [/\bcollaborat(e|ion|ions)\b/, /\bpaid collab\b/, /\bbrand partnership\b/, /\bwork with iva\b/, /\bcampaign\b/],
     keywords: ["collaboration", "collab", "partnership", "campaign", "brand", "marketing", "sponsor"],
     answer: [
       "Brands can collaborate with Iva across premium lifestyle and city-experience stories.",
@@ -146,7 +147,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "collaboration-packages",
-    patterns: [/package/, /deliverables/, /what can.*include/, /reel.*story/, /creator visit/],
+    patterns: [/\bpackage(s)?\b/, /\bdeliverables?\b/, /\bwhat can\b.*\binclude\b/, /\breel\b.*\bstor(y|ies)\b/, /\bcreator visit\b/],
     keywords: ["package", "deliverables", "reel", "story", "stories", "visit", "coverage"],
     answer: [
       "Iva's collaboration menu is built for clear, premium storytelling.",
@@ -159,7 +160,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "rates-availability",
-    patterns: [/rate/, /price/, /pricing/, /cost/, /availability/, /available/, /book/],
+    patterns: [/\brates?\b/, /\bprice\b/, /\bpricing\b/, /\bcost\b/, /\bavailability\b/, /\bavailable\b/, /\bbook(ing)?\b/],
     keywords: ["rate", "rates", "price", "pricing", "cost", "availability", "available", "booking", "book"],
     answer: [
       `For **rates, availability, booking dates, and final scope**, please contact Iva directly at ${contactLink}.`,
@@ -169,7 +170,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "contact-follow",
-    patterns: [/contact/, /email/, /reach/, /follow/, /instagram/, /youtube/, /facebook/, /social/],
+    patterns: [/\bcontact\b/, /\bemail\b/, /\breach\b/, /\bfollow\b/, /\binstagram\b/, /\byoutube\b/, /\bfacebook\b/, /\bsocial\b/],
     keywords: ["contact", "email", "reach", "follow", "instagram", "youtube", "facebook", "social"],
     answer: [
       `You can reach Iva at ${contactLink}.`,
@@ -183,7 +184,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "media-kit",
-    patterns: [/media kit/, /followers/, /audience/, /views/, /insights/, /analytics/, /numbers/],
+    patterns: [/\bmedia kit\b/, /\bfollowers\b/, /\baudience\b/, /\bviews\b/, /\binsights\b/, /\banalytics\b/, /\bnumbers\b/],
     keywords: ["media", "kit", "followers", "audience", "views", "insights", "analytics", "numbers"],
     answer: [
       `Iva's media snapshot: ${audienceSummary}.`,
@@ -196,7 +197,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "demographics",
-    patterns: [/demographic/, /age/, /gender/, /country/, /city split/, /top cit/],
+    patterns: [/\bdemographics?\b/, /\bage\b/, /\bgender\b/, /\bcountr(y|ies)\b/, /\bcity split\b/, /\btop cit(y|ies)\b/],
     keywords: ["demographics", "age", "gender", "country", "countries", "cities", "split"],
     answer: [
       "**Audience demographics**",
@@ -208,7 +209,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "bengaluru",
-    patterns: [/bengaluru/, /bangalore/, /city guide/, /indiranagar/, /koramangala/, /hsr/, /mg road/],
+    patterns: [/\bbengaluru\b/, /\bbangalore\b/, /\bcity guide\b/, /\bindiranagar\b/, /\bkoramangala\b/, /\bhsr\b/, /\bmg road\b/],
     keywords: ["bengaluru", "bangalore", "city", "guide", "indiranagar", "koramangala", "hsr", "rooftop", "cafe"],
     answer: [
       "Iva's Bengaluru marketing lane is rooftops, cafes, boutique stays, date-night plans, beauty, fashion, food discoveries, and premium city experiences worth saving.",
@@ -220,7 +221,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "cities-travel",
-    patterns: [/goa/, /mumbai/, /pune/, /kolkata/, /travel/, /city content/, /where.*cover/, /cities.*cover/, /markets/, /locations/],
+    patterns: [/\bgoa\b/, /\bmumbai\b/, /\bpune\b/, /\bkolkata\b/, /\btravel\b/, /\bcity content\b/, /\bwhere\b.*\bcover\b/, /\bcities\b.*\bcover\b/, /\bmarkets\b/, /\blocations\b/],
     keywords: ["goa", "mumbai", "pune", "kolkata", "travel", "cities", "city", "markets", "locations"],
     answer: [
       "Iva's site currently frames these markets:",
@@ -233,7 +234,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "brand-proof",
-    patterns: [/worked with/, /brands/, /trusted/, /past collaboration/, /proof/],
+    patterns: [/\bworked with\b/, /\bbrands\b/, /\btrusted\b/, /\bpast collaboration\b/, /\bproof\b/],
     keywords: ["brands", "trusted", "proof", "worked", "collaborations", "clients"],
     answer: [
       "Iva has brand signals across beauty, food, hospitality, fashion, wellness, salons, travel, and lifestyle.",
@@ -246,7 +247,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "performance",
-    patterns: [/performance/, /top content/, /best reel/, /views/, /case stud/, /results/],
+    patterns: [/\bperformance\b/, /\btop content\b/, /\bbest reel\b/, /\bviews\b/, /\bcase stud(y|ies)\b/, /\bresults\b/],
     keywords: ["performance", "views", "results", "case", "top", "reel"],
     answer: [
       "**Performance examples**",
@@ -257,7 +258,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "cafes-food",
-    patterns: [/cafe/, /coffee/, /restaurant/, /food/, /dining/, /rooftop/, /where to eat/],
+    patterns: [/\bcafes?\b/, /\bcoffee\b/, /\brestaurants?\b/, /\bfood\b/, /\bdining\b/, /\brooftops?\b/, /\bwhere to eat\b/],
     keywords: ["cafe", "cafes", "coffee", "restaurant", "food", "dining", "rooftop", "eat", "content", "create"],
     answer: [
       "For cafes, restaurants, rooftops, and food brands, Iva is strongest when the story has atmosphere.",
@@ -272,7 +273,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "hotels-stays",
-    patterns: [/hotel/, /staycation/, /resort/, /boutique stay/, /room reveal/, /hospitality/],
+    patterns: [/\bhotels?\b/, /\bstaycations?\b/, /\bresorts?\b/, /\bboutique stay\b/, /\broom reveal\b/, /\bhospitality\b/],
     keywords: ["hotel", "staycation", "resort", "boutique", "stay", "room", "hospitality", "content", "create"],
     answer: [
       "For hotels, resorts, and staycations, Iva's best story flow is simple and visual.",
@@ -290,7 +291,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "beauty-fashion",
-    patterns: [/beauty/, /skincare/, /makeup/, /fashion/, /salon/, /outfit/, /event/],
+    patterns: [/\bbeauty\b/, /\bskincare\b/, /\bmakeup\b/, /\bfashion\b/, /\bsalons?\b/, /\boutfits?\b/, /\bevents?\b/],
     keywords: ["beauty", "skincare", "makeup", "fashion", "salon", "outfit", "event", "content", "create"],
     answer: [
       "Beauty, fashion, salon, and event brands fit Iva when the product feels wearable in real life.",
@@ -306,7 +307,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "shop-products",
-    patterns: [/shop/, /amazon/, /product/, /recommend/, /affiliate/, /creator kit/, /beauty kit/],
+    patterns: [/\bshop\b/, /\bamazon\b/, /\bproducts?\b/, /\brecommend(ation|ations)?\b/, /\baffiliate\b/, /\bcreator kit\b/, /\bbeauty kit\b/],
     keywords: ["shop", "amazon", "product", "recommendation", "affiliate", "kit"],
     answer: [
       "Iva's shop direction covers practical details from her everyday creator world.",
@@ -325,7 +326,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "why-iva",
-    patterns: [/why iva/, /why choose/, /why partner/, /good fit/, /premium creator/, /marketing in bengaluru/],
+    patterns: [/\bwhy iva\b/, /\bwhy choose\b/, /\bwhy partner\b/, /\bgood fit\b/, /\bpremium creator\b/, /\bmarketing in bengaluru\b/],
     keywords: ["why", "choose", "fit", "premium", "marketing", "partner"],
     answer: [
       "Choose Iva when a brand needs premium presentation with a warm personal voice.",
@@ -341,7 +342,7 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
   },
   {
     id: "parenting-boundary",
-    patterns: [/parenting/, /parent/, /kids/, /children/, /family/],
+    patterns: [/\bparenting\b/, /\bparents?\b/, /\bkids\b/, /\bchildren\b/, /\bfamily\b/],
     keywords: ["parenting", "parent", "kids", "children", "family"],
     answer: [
       "**Parenting note**",
@@ -355,10 +356,36 @@ const FAQ_INTENTS: CuratedFaqIntent[] = [
 
 function normalizeQuestion(question: string) {
   return question
+    .normalize("NFKC")
     .toLowerCase()
-    .replace(/[^a-z0-9@.+\s-]+/g, " ")
+    .replace(/[^\p{L}\p{N}@.+\s-]+/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function tokenizeQuestion(question: string) {
+  return new Set(question.split(/\s+/).filter(Boolean));
+}
+
+function hasExactToken(normalizedQuestion: string, tokens: Set<string>, keyword: string) {
+  const normalizedKeyword = normalizeQuestion(keyword);
+
+  if (!normalizedKeyword) {
+    return false;
+  }
+
+  if (!normalizedKeyword.includes(" ")) {
+    return tokens.has(normalizedKeyword);
+  }
+
+  return new RegExp(
+    `(?:^|[^${WORD_CHAR}])${escapeRegExp(normalizedKeyword)}(?:$|[^${WORD_CHAR}])`,
+    "iu",
+  ).test(normalizedQuestion);
 }
 
 function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
@@ -369,7 +396,7 @@ function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
   if (bengaliScriptPattern.test(question)) {
     return {
       intentId: "multilingual-hotel-cafe-brand",
-      confidence: 0.94,
+      confidence: 0.86,
       answer: [
         "ইভা বেঙ্গালুরুর হোটেল, ক্যাফে বা রেস্তোরাঁ ব্র্যান্ডের জন্য প্রিমিয়াম কিন্তু স্বাভাবিক কনটেন্ট স্টোরি বানাতে পারে।",
         "",
@@ -387,7 +414,7 @@ function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
   if (devanagariScriptPattern.test(question)) {
     return {
       intentId: "multilingual-hotel-cafe-brand",
-      confidence: 0.94,
+      confidence: 0.86,
       answer: [
         "Iva Bengaluru के hotel, cafe या restaurant brands के लिए premium लेकिन natural content story बना सकती है.",
         "",
@@ -405,7 +432,7 @@ function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
   if (kannadaScriptPattern.test(question)) {
     return {
       intentId: "multilingual-hotel-cafe-brand",
-      confidence: 0.94,
+      confidence: 0.86,
       answer: [
         "Iva Bengaluru hotel, cafe ಅಥವಾ restaurant brands ಗಾಗಿ premium ಆದರೆ natural content story ಮಾಡಬಹುದು.",
         "",
@@ -425,10 +452,10 @@ function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
 
 function scoreIntent(intent: CuratedFaqIntent, normalizedQuestion: string) {
   const patternScore = intent.patterns?.some((pattern) => pattern.test(normalizedQuestion)) ? 8 : 0;
-  const words = normalizedQuestion.split(/\s+/);
+  const words = tokenizeQuestion(normalizedQuestion);
   const keywordScore = intent.keywords.reduce(
     (total, keyword) =>
-      (words.includes(keyword) ? total + 1 : total),
+      (hasExactToken(normalizedQuestion, words, keyword) ? total + 1 : total),
     0,
   );
 

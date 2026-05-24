@@ -11,18 +11,18 @@ const MAX_BODY_BYTES = 16_000;
 
 const BLOCKED_PATTERNS = [
   /ignore (all )?(previous|system|developer) instructions/i,
+  /disregard (all )?(previous|system|developer) instructions/i,
+  /override (the )?(system|developer) instructions/i,
   /reveal (your )?(system|developer|hidden) prompt/i,
   /show (your )?(system|developer|hidden) prompt/i,
-  /api[_ -]?key/i,
+  /(print|show|reveal|leak).{0,40}(api[_ -]?key|secret|token|credential)/i,
   /google[_ -]?generative[_ -]?ai[_ -]?api[_ -]?key/i,
   /private (email|phone|address|data|details)/i,
   /jailbreak/i,
-  /write malware/i,
+  /(write|build|generate).{0,40}(malware|ransomware|keylogger|exploit)/i,
   /phishing/i,
   /credit card/i,
 ];
-
-const SAFE_SMALL_TALK = /^(hi|hello|hey|thanks|thank you|who are you|help)\b/i;
 
 export type GuardResult =
   | { ok: true; messages: UIMessage[]; question: string; grounded: boolean }
@@ -123,9 +123,8 @@ export function guardMessages(messages: UIMessage[]): GuardResult {
   if (!question) {
     return {
       ok: false,
-      status: 200,
-      answer:
-        "Ask me a question about Iva, collaborations, city guides, or brand work.",
+      status: 400,
+      answer: "Please send a user message for Iva's concierge.",
     };
   }
 
@@ -147,15 +146,6 @@ export function guardMessages(messages: UIMessage[]): GuardResult {
   }
 
   const grounded = searchKnowledgeBase(question, 1).length > 0;
-
-  if (!grounded && !SAFE_SMALL_TALK.test(question) && question.length < 25) {
-    return {
-      ok: false,
-      status: 200,
-      answer:
-        "I’m best for questions about Iva, collaborations, lifestyle, fashion, cafés, travel, parenting context on this site, and contact details. For anything outside that, please use the main site or contact Iva directly.",
-    };
-  }
 
   return { ok: true, messages: trimmed, question, grounded };
 }

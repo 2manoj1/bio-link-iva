@@ -1,6 +1,7 @@
 import "server-only";
 
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -26,10 +27,24 @@ function getCacheTtlMs() {
   return Math.max(60, seconds) * 1000;
 }
 
-function safeKey(key: string) {
-  const normalized = key.trim().toLowerCase().replace(/\s+/g, " ").slice(0, 280);
+function normalizeSemanticKey(key: string) {
+  return key
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/[^\p{L}\p{N}@.+\s-]+/gu, " ")
+    .replace(/\b(please|pls|kindly|can you|could you|tell me|ask iva)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 220);
+}
 
-  return `${cacheNamespace}:${normalized}`;
+function safeKey(key: string) {
+  const normalized = normalizeSemanticKey(key);
+  const digest = createHash("sha1").update(normalized || key).digest("hex").slice(0, 16);
+  const readable = normalized.replace(/\s+/g, "-").slice(0, 56);
+
+  return `${cacheNamespace}:${digest}:${readable}`;
 }
 
 async function readFileCache() {
