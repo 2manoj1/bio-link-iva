@@ -425,8 +425,10 @@ function getMultilingualFaqAnswer(question: string): CuratedFaqAnswer | null {
 
 function scoreIntent(intent: CuratedFaqIntent, normalizedQuestion: string) {
   const patternScore = intent.patterns?.some((pattern) => pattern.test(normalizedQuestion)) ? 8 : 0;
+  const words = normalizedQuestion.split(/\s+/);
   const keywordScore = intent.keywords.reduce(
-    (total, keyword) => (normalizedQuestion.includes(keyword) ? total + 1 : total),
+    (total, keyword) =>
+      (words.includes(keyword) ? total + 1 : total),
     0,
   );
 

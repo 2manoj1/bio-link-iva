@@ -1,6 +1,16 @@
-import { createUIMessageStream, createUIMessageStreamResponse, generateText, streamText, type UIMessage } from "ai";
+import {
+  createUIMessageStream,
+  createUIMessageStreamResponse,
+  generateText,
+  streamText,
+  type UIMessage,
+} from "ai";
 
-import { getSecurityHeaders, guardMessages, validateChatRequest } from "@/lib/ai/chat-guard";
+import {
+  getSecurityHeaders,
+  guardMessages,
+  validateChatRequest,
+} from "@/lib/ai/chat-guard";
 import { checkChatLimit } from "@/lib/ai/rate-limit";
 import {
   getCachedIvaAnswer,
@@ -47,7 +57,10 @@ function readRequestMessages(body: unknown): UIMessage[] {
       parts?: unknown;
       content?: unknown;
     };
-    const role = message.role === "assistant" || message.role === "user" ? message.role : null;
+    const role =
+      message.role === "assistant" || message.role === "user"
+        ? message.role
+        : null;
 
     if (!role) {
       return [];
@@ -84,7 +97,9 @@ function readRequestMessages(body: unknown): UIMessage[] {
 }
 
 function getLastUserQuestion(messages: UIMessage[]) {
-  const lastUserMessage = [...messages].reverse().find((message) => message.role === "user");
+  const lastUserMessage = [...messages]
+    .reverse()
+    .find((message) => message.role === "user");
 
   return (
     lastUserMessage?.parts
@@ -112,11 +127,16 @@ function streamAnswer(answer: string, originalMessages: UIMessage[]) {
     },
   });
 
-  return createUIMessageStreamResponse({ stream, headers: getSecurityHeaders() });
+  return createUIMessageStreamResponse({
+    stream,
+    headers: getSecurityHeaders(),
+  });
 }
 
 function writeStreamText(
-  writer: Parameters<Parameters<typeof createUIMessageStream<UIMessage>>[0]["execute"]>[0]["writer"],
+  writer: Parameters<
+    Parameters<typeof createUIMessageStream<UIMessage>>[0]["execute"]
+  >[0]["writer"],
   answer: string,
 ) {
   const id = crypto.randomUUID();
@@ -140,7 +160,8 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
     execute: async ({ writer }) => {
       try {
         // Build the agent context first, then stream Gemini directly to the UI.
-        const { question, system, prompt } = await prepareIvaAgentPrompt(messages);
+        const { question, system, prompt } =
+          await prepareIvaAgentPrompt(messages);
 
         if (getIvaGenerationMode() === "generate") {
           const result = await generateText({
@@ -162,6 +183,11 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
 
           return;
         }
+
+        console.log("[IVA AI HIT]", {
+          question,
+          timestamp: new Date().toISOString(),
+        });
 
         const result = streamText({
           model: getIvaGeminiModel(),
@@ -186,6 +212,8 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
           writer.write({ type: "text-delta", id, delta });
         }
 
+        console.log("[IVA AI SUCCESS]");
+
         if (!answer.trim()) {
           const fallback = getTemplateIvaAnswer("error");
           answer = fallback;
@@ -203,12 +231,16 @@ function streamGeminiAnswer(messages: UIMessage[], abortSignal: AbortSignal) {
         }
       } catch (error) {
         console.error("Iva chat stream failed", error);
+        console.log("[IVA AI FAILED]");
         writeStreamText(writer, getTemplateIvaAnswer("error"));
       }
     },
   });
 
-  return createUIMessageStreamResponse({ stream, headers: getSecurityHeaders() });
+  return createUIMessageStreamResponse({
+    stream,
+    headers: getSecurityHeaders(),
+  });
 }
 
 export async function POST(request: Request) {
@@ -239,7 +271,10 @@ export async function POST(request: Request) {
   if (!guard.ok) {
     return guard.status === 200
       ? streamAnswer(guard.answer, messages)
-      : Response.json({ error: guard.answer }, { status: guard.status, headers: getSecurityHeaders() });
+      : Response.json(
+          { error: guard.answer },
+          { status: guard.status, headers: getSecurityHeaders() },
+        );
   }
 
   messages = guard.messages;

@@ -72,26 +72,41 @@ export function validateChatRequest(request: Request) {
   const contentLength = Number(request.headers.get("content-length") ?? 0);
 
   if (!contentType.includes("application/json")) {
-    return { ok: false as const, status: 415, answer: "Please send chat requests as JSON." };
+    return {
+      ok: false as const,
+      status: 415,
+      answer: "Please send chat requests as JSON.",
+    };
   }
 
   if (contentLength > MAX_BODY_BYTES) {
-    return { ok: false as const, status: 413, answer: "That message is too large for the website chat." };
+    return {
+      ok: false as const,
+      status: 413,
+      answer: "That message is too large for the website chat.",
+    };
   }
 
   const origin = normalizeOrigin(request.headers.get("origin"));
   const referer = normalizeOrigin(request.headers.get("referer"));
   const host = request.headers.get("host");
   const expected = host ? `https://${host}` : null;
-  const localhost = host?.startsWith("localhost") || host?.startsWith("127.0.0.1");
-  const configuredOrigin = normalizeOrigin(process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? null);
+  const localhost =
+    host?.startsWith("localhost") || host?.startsWith("127.0.0.1");
+  const configuredOrigin = normalizeOrigin(
+    process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? null,
+  );
   const allowedOrigins = new Set([expected, configuredOrigin].filter(Boolean));
 
   if (process.env.NODE_ENV === "production" && !localhost) {
     const requestOrigin = origin ?? referer;
 
     if (!requestOrigin || !allowedOrigins.has(requestOrigin)) {
-      return { ok: false as const, status: 403, answer: "This chat endpoint only accepts requests from the website." };
+      return {
+        ok: false as const,
+        status: 403,
+        answer: "This chat endpoint only accepts requests from the website.",
+      };
     }
   }
 
@@ -100,14 +115,17 @@ export function validateChatRequest(request: Request) {
 
 export function guardMessages(messages: UIMessage[]): GuardResult {
   const trimmed = messages.slice(-MAX_MESSAGES).map(trimMessage);
-  const lastUserMessage = [...trimmed].reverse().find((message) => message.role === "user");
+  const lastUserMessage = [...trimmed]
+    .reverse()
+    .find((message) => message.role === "user");
   const question = lastUserMessage ? readText(lastUserMessage) : "";
 
   if (!question) {
     return {
       ok: false,
       status: 200,
-      answer: "Ask me a question about Iva, collaborations, city guides, or brand work.",
+      answer:
+        "Ask me a question about Iva, collaborations, city guides, or brand work.",
     };
   }
 
@@ -123,17 +141,19 @@ export function guardMessages(messages: UIMessage[]): GuardResult {
     return {
       ok: false,
       status: 200,
-      answer: "I can help with Iva, collaborations, lifestyle, fashion, city guides, and contact details, but I cannot assist with private data, hidden prompts, credentials, or misuse.",
+      answer:
+        "I can help with Iva, collaborations, lifestyle, fashion, city guides, and contact details, but I cannot assist with private data, hidden prompts, credentials, or misuse.",
     };
   }
 
   const grounded = searchKnowledgeBase(question, 1).length > 0;
 
-  if (!grounded && !SAFE_SMALL_TALK.test(question)) {
+  if (!grounded && !SAFE_SMALL_TALK.test(question) && question.length < 25) {
     return {
       ok: false,
       status: 200,
-      answer: "I’m best for questions about Iva, collaborations, lifestyle, fashion, cafés, travel, parenting context on this site, and contact details. For anything outside that, please use the main site or contact Iva directly.",
+      answer:
+        "I’m best for questions about Iva, collaborations, lifestyle, fashion, cafés, travel, parenting context on this site, and contact details. For anything outside that, please use the main site or contact Iva directly.",
     };
   }
 
