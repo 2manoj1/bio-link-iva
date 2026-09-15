@@ -14,6 +14,11 @@ const fallbackMetadata: Metadata = makeMetadata({
     "Bengaluru lifestyle creator media kit",
     "luxury creator India audience insights",
     "premium creator collaborations Bengaluru",
+    "Bangalore influencer media kit",
+    "India digital creator for brand partnerships",
+    "Bengaluru beauty food travel influencer",
+    "hospitality creator media kit India",
+    "Instagram creator for hotel collaboration",
   ],
 });
 
@@ -21,4 +26,6 @@ export default function MediaKitPage() {
   return <MediaKitExperience />;
 }
 
-export async function generateMetadata(): Promise<Metadata> { return getPageMetadata("/media-kit", fallbackMetadata); }
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageMetadata("/media-kit", fallbackMetadata);
+}

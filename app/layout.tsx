@@ -41,6 +41,11 @@ export const metadata: Metadata = {
     "Bangalore couple experiences",
     "hidden luxury cafés Bangalore",
     "luxury staycation Bangalore",
+    "Bangalore digital creator for brands",
+    "Bengaluru influencer collaborations",
+    "India creator marketing influencer",
+    "hospitality influencer Bangalore",
+    "Instagram brand collaboration Bengaluru",
   ],
   openGraph: {
     title: "Iva Chatterjee | Bangalore Influencer & Digital Creator",
@@ -77,9 +82,20 @@ export const viewport = {
   initialScale: 1,
 };
 
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en" className={`${inter.variable} ${editorialSerif.variable} ${geistMono.variable} dark h-full antialiased`} suppressHydrationWarning>
-    <body className="min-h-full bg-background text-foreground font-sans">{children}</body>
-  </html>;
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html
+      lang="en"
+      className={`${inter.variable} ${editorialSerif.variable} ${geistMono.variable} dark h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-full bg-background text-foreground font-sans">
+        {children}
+      </body>
+    </html>
+  );
 }
