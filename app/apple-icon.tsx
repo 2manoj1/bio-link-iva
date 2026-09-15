@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { siteUrl } from "@/lib/brand-data";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export const size = {
   width: 180,

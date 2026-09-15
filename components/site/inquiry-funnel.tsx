@@ -1,4 +1,6 @@
 "use client";
+import { usePageCopy } from "./content-provider";
+
 
 import type { FormEvent } from "react";
 
@@ -12,14 +14,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { collaborationTypes } from "@/lib/brand-data";
+import { useSiteContent } from "./content-provider";
 import { Container, SectionHeader } from "./luxury-ui";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
 
-const whatsappNumber = "918431716703"; // Iva's WhatsApp number in international format without the '+' sign
-const contactEmail = "ivachatterjee5@gmail.com";
+
 
 export function InquiryFunnel() {
+  const copy = usePageCopy("InquiryFunnel");
+
+  const { collaborationTypes, creator } = useSiteContent();
+  const whatsappNumber = creator.whatsappNumber;
+  const contactEmail = creator.email;
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -49,9 +55,9 @@ export function InquiryFunnel() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
           <div>
             <SectionHeader
-              eyebrow="Work With Iva"
-              title="Tell us what Iva should experience."
-              description="For thoughtful paid collaborations with cafés, stays, fashion, beauty, wellness, and lifestyle brands that feel natural in Iva’s world."
+              eyebrow={copy("t_72163f2b95")}
+              title={copy("t_597fa1149e")}
+              description={copy("t_c1e0683f6e")}
             />
           </div>
 
@@ -62,60 +68,63 @@ export function InquiryFunnel() {
             >
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="grid gap-2">
-                  <label className="text-sm font-medium">Brand name</label>
+                  <label htmlFor="inquiry-brandName" className="text-sm font-medium">{copy("t_6b4b8b5df0")}</label>
                   <Input
                     className="min-h-12 w-full"
+                    id="inquiry-brandName"
                     name="brandName"
-                    placeholder="Boutique hotel, café, label"
+                    placeholder={copy("t_3d72f5619f")}
                     required
                   />
                 </div>
                 <div className="grid gap-2">
-                  <label className="text-sm font-medium">Market</label>
+                  <label htmlFor="inquiry-market" className="text-sm font-medium">{copy("t_569bbd757e")}</label>
                   <Select name="market" required>
-                    <SelectTrigger className="min-h-12 w-full">
-                      <SelectValue placeholder="Select market" />
+                    <SelectTrigger id="inquiry-market" className="min-h-12 w-full">
+                      <SelectValue placeholder={copy("t_98c21b406f")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Bengaluru">Bengaluru</SelectItem>
-                      <SelectItem value="Goa">Goa</SelectItem>
-                      <SelectItem value="Mumbai">Mumbai</SelectItem>
-                      <SelectItem value="Pune">Pune</SelectItem>
-                      <SelectItem value="Kolkata, stay partnership only">Kolkata, stay partnership only</SelectItem>
+                      <SelectItem value="Bengaluru">{copy("t_a19b5baeec")}</SelectItem>
+                      <SelectItem value="Goa">{copy("t_cd39578633")}</SelectItem>
+                      <SelectItem value="Mumbai">{copy("t_5a13ea4a93")}</SelectItem>
+                      <SelectItem value="Pune">{copy("t_399706abf1")}</SelectItem>
+                      <SelectItem value="Kolkata, stay partnership only">{copy("t_6e80b6bdc2")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="mt-4 grid gap-2">
-                <label className="text-sm font-medium">What should Iva experience?</label>
+                <label htmlFor="inquiry-details" className="text-sm font-medium">{copy("t_955385f8ee")}</label>
                 <Textarea
                   className="min-h-36 w-full"
-                  name="details"
-                  placeholder="Share the place, product, launch window, story idea, and paid collaboration range."
+                  id="inquiry-details"
+                    name="details"
+                  placeholder={copy("t_6d1290126e")}
                   required
                 />
               </div>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <div className="grid gap-2">
-                  <label className="text-sm font-medium">Brand email</label>
+                  <label htmlFor="inquiry-brandEmail" className="text-sm font-medium">{copy("t_9f137f87c2")}</label>
                   <Input
                     className="min-h-12 w-full"
+                    id="inquiry-brandEmail"
                     name="brandEmail"
-                    placeholder="partnerships@brand.com"
+                    placeholder={copy("t_0951c8a344")}
                     required
                     type="email"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <label className="text-sm font-medium">Collaboration type</label>
+                  <label htmlFor="inquiry-collaborationType" className="text-sm font-medium">{copy("t_a60bc6ae42")}</label>
                   <Select name="collaborationType" required>
-                    <SelectTrigger className="min-h-12 w-full">
-                      <SelectValue placeholder="Select type" />
+                    <SelectTrigger id="inquiry-collaborationType" className="min-h-12 w-full">
+                      <SelectValue placeholder={copy("t_905d012288")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Paid collaboration">Paid collaboration</SelectItem>
-                      <SelectItem value="Launch or event invite">Launch or event invite</SelectItem>
-                      <SelectItem value="Stay or travel feature">Stay or travel feature</SelectItem>
+                      <SelectItem value="Paid collaboration">{copy("t_a8d851e27e")}</SelectItem>
+                      <SelectItem value="Launch or event invite">{copy("t_5e33e81167")}</SelectItem>
+                      <SelectItem value="Stay or travel feature">{copy("t_c6222d8b4f")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -123,19 +132,14 @@ export function InquiryFunnel() {
               <Button
                 className="mt-5 h-auto min-h-12 w-full rounded-full bg-[var(--text-strong)] px-6 text-sm font-semibold text-[var(--page)] transition duration-300 ease-luxury hover:bg-[var(--gold)] hover:text-[var(--matte)]"
                 type="submit"
-              >
-                Send Inquiry on WhatsApp
-              </Button>
-              <p className="mt-4 text-center text-xs leading-6 text-[var(--text-muted)]">
-                For more details or branding briefs, write to{" "}
+              >{copy("t_af62fc5240")}</Button>
+              <p className="mt-4 text-center text-xs leading-6 text-[var(--text-muted)]">{copy("t_2ed16ab450")}{" "}
                 <a
                   className="font-semibold text-[var(--text-strong)] underline decoration-[var(--gold)]/50 underline-offset-4 transition hover:text-[var(--gold)]"
                   href={`mailto:${contactEmail}`}
                 >
                   {contactEmail}
-                </a>
-                .
-              </p>
+                </a>{copy("t_3a52ce7809")}</p>
             </form>
           </Reveal>
         </div>

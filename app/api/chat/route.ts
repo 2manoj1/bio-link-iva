@@ -405,7 +405,7 @@ export async function POST(request: Request) {
 
   messages = guard.messages;
   const question = guard.question || getLastUserQuestion(messages);
-  const instantAnswer = getInstantIvaAnswer(question);
+  const instantAnswer = await getInstantIvaAnswer(question);
 
   if (instantAnswer) {
     logIvaChatEvent("instant_answer", { intent: instantAnswer.intentId });
@@ -420,11 +420,11 @@ export async function POST(request: Request) {
     return streamAnswer(cached, messages);
   }
 
-  const limit = checkChatLimit(getVisitorId(request));
+  const limit = await checkChatLimit(getVisitorId(request));
 
   if (limit.limited) {
     logIvaChatEvent("fallback_usage", {
-      reason: limit.reason === "burst" ? "burst_limit" : "daily_limit",
+      reason: limit.reason === "unavailable" ? "quota_unavailable" : limit.reason === "burst" ? "burst_limit" : "daily_limit",
     });
     return streamAnswer(
       limit.reason === "burst"

@@ -62,37 +62,35 @@ export const shopQuickLinks = [
 
 export const instagramProfile = {
   username: "iva_mana5",
-  displayName: "Iva Chatterjee | Bangalore Influencer",
+  displayName: "Iva Chatterjee | Bangalore Influencer ✨",
   category: "Digital creator",
-  posts: "812",
-  followers: "58.9K",
-  following: "961",
-  profileLine: "Beauty | Food | Travel | Lifestyle",
-  birthday: "23 March",
+  posts: "870",
+  followers: "82.9K",
+  following: "1,750",
+  profileLine: "Beauty | Food | Travel | Lifestyle ✨",
+  birthday: "23rd March",
   location: "Bangalore",
-  identity: "Bong",
-  collaborationCta: "DM or mail for paid collaboration",
+  identity: "Bong ✨",
+  collaborationCta: "DM Or Mail For Paid Collaboration",
   contentPillars: ["Beauty", "Food", "Travel", "Lifestyle"],
   collaborationHighlights: [
-    "Furniture Collab",
-    "Salon Collab",
-    "Hilton",
-    "Food Collab",
-    "Collab & Concert",
-    "Fashion Collab",
-    "Resort Collab",
-    "Fashion Show",
+    "Staycation", "Self Love ❤️", "Hilton ✨", "Hilton Shoot", "ITC Gardenia ✨",
+    "property collab", "Radisson Blu ✨", "DTB Hilton", "BTS 🎀", "🥂",
+    "Food Collab ✨", "Canopy Collab ✨", "Hotel Collab ✨", "Collab & concert",
   ],
   recentCollaborationSignals: [
-    "Hair Masters Luxury Salon",
-    "Hilton Manyata",
-    "The Bier Library",
-    "Swiggy Giftables",
-    "Tipsy Bull",
-    "Nandhana Palace",
-    "Long Boat Brewing Co.",
-    "Estee Lauder at Sephora",
-    "Michael Kors",
+    "Hi Life Exhibition", "Hair Masters Luxury Salon", "The Furniture Park",
+  ],
+  instagramUrl: "https://www.instagram.com/iva_mana5/reels/",
+  threadsHandle: "@iva_mana5",
+  websiteUrl: "https://iva.manojmukherjee.co.in",
+  links: [
+    { _key: "website", label: "Website", href: "https://iva.manojmukherjee.co.in" },
+  ],
+  featuredReels: [
+    { _key: "hi-life", title: "Hi Life Exhibition", description: "Stall – B6, Varanasi Creation at The Lalit Ashok, Bangalore", href: "" },
+    { _key: "hair-masters", title: "Hair Masters Luxury Salon", description: "", href: "" },
+    { _key: "furniture-park", title: "The Furniture Park", description: "", href: "" },
   ],
 };
 
@@ -176,7 +174,7 @@ export const stats = [
   { label: "Instagram", value: instagramProfile.followers, note: "Followers" },
   { label: "Posts", value: instagramProfile.posts, note: "Always-on creator" },
   { label: "YouTube", value: "16K+", note: "Maniva community" },
-  { label: "Loved Reel", value: "319K", note: "Most-loved moment" },
+  { label: "Loved Reel", value: "1.4M", note: "Most-loved moment" },
 ];
 
 export const dailyProductShelves = [
@@ -506,10 +504,18 @@ export function makeAmazonAffiliateUrl(search: string) {
 
 export const topContent = [
   {
+    title: "Heritage Saree Check-in",
+    city: "Bengaluru",
+    category: "Cultural Luxury",
+    views: "1.4M",
+    image: ivaImages.heritageSaree,
+    href: "https://www.instagram.com/iva_mana5/",
+  },
+  {
     title: "The Bear House Shopping Day",
     city: "Bengaluru",
     category: "Fashion",
-    views: "319K",
+    views: "326K",
     image: ivaImages.bearHouseRetail,
     href: "https://www.instagram.com/reel/DYEM8CpxKdj",
   },
@@ -517,17 +523,9 @@ export const topContent = [
     title: "Marriott Rooftop Evening",
     city: "Bengaluru",
     category: "Rooftop",
-    views: "141K",
+    views: "145K",
     image: ivaImages.rooftopBar,
     href: "https://www.instagram.com/reel/DXf_JOMEQlB",
-  },
-  {
-    title: "Hilton Poolside Staycation",
-    city: "Bengaluru",
-    category: "Staycation",
-    views: "102K",
-    image: ivaImages.rooftopPool,
-    href: "https://www.instagram.com/reel/DW6CUOaEX4t",
   },
 ];
 
@@ -769,17 +767,17 @@ export const visualStories = [
 
 export const demographics = {
   age: [
-    { label: "13-17", value: 30.8 },
-    { label: "18-24", value: 41.5 },
-    { label: "25-34", value: 19.7 },
-    { label: "35-44", value: 5.2 },
+    { label: "13-17", value: 29.1 },
+    { label: "18-24", value: 42.1 },
+    { label: "25-34", value: 20.2 },
+    { label: "35-44", value: 5.7 },
     { label: "45-54", value: 1.6 },
     { label: "55-64", value: 0.5 },
     { label: "65+", value: 0.8 },
   ],
   gender: [
-    { label: "Men", value: 75.4 },
-    { label: "Women", value: 24.6 },
+    { label: "Men", value: 75.5 },
+    { label: "Women", value: 24.5 },
   ],
   geography: [
     { label: "India", value: 96.8 },
@@ -795,11 +793,11 @@ export const demographics = {
 };
 
 export const mediaKit = {
-  reportingWindow: "20 Apr - 19 May",
-  dashboardWindow: "19 Apr - 18 May",
+  reportingWindow: "14 Jul - 12 Aug",
+  dashboardWindow: "14 Jul - 12 Aug",
   source: "Instagram professional dashboard, last 30 days",
   insights: [
-    { label: "Views", value: "179.3K", note: "Top-of-funnel attention" },
+    { label: "Views", value: "2.7M", note: "Top-of-funnel attention" },
     { label: "Interactions", value: "36.5K", note: "Audience actions" },
     { label: "Content shared", value: "107", note: "Always-on output" },
   ],

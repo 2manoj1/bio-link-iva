@@ -1,7 +1,8 @@
+import { getSiteContent } from '@/lib/site-content';
 import type { MetadataRoute } from "next";
 
-import { blogPosts } from "@/lib/blog";
-import { editorial, neighborhoods, siteUrl } from "@/lib/brand-data";
+import { getPublishedBlogPosts } from "@/lib/cms-blog";
+import { siteUrl } from "@/lib/brand-data";
 
 const staticRoutes = [
   "",
@@ -20,15 +21,18 @@ const staticRoutes = [
   "/shop",
   "/blog",
   "/premium-experiences",
+  "/kolkata-experiences",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const blogPosts = await getPublishedBlogPosts();
+  const { neighborhoods } = await getSiteContent();
   const now = new Date();
   const routes = [
     ...staticRoutes,
     ...neighborhoods.map((area) => `/bengaluru-guide/${area.slug}`),
     ...blogPosts.map((story) => `/blog/${story.slug}`),
-    ...editorial.map((story) => `/editorial/${story.slug}`),
+
   ];
 
   return routes.map((route) => ({

@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
-import { Footer } from "@/components/site/footer";
-import { JsonLd } from "@/components/site/json-ld";
-import { Navigation } from "@/components/site/navigation";
-import { Analytics } from "@vercel/analytics/react";
-import { creator, siteUrl } from "@/lib/brand-data";
-import { Chatbot } from "@/components/site/chatbot";
+import { siteUrl } from "@/lib/brand-data";
 import "./globals.css";
 
 const inter = Inter({
@@ -80,76 +75,11 @@ export const viewport = {
   themeColor: "#11100e",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${editorialSerif.variable} ${geistMono.variable} dark h-full antialiased`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-full bg-background text-foreground font-sans">
-        <JsonLd
-          data={[
-            {
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: creator.name,
-              alternateName: creator.handle,
-              url: siteUrl,
-              image: `${siteUrl}${creator.profileImage}`,
-              description: creator.description,
-              jobTitle: "Bangalore Influencer and Digital Creator",
-              knowsAbout: [
-                "Beauty",
-                "Food",
-                "Travel",
-                "Lifestyle",
-                "Fine Dining",
-                "Fashion",
-                "Bangalore Culture",
-                "Boutique Hospitality",
-              ],
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Bengaluru",
-                addressRegion: "Karnataka",
-                addressCountry: "IN",
-              },
-              sameAs: [
-                creator.instagramUrl,
-                creator.youtubeUrl,
-                creator.facebookPageUrl,
-                creator.websiteUrl
-              ],
-            },
-            {
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "Iva Chatterjee",
-              url: siteUrl,
-              description: creator.description,
-              publisher: {
-                "@type": "Person",
-                name: creator.name,
-              },
-            }
-          ]}
-        />
-          <Navigation />
-          {children}
-          <Footer />
-          <Chatbot />
-          <Analytics />
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en" className={`${inter.variable} ${editorialSerif.variable} ${geistMono.variable} dark h-full antialiased`} suppressHydrationWarning>
+    <body className="min-h-full bg-background text-foreground font-sans">{children}</body>
+  </html>;
 }

@@ -1,3 +1,5 @@
+import { getPageCopy } from "@/lib/page-copy";
+import { getSiteContent, getFullMediaKit } from '@/lib/site-content';
 import {
   ArrowRight,
   AtSign,
@@ -26,19 +28,15 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import {
-  collaborationTypes,
-  creator,
-  editorial,
-  experiencePillars,
-  instagramProfile,
-  ivaImages,
-  markets,
-  mediaKit,
-  stats,
-  topContent,
-  trustedBrands,
-  visualStories,
-} from "@/lib/brand-data";
+  getCreatorProfile,
+  getLiveStats,
+  getPremiumExperiences,
+  getMediaKitData,
+  getInstagramStats,
+  getTrustedBrands,
+  getVisualStories,
+  getMarkets,
+} from "@/lib/brand-data-fetch";
 import {
   Container,
   CTAButton,
@@ -51,8 +49,16 @@ import {
 } from "./luxury-ui";
 import { InquiryFunnel } from "./inquiry-funnel";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
-import { blogPosts } from "@/lib/blog";
-export function HomeExperience() {
+import { getPublishedBlogPosts } from "@/lib/cms-blog";
+import { SocialVideos } from "./social-videos";
+export async function HomeExperience() {
+  const copy = await getPageCopy("HomeExperience");
+
+  const { creator, ivaImages } = await getSiteContent();
+
+  const liveStats = await getLiveStats();
+  const liveTopContent = await getPremiumExperiences();
+
   return (
     <PageShell>
       <section className="relative overflow-hidden bg-stone-950 text-stone-50 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed]">
@@ -68,9 +74,9 @@ export function HomeExperience() {
         <Container className="relative grid min-h-[calc(100svh-4rem)] gap-10 pb-12 pt-24 md:pb-16 md:pt-28 lg:grid-cols-[1.02fr_0.68fr] lg:items-end">
           <div className="max-w-4xl">
             <EditorialHeader
-              eyebrow="Iva Chatterjee · Bengaluru"
-              title="Soft luxury, through Iva’s eyes."
-              description="Beautiful cafés, rooftop nights, boutique stays, fashion moments, and city plans shared with taste, warmth, and trust."
+              eyebrow={copy("t_09f72a7c22")}
+              title={copy("t_8ff2b726a2")}
+              description={copy("t_b549d23e5f")}
             />
             <Reveal delay={0.1} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
@@ -78,7 +84,7 @@ export function HomeExperience() {
                 size="lg"
                 className="h-auto min-h-12 rounded-full bg-white px-8 text-sm font-semibold text-black shadow-luxury-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--gold)] hover:text-[var(--matte)]"
               >
-                <Link href="/collaborations">Collaborate with Iva</Link>
+                <Link href="/collaborations">{copy("t_344c4ef4ee")}</Link>
               </Button>
               <Button
                 asChild
@@ -86,7 +92,7 @@ export function HomeExperience() {
                 size="lg"
                 className="h-auto min-h-12 rounded-full border-white/25 bg-white/5 px-8 text-sm font-semibold text-white backdrop-blur-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/10 hover:text-white"
               >
-                <Link href="/media-kit">Explore Media Kit</Link>
+                <Link href="/media-kit">{copy("t_c3f730be52")}</Link>
               </Button>
             </Reveal>
             <Reveal
@@ -107,15 +113,13 @@ export function HomeExperience() {
             <Reveal
               delay={0.2}
               className="mt-8 max-w-md font-serif text-2xl italic leading-snug text-[var(--beige)]"
-            >
-              “I share what feels beautiful, useful, and real.”
-            </Reveal>
+            >{copy("t_d600a8e584")}</Reveal>
           </div>
 
           <Reveal delay={0.14} className="relative justify-self-center lg:justify-self-end">
             <div className="cinematic-vignette relative aspect-[4/5] w-full max-w-[430px] overflow-hidden rounded-md border border-white/15 bg-stone-950 shadow-luxury-lg ring-1 ring-[var(--gold)]/20">
               <Image
-                alt="Iva Chatterjee editorial portrait"
+                alt={copy("t_e8c9eeaaa4")}
                 className="object-cover object-top"
                 fill
                 priority
@@ -123,12 +127,8 @@ export function HomeExperience() {
                 src={ivaImages.editorialSaree}
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/20 to-transparent p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
-                  Iva Chatterjee
-                </p>
-                <p className="mt-2 font-serif text-3xl text-stone-50">
-                  Fashion, cafés, stays, and city nights she truly loves.
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">{copy("t_6f05922b6e")}</p>
+                <p className="mt-2 font-serif text-3xl text-stone-50">{copy("t_a9efd49f2b")}</p>
               </div>
             </div>
           </Reveal>
@@ -137,7 +137,7 @@ export function HomeExperience() {
 
       <section className="border-b border-[var(--border-soft)] bg-[var(--surface-glass)] py-8 backdrop-blur-md">
         <Container>
-          <StatGrid stats={stats} />
+          <StatGrid stats={liveStats} />
         </Container>
       </section>
 
@@ -147,22 +147,20 @@ export function HomeExperience() {
         <Container>
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <SectionHeader
-              eyebrow="Featured Collaborations"
-              title="Stories people save. Brands remember."
-              description="A few high-performing moments that show how Iva turns a real experience into desire."
+              eyebrow={copy("t_e0233de721")}
+              title={copy("t_7465c3cc81")}
+              description={copy("t_b74af3c3ea")}
             />
-            <CTAButton href="/premium-experiences" variant="outline">
-              Explore Experiences
-            </CTAButton>
+            <CTAButton href="/premium-experiences" variant="outline">{copy("t_b816fbfa9d")}</CTAButton>
           </div>
           <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
-            {topContent.map((item) => (
+            {liveTopContent.map((item) => (
               <StaggerItem key={item.title}>
                 <ImageCard
-                  href={item.href}
-                  image={item.image}
-                  meta={`${item.views} views · ${item.category}`}
-                  subtitle={`${item.city} moment`}
+                  href={item.href || "#"}
+                  image={item.image || ivaImages.heritageSaree}
+                  meta={`${item.views || "100K+"} views · ${item.category || "Moment"}`}
+                  subtitle={`${item.city || "Bengaluru"} moment`}
                   title={item.title}
                 />
               </StaggerItem>
@@ -176,27 +174,32 @@ export function HomeExperience() {
       <VisualStoriesSection />
       <MarketSection />
       <InquiryFunnel />
+    <SocialVideos />
+      <BlogPreviewSection />
     </PageShell>
   );
 }
 
-function OwnedChannelsSection() {
+async function OwnedChannelsSection() {
+  const { ivaImages } = await getSiteContent();
+  const copy = await getPageCopy("OwnedChannelsSection");
+
   const channels = [
     {
-      title: "Read Iva's Notes",
-      text: "Cafe rituals, city edits, stay stories, and the longer thoughts behind the moments she shares.",
+      title: copy("t_e25d22e0af"),
+      text: copy("t_030ab39ad7"),
       href: "/blog",
       image: ivaImages.hiltonChef,
-      cta: "Open Blog",
+      cta: copy("t_8b561eb6b1"),
       icon: BookOpen,
       imageClassName: "object-cover object-[50%_50%]",
     },
     {
-      title: "Shop Iva's Shelf",
-      text: "Beauty, travel, cafe-day, creator, and home finds curated from Iva's everyday world.",
+      title: copy("t_743c99ed5f"),
+      text: copy("t_a114849966"),
       href: "/shop",
       image: ivaImages.fineDining,
-      cta: "Open Shop",
+      cta: copy("t_3995565d8b"),
       icon: ShoppingBag,
       imageClassName: "object-cover object-[50%_42%]",
     },
@@ -207,9 +210,9 @@ function OwnedChannelsSection() {
       <Container>
         <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
           <SectionHeader
-            eyebrow="Iva's World"
-            title="Read the mood. Shop the details."
-            description="Two easy ways to stay inside Iva's world: longer notes for plans worth saving, and product shelves for the small things followers ask about."
+            eyebrow={copy("t_5f6f062ece")}
+            title={copy("t_2496942ac9")}
+            description={copy("t_f96a7fac03")}
           />
           <Stagger className="grid gap-5 md:grid-cols-2">
             {channels.map(({ title, text, href, image, cta, icon: Icon, imageClassName }) => (
@@ -253,16 +256,21 @@ function OwnedChannelsSection() {
   );
 }
 
-export function BrandTrustCarousel() {
+export async function BrandTrustCarousel() {
+  const copy = await getPageCopy("BrandTrustCarousel");
+
+
+
+  const trustedBrands = await getTrustedBrands();
   return (
     <section className="bg-[var(--surface-muted)]/70 py-[var(--spacing-editorial-section)] text-[var(--text-strong)]">
       <Container>
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between select-none">
           <div>
             <SectionHeader
-              eyebrow="Trusted By"
-              title="Brands that choose Iva for authentic reach."
-              description="A growing collaboration footprint across beauty, food, travel, lifestyle, hospitality, salons, fashion events, and Bengaluru weekend culture."
+              eyebrow={copy("t_5f8e03e379")}
+              title={copy("t_fe8b1a5217")}
+              description={copy("t_9e5d4c9a8b")}
             />
           </div>
         </div>
@@ -283,7 +291,7 @@ export function BrandTrustCarousel() {
                       <div className="grid h-16 w-16 place-items-center rounded-3xl bg-[var(--gold)]/15 text-[var(--gold)] font-semibold uppercase tracking-[0.22em] shadow-[0_10px_40px_rgba(0,0,0,0.12)]">
                         {brand.name
                           .split(" ")
-                          .map((word) => word[0])
+                          .map((word: string) => word[0])
                           .join("")
                           .slice(0, 2)}
                       </div>
@@ -312,13 +320,19 @@ export function BrandTrustCarousel() {
   );
 }
 
-export function VisualStoriesSection() {
-  const featureStory = visualStories[1];
+export async function VisualStoriesSection() {
+  const copy = await getPageCopy("VisualStoriesSection");
+
+
+
+  const instagramProfile = await getCreatorProfile();
+  const visualStories = await getVisualStories();
+  const featureStory = visualStories[1] || visualStories[0];
   const worldSignals = [
-    { label: "Instagram-first", value: "Saveable", icon: Camera },
-    { label: "Personal taste", value: "Iva’s lens", icon: Sparkles },
+    { label: copy("t_140ff85fa3"), value: copy("t_3d88c5a1b3"), icon: Camera },
+    { label: copy("t_77874a8787"), value: copy("t_6a1247402d"), icon: Sparkles },
     {
-      label: "Creator reach",
+      label: copy("t_0671664bed"),
       value: `${instagramProfile.followers} IG`,
       icon: TrendingUp,
     },
@@ -330,9 +344,9 @@ export function VisualStoriesSection() {
         <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-end lg:gap-14">
           <div>
             <SectionHeader
-              eyebrow="Iva’s World"
-              title="A moodboard of places, outfits, and nights out."
-              description="A visual archive of the moods her audience remembers: arrival light, dressed-up details, table stories, and city nights."
+              eyebrow={copy("t_dda21e039a")}
+              title={copy("t_9d33b6506a")}
+              description={copy("t_6477798d8a")}
             />
           </div>
           <Reveal className="grid gap-3 sm:grid-cols-3">
@@ -365,9 +379,7 @@ export function VisualStoriesSection() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 z-10 p-6 md:p-8">
-            <Badge className="h-7 rounded-full bg-[var(--gold)] px-3 text-[11px] uppercase tracking-[0.16em] text-[var(--matte)]">
-              Current Mood
-            </Badge>
+            <Badge className="h-7 rounded-full bg-[var(--gold)] px-3 text-[11px] uppercase tracking-[0.16em] text-[var(--matte)]">{copy("t_898d1311dd")}</Badge>
             <h3 className="mt-5 max-w-md font-serif text-5xl font-medium leading-[0.95] text-stone-50">
               {featureStory.title}
             </h3>
@@ -425,14 +437,19 @@ export function VisualStoriesSection() {
   );
 }
 
-export function MarketSection() {
+export async function MarketSection() {
+  const copy = await getPageCopy("MarketSection");
+
+
+
+  const markets = await getMarkets();
   return (
     <section className="bg-[var(--surface)] py-[var(--spacing-editorial-section)]">
       <Container>
         <SectionHeader
-          eyebrow="Where The Mood Travels"
-          title="Bengaluru first, with selective escapes."
-          description="A simple map of the cities and stays that naturally fit Iva’s visual world."
+          eyebrow={copy("t_0a43d11f79")}
+          title={copy("t_abd95a9b32")}
+          description={copy("t_53eb10e620")}
         />
         <Stagger className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {markets.map((market) => (
@@ -452,14 +469,18 @@ export function MarketSection() {
   );
 }
 
-export function PillarsSection() {
+export async function PillarsSection() {
+  const copy = await getPageCopy("PillarsSection");
+
+  const { experiencePillars } = await getSiteContent();
+
   return (
     <section className="py-[var(--spacing-editorial-section)]">
       <Container>
         <SectionHeader
-          eyebrow="What Iva Shares"
-          title="The rituals her audience comes back for."
-          description="Cafés, stays, fashion, dining, and city culture shared as real moments, not generic recommendations."
+          eyebrow={copy("t_8df68e4b25")}
+          title={copy("t_4e8024665e")}
+          description={copy("t_06fc9672cd")}
         />
         <Stagger className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {experiencePillars.map((pillar) => (
@@ -476,7 +497,13 @@ export function PillarsSection() {
   );
 }
 
-export function BlogPreviewSection() {
+export async function BlogPreviewSection() {
+  const copy = await getPageCopy("BlogPreviewSection");
+
+
+
+  const blogPosts = await getPublishedBlogPosts();
+  if (!blogPosts.length) return null;
   const featured = blogPosts[0];
   const secondary = blogPosts.slice(1, 4);
 
@@ -486,18 +513,16 @@ export function BlogPreviewSection() {
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end lg:gap-14">
           <div>
             <SectionHeader
-              eyebrow="Iva’s Notes"
-              title="Simple notes from beautiful days."
-              description="Short stories for cafés, stays, fashion, food, and the small rituals that make a day feel special."
+              eyebrow={copy("t_5a085d4d2d")}
+              title={copy("t_51f1bf8f85")}
+              description={copy("t_7b6feb6772")}
             />
           </div>
           <Reveal className="flex justify-start lg:justify-end">
             <Link
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-[var(--border-soft)] px-6 text-sm font-semibold text-[var(--text-strong)] transition hover:border-[var(--gold)] hover:bg-[var(--surface)]"
               href="/blog"
-            >
-              Read the Blog
-            </Link>
+            >{copy("t_e469ed1b1a")}</Link>
           </Reveal>
         </div>
 
@@ -518,7 +543,7 @@ export function BlogPreviewSection() {
               </div>
               <div className="p-5 md:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
-                  {featured.category} · {featured.readTime}
+                  {featured.category}{copy("t_d3dacf895c")}{featured.readTime}
                 </p>
                 <h3 className="mt-4 font-serif text-4xl leading-tight">
                   {featured.title}
@@ -548,7 +573,7 @@ export function BlogPreviewSection() {
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--gold)]">
-                      {story.category} · {story.readTime}
+                      {story.category}{copy("t_d3dacf895c")}{story.readTime}
                     </p>
                     <h3 className="mt-2 font-serif text-2xl leading-tight">
                       {story.title}
@@ -567,12 +592,16 @@ export function BlogPreviewSection() {
   );
 }
 
-export function AboutExperience() {
+export async function AboutExperience() {
+  const copy = await getPageCopy("AboutExperience");
+
+  const { creator, ivaImages } = await getSiteContent();
+
   return (
     <PageShell>
       <section className="relative overflow-hidden py-[var(--spacing-editorial-section)]">
         <Image
-          alt="Iva Chatterjee - Bengaluru based Bengali lifestyle creator in a saree"
+          alt={copy("t_0c17cc6bf4")}
           className="object-cover object-[42%_18%] opacity-45 scale-105 saturate-[0.9] md:opacity-60"
           fill
           priority
@@ -582,20 +611,10 @@ export function AboutExperience() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_8%,rgba(201,169,106,0.2),transparent_28%),linear-gradient(180deg,rgba(17,16,14,0.58),rgba(17,16,14,0.92)),linear-gradient(90deg,rgba(17,16,14,0.88),rgba(17,16,14,0.66),rgba(17,16,14,0.32))] md:bg-[radial-gradient(circle_at_16%_8%,rgba(201,169,106,0.2),transparent_28%),linear-gradient(180deg,rgba(17,16,14,0.32),rgba(17,16,14,0.9)),linear-gradient(90deg,rgba(17,16,14,0.94)_0%,rgba(17,16,14,0.76)_42%,rgba(17,16,14,0.18)_100%)]" />
         <Container className="relative grid gap-10 lg:grid-cols-[1fr_0.82fr] lg:items-end lg:gap-16">
           <Reveal className="max-w-4xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--gold)]">
-              About Iva
-            </p>
-            <h1 className="mt-5 max-w-5xl text-balance font-serif text-6xl font-medium leading-[0.88] text-[var(--text-strong)] sm:text-7xl md:text-8xl xl:text-[7.5rem]">
-              Iva Chatterjee, in her own light.
-            </h1>
-            <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)] md:text-lg md:leading-9">
-              A Bengaluru-based Bengali creator with a soft eye for style,
-              music, beautiful spaces, and small moments that feel cinematic
-              without trying too hard.
-            </p>
-            <p className="mt-8 max-w-xl border-l border-[var(--gold)]/55 pl-5 font-serif text-3xl italic leading-tight text-[var(--champagne)] md:text-4xl">
-              “Soft, expressive, and a little old-world at heart.”
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--gold)]">{copy("t_44e9f5e025")}</p>
+            <h1 className="mt-5 max-w-5xl text-balance font-serif text-6xl font-medium leading-[0.88] text-[var(--text-strong)] sm:text-7xl md:text-8xl xl:text-[7.5rem]">{copy("t_d3fcbade1c")}</h1>
+            <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)] md:text-lg md:leading-9">{copy("t_70ca4a1fb7")}</p>
+            <p className="mt-8 max-w-xl border-l border-[var(--gold)]/55 pl-5 font-serif text-3xl italic leading-tight text-[var(--champagne)] md:text-4xl">{copy("t_7d1f71c26a")}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-6 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)]"
@@ -603,18 +622,14 @@ export function AboutExperience() {
                 rel="noreferrer"
                 target="_blank"
               >
-                <AtSign className="size-4" />
-                Follow Instagram
-              </a>
+                <AtSign className="size-4" />{copy("t_23092a48ba")}</a>
               <a
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--gold)]/45 bg-[var(--gold)]/10 px-6 text-sm font-semibold text-[var(--text-strong)] transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--gold)] hover:text-[var(--matte)]"
                 href={creator.youtubeUrl}
                 rel="noreferrer"
                 target="_blank"
               >
-                <Play className="size-4" />
-                Watch YouTube
-              </a>
+                <Play className="size-4" />{copy("t_5344fc46d2")}</a>
             </div>
           </Reveal>
 
@@ -633,12 +648,8 @@ export function AboutExperience() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/5 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
-                    Bengaluru · Bengal
-                  </p>
-                  <p className="mt-2 font-serif text-3xl leading-none text-stone-50">
-                    Soft luxury, music, and city mood.
-                  </p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">{copy("t_cf1b964ef1")}</p>
+                  <p className="mt-2 font-serif text-3xl leading-none text-stone-50">{copy("t_e8c7e34210")}</p>
                 </div>
               </div>
             </div>
@@ -648,9 +659,9 @@ export function AboutExperience() {
         <Container className="relative mt-12">
           <Reveal className="grid gap-0 overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface-glass)] shadow-luxury-md backdrop-blur-md md:grid-cols-3">
             {[
-              { icon: MapPin, label: "Home town", value: "Bengaluru" },
-              { icon: Sparkles, label: "Roots", value: "Bengal · Bengali" },
-              { icon: Music, label: "Interest", value: "Singing" },
+              { icon: MapPin, label: copy("t_92f3c59ede"), value: copy("t_a19b5baeec") },
+              { icon: Sparkles, label: copy("t_4d78ec7d11"), value: copy("t_d68d5a3205") },
+              { icon: Music, label: copy("t_3a12015d49"), value: copy("t_0c97242665") },
             ].map(({ icon: Icon, label, value }) => (
               <div
                 key={label}
@@ -672,9 +683,9 @@ export function AboutExperience() {
       <section className="py-[var(--spacing-editorial-section)]">
         <Container className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start lg:gap-16">
           <SectionHeader
-            eyebrow="Who She Is"
-            title="Elegant, expressive, and quietly magnetic."
-            description="Iva’s world is built on personal taste: dressed-up evenings, soft glam, warm details, music, food, and the feeling of finding a place that matches your mood."
+            eyebrow={copy("t_0c9135a44c")}
+            title={copy("t_11d5547b8f")}
+            description={copy("t_055ea0b3b0")}
           />
           <div className="grid gap-6">
             {[
@@ -730,15 +741,19 @@ export function AboutExperience() {
   );
 }
 
-export function CollaborationExperience() {
+export async function CollaborationExperience() {
+  const copy = await getPageCopy("CollaborationExperience");
+
+  const { collaborationTypes } = await getSiteContent();
+
   return (
     <PageShell>
       <section className="py-[var(--spacing-editorial-section)]">
         <Container>
           <EditorialHeader
-            eyebrow="Collaborations"
-            title="For brands that belong in her world."
-            description="Iva works best with places and products that care about beauty, service, design, and the feeling people carry after the moment."
+            eyebrow={copy("t_afd29f87f9")}
+            title={copy("t_0da4cd4a25")}
+            description={copy("t_1f7a274201")}
           />
           <Stagger className="mt-10 grid gap-4 md:grid-cols-4">
             {collaborationTypes.map((type) => (
@@ -759,7 +774,7 @@ export function CollaborationExperience() {
   );
 }
 
-export function CityExperience({
+export async function CityExperience({
   name,
   role,
   positioning,
@@ -772,6 +787,10 @@ export function CityExperience({
   image: string;
   href: string;
 }) {
+  const copy = await getPageCopy("CityExperience");
+
+
+
   return (
     <PageShell>
       <section className="relative min-h-[78vh] overflow-hidden [--text-body:#ddd0bd] [--text-muted:#b8aa98] [--text-strong:#f8f1e6]">
@@ -795,9 +814,9 @@ export function CityExperience({
       <section className="py-[var(--spacing-editorial-section)]">
         <Container>
           <SectionHeader
-            eyebrow="How Iva Shares It"
-            title="The feeling comes before the post."
-            description="Iva looks for arrival, atmosphere, service, table details, wardrobe, and one honest reason a moment feels worth saving."
+            eyebrow={copy("t_f33cce830e")}
+            title={copy("t_189cffb51e")}
+            description={copy("t_f5a02c0017")}
           />
           <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
             {[
@@ -818,9 +837,7 @@ export function CityExperience({
           </Stagger>
           {href === "/bengaluru-guide" ? (
             <div className="mt-10">
-              <CTAButton href="/bengaluru-guide/indiranagar" variant="outline">
-                Explore Iva’s Indiranagar Evening
-              </CTAButton>
+              <CTAButton href="/bengaluru-guide/indiranagar" variant="outline">{copy("t_a30c758fc2")}</CTAButton>
             </div>
           ) : null}
         </Container>
@@ -830,47 +847,64 @@ export function CityExperience({
   );
 }
 
-export function MediaKitExperience() {
+export async function MediaKitExperience() {
+  const copy = await getPageCopy("MediaKitExperience");
+
+  const { creator, ivaImages } = await getSiteContent();
+  const mediaKit = await getFullMediaKit();
+
+  const profile = await getCreatorProfile();
+  const mediaKitData = await getMediaKitData();
+  const instaStats = await getInstagramStats();
+  const liveExperiences = await getPremiumExperiences();
+
+  const ageShare = (labels: string[]) => {
+    const rows = instaStats.demographicsAge.filter(item => labels.includes(item.label));
+    return rows.length === labels.length
+      ? `${Number(rows.reduce((sum, item) => sum + item.value, 0).toFixed(1))}%`
+      : "—";
+  };
+  const youthShare = ageShare(["13-17", "18-24"]);
+  const millennialShare = ageShare(["25-34"]);
   const mediaKitHighlights = [
-    ...mediaKit.insights.map((item, index) => ({
-      ...item,
-      icon: [TrendingUp, Sparkles, Camera][index] ?? TrendingUp,
-    })),
+    { label: copy("t_24be61285e"), value: instaStats.views, note: copy("t_cf1d6ff2b0"), icon: TrendingUp },
+    { label: copy("t_0b3583ecaa"), value: mediaKitData.interactions, note: copy("t_e8f73c0294"), icon: Sparkles },
+    { label: copy("t_834fdb728d"), value: mediaKitData.contentShared, note: copy("t_1284cbac37"), icon: Camera },
     {
-      label: "Bengaluru",
-      value: "1.3%",
-      note: "Home-city signal",
+      label: copy("t_a19b5baeec"),
+      value: copy("t_dead336b84"),
+      note: copy("t_6a5bb51183"),
       icon: MapPin,
     },
   ];
   const audienceHighlights = [
     {
-      label: "Instagram followers",
-      value: instagramProfile.followers,
-      note: "Current profile audience",
+      label: copy("t_56e8a809f0"),
+      value: instaStats.followers,
+      note: copy("t_946c80cb30"),
     },
     {
-      label: "Published posts",
-      value: instagramProfile.posts,
-      note: "Always-on creator library",
+      label: copy("t_9aab9918a9"),
+      value: instaStats.posts,
+      note: copy("t_42ff6f7603"),
     },
     {
-      label: "Youth-led audience",
-      value: "72.3%",
-      note: "13-24 combined audience",
+      label: copy("t_27f3fd585e"),
+      value: youthShare,
+      note: copy("t_f30c6ebe3b"),
     },
     {
-      label: "India core market",
-      value: "96.8%",
-      note: "Views audience by country",
+      label: copy("t_784944e3e9"),
+      value: copy("t_66394966b2"),
+      note: copy("t_490ea818ae"),
     },
     {
-      label: "Profile visits",
+      label: copy("t_8cd5cd4c74"),
       value: mediaKit.profileActivity[1].value,
       note: `${mediaKit.profileActivity[1].note} vs previous window`,
     },
     {
-      label: "Profile activity",
+      label: copy("t_f9a98c8737"),
       value: mediaKit.profileActivity[0].value,
       note: `${mediaKit.profileActivity[0].note} vs previous window`,
     },
@@ -882,7 +916,7 @@ export function MediaKitExperience() {
     <PageShell>
       <section className="relative overflow-hidden border-b border-[var(--border-soft)] bg-stone-950 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed]">
         <Image
-          alt="Iva Chatterjee media kit portrait"
+          alt={copy("t_56368cbd02")}
           className="object-cover object-[50%_18%] opacity-54 saturate-[0.92] md:object-[56%_24%] md:opacity-72"
           fill
           priority
@@ -893,17 +927,9 @@ export function MediaKitExperience() {
         <Container className="relative grid gap-7 pb-8 pt-20 sm:pt-24 md:min-h-[68vh] md:pb-10 md:pt-24 lg:grid-cols-[1fr_0.68fr] lg:items-end">
           <div>
             <Reveal className="max-w-4xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--gold)] sm:text-xs sm:tracking-[0.32em]">
-                Media Kit
-              </p>
-              <h1 className="mt-4 max-w-3xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] min-[380px]:text-6xl sm:text-7xl md:text-[5.9rem] xl:text-[6.7rem]">
-                A premium creator brand ready for the right partners.
-              </h1>
-              <p className="mt-5 max-w-lg text-sm leading-7 text-[var(--text-body)] sm:text-base sm:leading-8">
-                Iva turns beauty, food, travel, lifestyle, hotels, cafes, and
-                city experiences into moments people save, share, and remember.
-                Premium, but still personal.
-              </p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--gold)] sm:text-xs sm:tracking-[0.32em]">{copy("t_1665cce0dc")}</p>
+              <h1 className="mt-4 max-w-3xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] min-[380px]:text-6xl sm:text-7xl md:text-[5.9rem] xl:text-[6.7rem]">{copy("t_05b99559ce")}</h1>
+              <p className="mt-5 max-w-lg text-sm leading-7 text-[var(--text-body)] sm:text-base sm:leading-8">{copy("t_8643bf4693")}</p>
               <div className="mt-6 grid max-w-xl gap-2 sm:grid-cols-2">
                 {mediaKit.brandPromise.map((item) => (
                   <div
@@ -920,18 +946,14 @@ export function MediaKitExperience() {
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-5 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)] sm:px-6"
                 href={`mailto:${creator.email}?subject=Media%20Kit%20%26%20Collaboration%20Inquiry`}
               >
-                <Mail className="size-4" />
-                Request collaboration
-              </a>
+                <Mail className="size-4" />{copy("t_b06f45868f")}</a>
               <a
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-white hover:text-stone-950 sm:px-6"
                 href={creator.instagramUrl}
                 rel="noreferrer"
                 target="_blank"
               >
-                <AtSign className="size-4" />
-                Follow Instagram
-              </a>
+                <AtSign className="size-4" />{copy("t_23092a48ba")}</a>
             </Reveal>
           </div>
 
@@ -939,12 +961,10 @@ export function MediaKitExperience() {
             <div className="rounded-md border border-white/15 bg-black/38 p-4 shadow-luxury-lg backdrop-blur-xl sm:p-5">
               <div className="flex items-center gap-3">
                 <BadgeCheck className="size-5 text-[var(--gold)]" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--champagne)]">
-                  Last 30 days
-                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--champagne)]">{copy("t_6b32985251")}</p>
               </div>
               <p className="mt-3 text-sm leading-6 text-[var(--text-body)]">
-                {mediaKit.dashboardWindow} · {mediaKit.source}
+                {mediaKitData.dashboardWindow}{copy("t_d3dacf895c")}{mediaKit.source}
               </p>
               <div className="mt-5 grid gap-3">
                 {mediaKitHighlights.map(({ label, value, note, icon: Icon }) => (
@@ -976,18 +996,14 @@ export function MediaKitExperience() {
         <Container>
           <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <SectionHeader
-              eyebrow="Why Partner Now"
-              title="Iva makes a brand feel like a plan, not an ad."
-              description="The strongest opportunity is to enter early, while the brand still feels close, trusted, and selective. The numbers show momentum; the creative world gives that momentum a premium shape."
+              eyebrow={copy("t_25385dc976")}
+              title={copy("t_c810bc1b5b")}
+              description={copy("t_357621cd75")}
             />
             <div className="grid gap-4">
               <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
-                  Best current opportunity
-                </p>
-                <p className="mt-4 font-serif text-4xl leading-tight text-[var(--text-strong)] sm:text-5xl">
-                  Own a category in Iva’s world before it becomes crowded.
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">{copy("t_80fd33d856")}</p>
+                <p className="mt-4 font-serif text-4xl leading-tight text-[var(--text-strong)] sm:text-5xl">{copy("t_49006aac3a")}</p>
                 <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {audienceHighlights.map((stat) => (
                     <div
@@ -1033,26 +1049,22 @@ export function MediaKitExperience() {
           <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
             <div className="flex flex-col gap-2 border-b border-[var(--border-soft)] pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
-                  Instagram Followers
-                </p>
-                <h2 className="mt-3 font-serif text-4xl leading-tight text-[var(--text-strong)] sm:text-5xl">
-                  Age range
-                </h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">{copy("t_ee94d63272")}</p>
+                <h2 className="mt-3 font-serif text-4xl leading-tight text-[var(--text-strong)] sm:text-5xl">{copy("t_e7b749642e")}</h2>
               </div>
               <p className="text-sm leading-6 text-[var(--text-muted)]">
-                {mediaKit.reportingWindow}
+                {mediaKitData.reportingWindow}
               </p>
             </div>
             <div className="mt-6 space-y-5">
-              {mediaKit.audience.age.map((item) => (
+              {instaStats.demographicsAge.map((item) => (
                 <ProgressRow key={item.label} {...item} />
               ))}
             </div>
             <div className="mt-8 grid gap-3 border-t border-[var(--border-soft)] pt-5 sm:grid-cols-3">
               {[
-                ["13-24", "72.3%", "youth audience"],
-                ["25-34", "19.7%", "young millennials"],
+                ["13-24", youthShare, "youth audience"],
+                ["25-34", millennialShare, "young millennials"],
                 ["India", "96.8%", "country reach"],
               ].map(([label, value, note]) => (
                 <div key={label}>
@@ -1072,11 +1084,9 @@ export function MediaKitExperience() {
 
           <div className="grid gap-4">
             <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
-              <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">
-                Gender split
-              </h2>
+              <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">{copy("t_ef4098326d")}</h2>
               <div className="mt-6 space-y-5">
-                {mediaKit.audience.gender.map((item) => (
+                {instaStats.demographicsGender.map((item) => (
                   <ProgressRow key={item.label} {...item} />
                 ))}
               </div>
@@ -1084,15 +1094,9 @@ export function MediaKitExperience() {
             <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
               <div className="flex items-center gap-3">
                 <MapPin className="size-4 text-[var(--gold)]" />
-                <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">
-                  City pull
-                </h2>
+                <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">{copy("t_b80b5b6190")}</h2>
               </div>
-              <p className="mt-3 text-sm leading-7 text-[var(--text-body)]">
-                Bengaluru is the home-city story. Delhi, Kolkata, and Mumbai
-                add useful premium-market spread for hospitality, fashion,
-                beauty, and food campaigns.
-              </p>
+              <p className="mt-3 text-sm leading-7 text-[var(--text-body)]">{copy("t_a92972747f")}</p>
               <div className="mt-6 grid gap-2">
                 {mediaKit.audience.topCities.map((item) => (
                   <div
@@ -1103,16 +1107,13 @@ export function MediaKitExperience() {
                       {item.label}
                     </p>
                     <p className="rounded-full border border-[var(--gold)]/35 bg-[var(--gold)]/10 px-3 py-1 text-xs font-semibold text-[var(--gold)]">
-                      {item.value.toFixed(1)}%
-                    </p>
+                      {item.value.toFixed(1)}{copy("t_4345cb1fa2")}</p>
                   </div>
                 ))}
               </div>
             </Reveal>
             <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm sm:p-6">
-              <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">
-                Country reach
-              </h2>
+              <h2 className="font-serif text-4xl leading-tight text-[var(--text-strong)]">{copy("t_113745ec99")}</h2>
               <div className="mt-6 space-y-5">
                 {mediaKit.audience.topCountries.map((item) => (
                   <ProgressRow key={item.label} {...item} />
@@ -1127,9 +1128,9 @@ export function MediaKitExperience() {
         <Container>
           <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
             <SectionHeader
-              eyebrow="Partnership System"
-              title="A clear offer, without making the work feel like an ad."
-              description="A brand gets three clear answers fast: what Iva can make desirable, where she fits, and what the collaboration can include."
+              eyebrow={copy("t_15bc2856b9")}
+              title={copy("t_88b1f9379f")}
+              description={copy("t_886760229f")}
             />
             <div className="grid gap-4">
               <Stagger className="grid gap-3">
@@ -1154,9 +1155,7 @@ export function MediaKitExperience() {
               </Stagger>
 
               <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
-                  Best-fit categories
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">{copy("t_35aafe517f")}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {brandFit.map((item) => (
                     <span
@@ -1171,11 +1170,9 @@ export function MediaKitExperience() {
               </Reveal>
 
               <Reveal className="rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 shadow-luxury-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">
-                  Instagram highlight proof
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--gold)]">{copy("t_613dca9deb")}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  {mediaKit.collaborationHighlights.map((item) => (
+                  {profile.collaborationHighlights.map((item) => (
                     <span
                       className="rounded-full border border-[var(--border-soft)] bg-[var(--surface-muted)]/50 px-4 py-2 text-sm leading-6 text-[var(--text-body)]"
                       key={item}
@@ -1209,34 +1206,38 @@ export function MediaKitExperience() {
       <section className="py-12 sm:py-16">
         <Container>
           <SectionHeader
-            eyebrow="Loved Content"
-            title="Proof that the right mood can travel."
-            description="The latest performance examples show why Iva is useful for brands: fashion retail, rooftops, staycations, and visual experiences can all become watchable."
+            eyebrow={copy("t_0fbac7e502")}
+            title={copy("t_c35d4e50e3")}
+            description={copy("t_5c2581335e")}
           />
           <Stagger className="mt-8 grid gap-4 md:grid-cols-3">
-            {mediaKit.performanceProof.map((item) => (
+            {liveExperiences.map((item) => (
               <StaggerItem key={item.title}>
-                <article className="group relative min-h-[430px] overflow-hidden rounded-md border border-[var(--border-soft)] bg-stone-950 shadow-luxury-lg sm:min-h-[470px]">
+                <a
+                  href={item.href || "#"}
+                  target={item.href?.startsWith("http") ? "_blank" : undefined}
+                  rel="noreferrer"
+                  className="group block relative min-h-[430px] overflow-hidden rounded-md border border-[var(--border-soft)] bg-stone-950 shadow-luxury-lg sm:min-h-[470px] transition duration-500 ease-luxury hover:-translate-y-1 hover:border-[var(--gold)]/50"
+                >
                   <Image
                     alt={item.title}
                     className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.025]"
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
-                    src={item.image}
+                    src={item.image || ivaImages.heritageSaree}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md">
-                    {item.value} views
-                  </div>
+                    {item.views || "100K+"}{copy("t_81f3318714")}</div>
                   <div className="absolute inset-x-0 bottom-0 p-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
-                      {item.note}
+                      {item.category || "Featured Moment"}
                     </p>
                     <h3 className="mt-3 font-serif text-4xl leading-tight text-white">
                       {item.title}
                     </h3>
                   </div>
-                </article>
+                </a>
               </StaggerItem>
             ))}
           </Stagger>
@@ -1245,12 +1246,8 @@ export function MediaKitExperience() {
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-6 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)]"
               href={`mailto:${creator.email}?subject=Media%20Kit%20%26%20Collaboration%20Inquiry`}
             >
-              <Mail className="size-4" />
-              Email the team
-            </a>
-            <CTAButton href="/contact" variant="outline">
-              Start a brief
-            </CTAButton>
+              <Mail className="size-4" />{copy("t_56839cc7e7")}</a>
+            <CTAButton href="/contact" variant="outline">{copy("t_c0b8400213")}</CTAButton>
           </Reveal>
         </Container>
       </section>
@@ -1258,14 +1255,19 @@ export function MediaKitExperience() {
   );
 }
 
-export function LinksExperience() {
+export async function LinksExperience() {
+  const copy = await getPageCopy("LinksExperience");
+
+  const { creator } = await getSiteContent();
+
+  const profile = await getCreatorProfile();
   return (
     <PageShell>
       <section className="mx-auto flex min-h-[88vh] max-w-md flex-col px-5 py-12 text-center">
         <Reveal>
           <div className="relative mx-auto size-32 overflow-hidden rounded-full border border-[var(--gold)]/60">
             <Image
-              alt={creator.name}
+              alt={profile.displayName}
               className="object-cover"
               fill
               priority
@@ -1274,16 +1276,22 @@ export function LinksExperience() {
             />
           </div>
           <h1 className="mt-6 font-serif text-4xl text-[var(--text-strong)]">
-            {creator.name}
+            {profile.displayName}
           </h1>
-          <p className="mt-2 text-sm text-[var(--text-muted)]">{creator.handle}</p>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">{copy("t_9a78211436")}{profile.username}</p>
           <p className="mx-auto mt-5 max-w-xs text-sm leading-7 text-[var(--text-body)]">
-            Soft luxury, city nights, cafés, stays, and fashion moments from Bengaluru.
+            {profile.profileLine}
           </p>
+          <p className="mt-3 text-sm text-[var(--text-muted)]">{profile.category}{copy("t_d3dacf895c")}{profile.location}{copy("t_d3dacf895c")}{profile.identity}</p>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">{copy("t_9e97b5ba8a")}{profile.birthday}</p>
+          <p className="mt-3 text-sm text-[var(--text-body)]">{profile.followers}{copy("t_1adcafca7e")}{profile.following}{copy("t_ceb51335b5")}{profile.posts}{copy("t_7ddf0bf3ac")}</p>
+          <p className="mt-3 text-sm text-[var(--text-body)]">{profile.collaborationCta}</p>
         </Reveal>
         <div className="mt-8 grid gap-3">
           {[
-            ["Instagram", creator.instagramUrl],
+            ["Instagram", profile.instagramUrl],
+            ["Threads", `https://www.threads.net/@${profile.threadsHandle.replace(/^@/, "")}`],
+            ...profile.links.map(link => [link.label, link.href]),
             ["YouTube: Maniva", creator.youtubeUrl],
             ["Shop Iva's Products", "/shop"],
             ["Work With Iva", "/contact"],
@@ -1300,20 +1308,39 @@ export function LinksExperience() {
             </Link>
           ))}
         </div>
+        {profile.collaborationHighlights.length > 0 && <div className="mt-8">
+          <h2 className="font-serif text-2xl">{copy("t_84158b0456")}</h2>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {profile.collaborationHighlights.map(highlight => <span key={highlight} className="rounded-full border border-[var(--border-soft)] px-3 py-2 text-sm">{highlight}</span>)}
+          </div>
+        </div>}
+        {profile.featuredReels.length > 0 && <div className="mt-8 text-left">
+          <h2 className="font-serif text-2xl">{copy("t_37a2ef239f")}</h2>
+          {profile.featuredReels.map(reel => <article key={reel._key} className="mt-4 rounded-md border border-[var(--border-soft)] p-4">
+            <h3 className="font-semibold">{reel.href ? <a href={reel.href}>{reel.title}</a> : reel.title}</h3>
+            {reel.description && <p className="mt-2 text-sm text-[var(--text-muted)]">{reel.description}</p>}
+          </article>)}
+        </div>}
       </section>
+      <SocialVideos />
     </PageShell>
   );
 }
 
-export function EditorialExperience() {
+export async function EditorialExperience() {
+  const copy = await getPageCopy("EditorialExperience");
+
+
+
+  const blogPosts = await getPublishedBlogPosts();
   return (
     <PageShell>
       <section className="py-[var(--spacing-editorial-section)]">
         <Container>
           <EditorialHeader
-            eyebrow="Iva’s Notes"
-            title="Stories from Iva’s world."
-            description="City notes, café picks, stay stories, and small moments written in a personal voice."
+            eyebrow={copy("t_5a085d4d2d")}
+            title={copy("t_792388ff63")}
+            description={copy("t_bec73e4ee4")}
           />
           <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
             {blogPosts.map((story) => (
@@ -1334,15 +1361,20 @@ export function EditorialExperience() {
   );
 }
 
-export function PremiumExperiences() {
+export async function PremiumExperiences() {
+  const copy = await getPageCopy("PremiumExperiences");
+
+
+
+  const markets = await getMarkets();
   return (
     <PageShell>
       <section className="py-[var(--spacing-editorial-section)]">
         <Container>
           <EditorialHeader
-            eyebrow="Iva’s Picks"
-            title="Beautiful places worth saving."
-            description="Cafés, rooftops, boutique stays, couple plans, and slower travel stories Iva would actually share."
+            eyebrow={copy("t_2bfc3d55dd")}
+            title={copy("t_25da6d7f9a")}
+            description={copy("t_4ec648295d")}
           />
           <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
             {markets.map((market) => (
@@ -1364,11 +1396,15 @@ export function PremiumExperiences() {
   );
 }
 
-export function ContactExperience() {
+export async function ContactExperience() {
+  const copy = await getPageCopy("ContactExperience");
+
+  const { creator, ivaImages } = await getSiteContent();
+
   const contactSignals = [
-    { label: "Based in", value: "Bengaluru", note: "Open to travel stories" },
-    { label: "Best for", value: "Paid collabs", note: "Places, stays, beauty, fashion" },
-    { label: "Reach us", value: "Email", note: "Briefs, dates, and budgets" },
+    { label: copy("t_0de20918c6"), value: copy("t_a19b5baeec"), note: copy("t_eeca18df8b") },
+    { label: copy("t_6d7ae87f78"), value: copy("t_cfd2e47bd1"), note: copy("t_246b83edd1") },
+    { label: copy("t_086f6a10b6"), value: copy("t_84add5b295"), note: copy("t_1344f4e23e") },
   ];
   const partnershipFit = [
     "A stay that feels warm, pretty, and worth saving",
@@ -1379,18 +1415,18 @@ export function ContactExperience() {
   const process = [
     {
       step: "01",
-      title: "Send the plan",
-      text: "Tell us the place, product, date, city, budget, and what you want people to feel.",
+      title: copy("t_0f23a6177f"),
+      text: copy("t_0827af39df"),
     },
     {
       step: "02",
-      title: "We check the fit",
-      text: "If it feels natural for Iva’s audience, we shape the content direction and deliverables.",
+      title: copy("t_f7b1b7d52a"),
+      text: copy("t_a766db6d4c"),
     },
     {
       step: "03",
-      title: "Iva shares it her way",
-      text: "The final story stays soft, useful, and personal. It should feel like a recommendation, not a hard sell.",
+      title: copy("t_73c483ef5b"),
+      text: copy("t_1856c10173"),
     },
   ];
 
@@ -1398,7 +1434,7 @@ export function ContactExperience() {
     <PageShell>
       <section className="relative overflow-visible border-b border-[var(--border-soft)] bg-stone-950 [--border-soft:rgba(255,255,255,0.14)] [--surface:rgba(255,255,255,0.08)] [--text-body:#eadfce] [--text-muted:#c9b89f] [--text-strong:#fff7ed] md:overflow-hidden">
         <Image
-          alt="Iva Chatterjee luxury collaboration contact"
+          alt={copy("t_558073d1cd")}
           className="object-cover object-[56%_18%] opacity-62 saturate-[0.9] sm:object-[52%_28%] md:opacity-70"
           fill
           priority
@@ -1409,31 +1445,20 @@ export function ContactExperience() {
         <Container className="relative grid gap-8 pb-8 pt-20 sm:pb-10 sm:pt-24 md:min-h-[calc(100svh-4rem)] md:pb-16 md:pt-28 lg:grid-cols-[1fr_0.78fr] lg:items-end">
           <div className="max-w-5xl">
             <Reveal>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[var(--gold)] sm:text-xs sm:tracking-[0.32em]">
-                Partnerships
-              </p>
-              <h1 className="mt-4 max-w-5xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] min-[380px]:text-6xl sm:mt-5 sm:text-7xl md:text-8xl xl:text-[8rem]">
-                Let your brand enter Iva’s world.
-              </h1>
-              <p className="mt-5 max-w-2xl text-pretty text-sm leading-7 text-[var(--text-body)] sm:text-base sm:leading-8 md:mt-7 md:text-lg md:leading-9">
-                For paid collaborations with places, products, and experiences
-                Iva can share with warmth, taste, and honesty.
-              </p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[var(--gold)] sm:text-xs sm:tracking-[0.32em]">{copy("t_7b0a0d109b")}</p>
+              <h1 className="mt-4 max-w-5xl text-balance font-serif text-5xl font-medium leading-[0.9] text-[var(--text-strong)] min-[380px]:text-6xl sm:mt-5 sm:text-7xl md:text-8xl xl:text-[8rem]">{copy("t_5873a0c2c8")}</h1>
+              <p className="mt-5 max-w-2xl text-pretty text-sm leading-7 text-[var(--text-body)] sm:text-base sm:leading-8 md:mt-7 md:text-lg md:leading-9">{copy("t_d89c21e36e")}</p>
             </Reveal>
             <Reveal delay={0.08} className="mt-6 grid gap-3 sm:mt-8 sm:flex sm:flex-row">
               <a
                 className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--gold)]/70 bg-[var(--gold)] px-5 text-sm font-semibold text-[var(--matte)] shadow-gold-glow transition duration-500 ease-luxury hover:-translate-y-0.5 hover:bg-[var(--text-strong)] hover:text-[var(--page)] sm:w-auto sm:px-6"
                 href={`mailto:${creator.email}?subject=Paid%20Collaboration%20Inquiry%20for%20Iva`}
               >
-                <Mail className="size-4" />
-                Email the team
-              </a>
+                <Mail className="size-4" />{copy("t_56839cc7e7")}</a>
               <Link
                 className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-md transition duration-500 ease-luxury hover:-translate-y-0.5 hover:border-white/40 hover:bg-white hover:text-stone-950 sm:w-auto sm:px-6"
                 href="/media-kit"
-              >
-                View media kit
-                <ArrowRight className="size-4" />
+              >{copy("t_3927d523f6")}<ArrowRight className="size-4" />
               </Link>
             </Reveal>
           </div>
@@ -1442,9 +1467,7 @@ export function ContactExperience() {
             <div className="rounded-md border border-white/15 bg-black/38 p-4 shadow-luxury-lg backdrop-blur-xl sm:p-5 md:p-6">
               <div className="flex items-center gap-3">
                 <BadgeCheck className="size-5 text-[var(--gold)]" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--champagne)] sm:text-sm sm:tracking-[0.18em]">
-                  Collaboration desk
-                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--champagne)] sm:text-sm sm:tracking-[0.18em]">{copy("t_f08b783f0b")}</p>
               </div>
               <a
                 className="mt-5 block max-w-full break-all font-serif text-2xl leading-tight text-white transition hover:text-[var(--champagne)] min-[380px]:text-[1.75rem] sm:break-words sm:text-4xl sm:[overflow-wrap:anywhere]"
@@ -1452,10 +1475,7 @@ export function ContactExperience() {
               >
                 {creator.email}
               </a>
-              <p className="mt-4 text-sm leading-7 text-[var(--text-body)]">
-                Send the brief, date, city, deliverables, and budget range.
-                We will reply if it feels like the right fit.
-              </p>
+              <p className="mt-4 text-sm leading-7 text-[var(--text-body)]">{copy("t_37eac9ad95")}</p>
               <div className="mt-5 grid gap-3">
                 {contactSignals.map((signal) => (
                   <div
@@ -1484,9 +1504,9 @@ export function ContactExperience() {
       <section className="py-14 sm:py-[var(--spacing-editorial-breath)]">
         <Container className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-14">
           <SectionHeader
-            eyebrow="Best Fit"
-            title="The kind of work Iva says yes to."
-            description="The best collaborations feel easy to believe: a beautiful place, a thoughtful product, or a plan her audience would genuinely want to save."
+            eyebrow={copy("t_77c5086b3d")}
+            title={copy("t_48714c23ba")}
+            description={copy("t_5f6bda8a63")}
           />
           <Stagger className="grid gap-4 sm:grid-cols-2">
             {partnershipFit.map((item) => (
@@ -1508,13 +1528,10 @@ export function ContactExperience() {
         <Container>
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
             <SectionHeader
-              eyebrow="Collaboration Flow"
-              title="Simple, clear, and still personal."
+              eyebrow={copy("t_3e1fdb1ee3")}
+              title={copy("t_b402ffea14")}
             />
-            <Reveal className="max-w-xl text-sm leading-7 text-[var(--text-body)] lg:justify-self-end">
-              A good brief helps us move faster. The final content should still
-              feel like Iva found something worth sharing.
-            </Reveal>
+            <Reveal className="max-w-xl text-sm leading-7 text-[var(--text-body)] lg:justify-self-end">{copy("t_1648af1728")}</Reveal>
           </div>
           <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
             {process.map((item) => (
@@ -1542,7 +1559,12 @@ export function ContactExperience() {
   );
 }
 
-export function EditorialArticle({ slug }: { slug: string }) {
+export async function EditorialArticle({ slug }: { slug: string }) {
+  const { editorial } = await getSiteContent();
+  const copy = await getPageCopy("EditorialArticle");
+
+
+
   const story = editorial.find((item) => item.slug === slug) ?? editorial[0];
 
   return (
@@ -1567,9 +1589,9 @@ export function EditorialArticle({ slug }: { slug: string }) {
           <Reveal className="mt-10 space-y-6 text-lg leading-9 text-[var(--text-body)]">
             <div className="flex flex-wrap gap-3 border-y border-[var(--border-soft)] py-5 text-sm text-[var(--text-muted)]">
               <span>{story.date}</span>
-              <span>·</span>
+              <span>{copy("t_1fdf0d90c3")}</span>
               <span>{story.readTime}</span>
-              <span>·</span>
+              <span>{copy("t_1fdf0d90c3")}</span>
               <span>{story.category}</span>
             </div>
             {story.body.map((section) => (

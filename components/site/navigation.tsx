@@ -1,4 +1,6 @@
 "use client";
+import { usePageCopy } from "./content-provider";
+
 
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -7,17 +9,20 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { creator, navItems } from "@/lib/brand-data";
+import { useSiteContent } from "./content-provider";
 import { cn } from "@/lib/utils";
 
 export function Navigation() {
+  const copy = usePageCopy("Navigation");
+
+  const { creator, navItems } = useSiteContent();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   const allItems = [
-    { label: "Home", href: "/" },
+    { label: copy("t_70f8bb9a8a"), href: "/" },
     ...navItems,
-    { label: "Links", href: "/links" },
+    { label: copy("t_014bcd654c"), href: "/links" },
   ];
 
   return (
@@ -62,10 +67,10 @@ export function Navigation() {
             asChild
             className="hidden h-10 rounded-full bg-[var(--text-strong)] px-5 text-sm font-semibold text-[var(--page)] transition duration-300 ease-luxury hover:bg-[var(--gold)] hover:text-[var(--matte)] md:inline-flex"
           >
-            <Link href="/contact">Partnership Inquiry</Link>
+            <Link href="/contact">{copy("t_3de89347c3")}</Link>
           </Button>
           <Button
-            aria-label="Open menu"
+            aria-label={copy("t_197101e9db")}
             className="size-10 rounded-full border-[var(--border-soft)] bg-[var(--surface)] text-[var(--text-strong)] hover:bg-[var(--surface-muted)] lg:hidden"
             size="icon"
             variant="outline"
@@ -96,13 +101,11 @@ export function Navigation() {
               </span>
               <span>
                 <span className="block text-sm font-semibold">{creator.name}</span>
-                <span className="block text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
-                  Soft Luxury
-                </span>
+                <span className="block text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">{copy("t_6d343a0b96")}</span>
               </span>
             </Link>
             <Button
-              aria-label="Close menu"
+              aria-label={copy("t_6c9fc99089")}
               className="size-10 rounded-full"
               size="icon"
               type="button"
@@ -115,7 +118,7 @@ export function Navigation() {
 
           <div className="relative mt-6 aspect-[16/10] overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface)] shadow-luxury-md">
             <Image
-              alt="Iva Chatterjee at a rooftop experience"
+              alt={copy("t_012cb6080f")}
               className="object-cover object-[50%_30%]"
               fill
               sizes="100vw"
@@ -123,12 +126,8 @@ export function Navigation() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
-                Iva’s world
-              </p>
-              <p className="mt-2 font-serif text-3xl leading-none text-stone-50">
-                Cafés, rooftops, stays, and city nights.
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">{copy("t_754bc784d5")}</p>
+              <p className="mt-2 font-serif text-3xl leading-none text-stone-50">{copy("t_530e19f3b3")}</p>
             </div>
           </div>
 
@@ -150,16 +149,12 @@ export function Navigation() {
           </div>
 
           <div className="mt-5 rounded-md border border-[var(--border-soft)] bg-[var(--surface)] p-5 text-[var(--text-strong)] shadow-luxury-md">
-            <p className="font-serif text-3xl leading-tight">
-              Make the experience feel worth saving.
-            </p>
+            <p className="font-serif text-3xl leading-tight">{copy("t_83ac76c38e")}</p>
             <Button
               asChild
               className="mt-5 h-12 w-full rounded-full bg-[var(--gold)] text-[var(--matte)] hover:bg-[var(--ivory)]"
             >
-              <Link href="/contact" onClick={() => setOpen(false)}>
-                Start Inquiry
-              </Link>
+              <Link href="/contact" onClick={() => setOpen(false)}>{copy("t_c6304526cf")}</Link>
             </Button>
           </div>
         </div>

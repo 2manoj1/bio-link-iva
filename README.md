@@ -69,3 +69,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Launch and CMS operations
+
+See [CMS operations](scripts/sanity/README.md) for editing, validation, backups, recovery, and production configuration. Copy `.env.example` for the required variable names. Admin editing uses Sanity login at `/studio`; `/admin` redirects there.
+
+Run `pnpm check` before deployment. AI generation also requires the shared Redis quota store documented above. The contact form keeps its WhatsApp handoff and does not store inquiries.
