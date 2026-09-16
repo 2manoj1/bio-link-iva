@@ -9,7 +9,9 @@ import {
 } from "@/components/site/site-chrome";
 import { JsonLd } from "@/components/site/json-ld";
 import { Analytics } from "@vercel/analytics/react";
-import { siteUrl } from "@/lib/brand-data";
+import { creatorStructuredData } from '@/lib/creator-discovery';
+import { getPageMetadata } from '@/lib/page-metadata';
+export async function generateMetadata() { return getPageMetadata('/', {}); }
 export default async function PublicLayout({
   children,
 }: Readonly<{
@@ -29,58 +31,7 @@ export default async function PublicLayout({
   );
   return (
     <>
-      <JsonLd
-        data={[
-          {
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: creator.name,
-            alternateName: creator.handle,
-            url: siteUrl,
-            image: new URL(creator.profileImage, siteUrl).href,
-            description: creator.description,
-            jobTitle: "Bangalore Influencer and Digital Creator",
-            knowsAbout: [
-              "Beauty",
-              "Food",
-              "Travel",
-              "Lifestyle",
-              "Fine Dining",
-              "Fashion",
-              "Bangalore Culture",
-              "Boutique Hospitality",
-              "Creator Marketing",
-              "Influencer Marketing",
-              "Brand Collaborations",
-              "Social Media Content",
-              "Hospitality Campaigns",
-            ],
-            address: {
-              "@type": "PostalAddress",
-              addressLocality: "Bengaluru",
-              addressRegion: "Karnataka",
-              addressCountry: "IN",
-            },
-            sameAs: [
-              creator.instagramUrl,
-              creator.youtubeUrl,
-              creator.facebookPageUrl,
-              creator.websiteUrl,
-            ],
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Iva Chatterjee",
-            url: siteUrl,
-            description: creator.description,
-            publisher: {
-              "@type": "Person",
-              name: creator.name,
-            },
-          },
-        ]}
-      />
+      <JsonLd data={creatorStructuredData(creator)} />
       <ContentProvider
         value={{
           creator,

@@ -1172,24 +1172,12 @@ export function makeMetadata({
   keywords?: string[];
   image?: string;
 }): Metadata {
-  const fullTitle = `${title} | ${creator.name}`;
+  const fullTitle = title;
 
   return {
     title: fullTitle,
     description,
-    keywords: [
-      "Iva Chatterjee",
-      "Luxury Lifestyle Creator",
-      "Bengaluru Luxury Creator",
-      "High-end Lifestyle Influencer",
-      "Premium Brand Collaborations",
-      "Luxury Beauty Creator",
-      "Boutique Hospitality Influencer",
-      ...keywords,
-    ],
-    authors: [{ name: creator.name }],
-    creator: creator.name,
-    metadataBase: new URL(siteUrl),
+    keywords,
     alternates: {
       canonical: path,
     },
@@ -1197,7 +1185,6 @@ export function makeMetadata({
       title: fullTitle,
       description,
       url: path,
-      siteName: creator.name,
       type: "website",
       locale: "en_IN",
       images: [
@@ -1213,7 +1200,6 @@ export function makeMetadata({
       card: "summary_large_image",
       title: fullTitle,
       description,
-      creator: creator.handle,
       images: [image],
     },
     robots: {

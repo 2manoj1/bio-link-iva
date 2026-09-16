@@ -1,3 +1,6 @@
+import { getCreatorIdentity } from "@/lib/creator-identity";
+import { canonicalUrl } from "@/lib/creator-discovery";
+import { JsonLd } from "@/components/site/json-ld";
 import { getPageMetadata } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 
@@ -19,8 +22,10 @@ const fallbackMetadata: Metadata = makeMetadata({
   ],
 });
 
-export default function HomePage() {
-  return <HomeExperience />;
+export default async function HomePage() {
+  const creator = await getCreatorIdentity();
+  const url = canonicalUrl(creator);
+  return <><JsonLd data={{"@context":"https://schema.org","@type":"WebPage","@id":`${url}#webpage`,url,name:creator.name,description:creator.description,about:{"@id":`${url}#person`},isPartOf:{"@id":`${url}#website`}}} /><HomeExperience /></>;
 }
 
 export async function generateMetadata(): Promise<Metadata> { return getPageMetadata("/", fallbackMetadata); }

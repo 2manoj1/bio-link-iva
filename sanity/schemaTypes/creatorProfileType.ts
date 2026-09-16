@@ -3,11 +3,17 @@ import { User as UserIcon } from 'lucide-react'
 
 export const creatorProfileType = defineType({
   name: 'creatorProfile',
-  title: 'Profile & Instagram Bio',
+  title: 'Creator identity & profiles',
   type: 'document',
   icon: UserIcon,
-  description: 'Edit the public profile on the Links page and highlights in the media kit. Audience counts live in Instagram Stats.',
+  description: 'The single source for website identity, SEO, structured data and llms.txt. Audience counts live in Social metrics.',
   fields: [
+    ...[['name', 'Name'], ['title', 'Professional title'], ['positioning', 'Short description'], ['description', 'Biography / search description'], ['longDescription', 'Long biography'], ['email', 'Public collaboration email'], ['whatsappNumber', 'Public WhatsApp number'], ['profileImage', 'Profile image URL or site path'], ['heroImage', 'Hero image URL or site path']].map(([name, title]) => defineField({ name, title, type: name.includes('escription') ? 'text' : 'string', validation: rule => name === 'longDescription' ? rule : rule.required() })),
+    ...[['youtubeUrl', 'Verified YouTube URL'], ['facebookPageUrl', 'Verified Facebook URL']].map(([name, title]) => defineField({ name, title, type: 'url', validation: rule => rule.uri({ scheme: ['https'] }) })),
+    defineField({ name: 'primaryMarket', title: 'Primary market', type: 'reference', to: [{ type: 'market' }], validation: rule => rule.required() }),
+    defineField({ name: 'additionalMarkets', title: 'Additional markets', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'market' }] })], validation: rule => rule.unique() }),
+    defineField({ name: 'industries', title: 'Collaboration categories / industries', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+    defineField({ name: 'services', title: 'Collaboration services', type: 'array', of: [defineArrayMember({ name: 'creatorService', type: 'object', fields: [defineField({ name: 'title', type: 'string', validation: rule => rule.required() }), defineField({ name: 'text', title: 'Description', type: 'text', validation: rule => rule.required() })] })] }),
     ...[
       ['username', 'Instagram username (without @)'],
       ['displayName', 'Display name'],

@@ -1,3 +1,4 @@
+import { getPageMetadata } from '@/lib/page-metadata';
 import { getSiteContent } from '@/lib/site-content';
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -20,20 +21,20 @@ export async function generateMetadata({
   const area = neighborhoods.find((item) => item.slug === areaSlug);
 
   if (!area) {
-    return makeMetadata({
+    return getPageMetadata("/bengaluru-guide", makeMetadata({
       title: "Bengaluru Guide",
       description:
         "Bengaluru cafés, rooftops, stays, and city nights through Iva Chatterjee's soft luxury lens.",
       path: "/bengaluru-guide",
-    });
+    }));
   }
 
-  return makeMetadata({
+  return getPageMetadata(`/bengaluru-guide/${area.slug}`, makeMetadata({
     title: area.title,
     description: area.description,
     path: `/bengaluru-guide/${area.slug}`,
     keywords: area.keywords,
-  });
+  }));
 }
 
 export default function NeighborhoodPage({

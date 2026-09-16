@@ -1,3 +1,5 @@
+import { getPageMetadata } from '@/lib/page-metadata';
+import { getCreatorIdentity } from '@/lib/creator-identity';
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -16,21 +18,22 @@ export async function generateMetadata({
   const post = await getPublishedBlogPost(slug);
 
   if (!post) {
-    return makeMetadata({
+    return getPageMetadata("/blog", makeMetadata({
       title: "Creator Journal",
       description:
         "Editorial stories and soft luxury city notes from Iva Chatterjee.",
       path: "/blog",
-    });
+    }));
   }
 
-  const metadata = makeMetadata({
+  const metadata = await getPageMetadata(`/blog/${post.slug}`, makeMetadata({
     title: post.title,
     description: post.description,
     path: `/blog/${post.slug}`,
     keywords: post.keywords,
     image: post.image,
-  });
+  }));
+  const creator = await getCreatorIdentity();
 
   return {
     ...metadata,
@@ -38,7 +41,7 @@ export async function generateMetadata({
       ...metadata.openGraph,
       type: "article",
       publishedTime: new Date(post.publishedAt).toISOString(),
-      authors: ["Iva Chatterjee"],
+      authors: [creator.name],
       tags: post.keywords,
     },
   };

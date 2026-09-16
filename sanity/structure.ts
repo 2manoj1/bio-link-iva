@@ -3,8 +3,8 @@ import type { StructureResolver } from 'sanity/structure'
 export const singletons = [
   { type: 'pageCopy', id: 'singleton-page-copy', title: 'Page headings & copy' },
   { type: 'siteContent', id: 'singleton-site-content', title: 'Site settings & content' },
-  { type: 'creatorProfile', id: 'singleton-creator-profile', title: 'Profile & Instagram Bio' },
-  { type: 'instagramStats', id: 'singleton-instagram-stats', title: 'Instagram Stats' },
+  { type: 'creatorProfile', id: 'singleton-creator-profile', title: 'Creator identity & profiles' },
+  { type: 'instagramStats', id: 'singleton-instagram-stats', title: 'Social metrics' },
   { type: 'mediaKit', id: 'singleton-media-kit', title: 'Media Kit' },
 ]
 export const singletonTypes = new Set(singletons.map(item => item.type))

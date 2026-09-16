@@ -11,7 +11,10 @@ export async function getIvaContextToolResult(query: string, limit: number): Pro
     && hidden!=true && (!defined(publishedAt) || dateTime(publishedAt)<=dateTime(now()))
   ]{_type,title,name,description,excerpt,category,views,followers,posts,following,
     displayName,profileLine,collaborationCta,collaborationHighlights,recentCollaborationSignals,
-    creator,assistantKnowledge,collaborationTypes,brandFit,collaborationMenu,reportingWindow,
+    longDescription,location,email,whatsappNumber,username,instagramUrl,youtubeUrl,facebookPageUrl,websiteUrl,
+    contentPillars,industries,services,metricsUpdatedAt,youtubeSubscribers,lovedReelViews,
+    "primaryMarket":primaryMarket->{name,positioning},"additionalMarkets":additionalMarkets[]->{name,positioning},
+    assistantKnowledge,brandFit,reportingWindow,
     interactions,contentShared,demographicsAge,demographicsGender,
     "slug":slug.current,"articleText":pt::text(body),url,href,positioning,focus,metric}`, {}, []);
   const words = query.toLowerCase().split(/\W+/).filter(word=>word.length>2);

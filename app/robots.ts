@@ -1,14 +1,9 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next';
+import { getCreatorIdentity } from '@/lib/creator-identity';
+import { canonicalUrl } from '@/lib/creator-discovery';
 
-import { siteUrl } from "@/lib/brand-data";
-
-export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: ["/admin", "/studio", "/api/"],
-    },
-    sitemap: `${siteUrl}/sitemap.xml`,
-  };
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const profile = await getCreatorIdentity();
+  return { rules: { userAgent: '*', allow: '/', disallow: ['/admin', '/studio', '/api/'] }, sitemap:canonicalUrl(profile,'/sitemap.xml') };
 }
+export const revalidate = 60;

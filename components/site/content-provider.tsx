@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useContext } from 'react';
-import type { SiteContent } from '@/lib/site-content-defaults';
+import type { getSiteContent } from '@/lib/site-content';
+type SiteContent = Awaited<ReturnType<typeof getSiteContent>>;
 type ChromeContent = Pick<SiteContent, 'creator' | 'navItems' | 'collaborationTypes' | 'amazonAffiliate'> & { pageCopy: Record<string, Record<string,string>>; markets: Array<{ name: string; href: string }> };
 const ContentContext = createContext<ChromeContent | null>(null);
 export function ContentProvider({ value, children }: {value: ChromeContent; children: React.ReactNode}) {

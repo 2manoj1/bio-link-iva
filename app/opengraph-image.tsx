@@ -1,3 +1,4 @@
+import { getCreatorIdentity } from '@/lib/creator-identity';
 import { ImageResponse } from "next/og";
 
 export const size = {
@@ -7,7 +8,8 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function Image() {
+export default async function Image() {
+  const creator = await getCreatorIdentity();
   return new ImageResponse(
     (
       <div
@@ -46,21 +48,21 @@ export default function Image() {
               marginBottom: 40,
             }}
           >
-            Luxury Lifestyle · Bengaluru
+            {`${creator.title} · ${creator.primaryMarket?.name || creator.location}`}
           </div>
           
           <div style={{ fontSize: 120, lineHeight: 0.85, color: "#11100e", marginBottom: 40 }}>
-            Iva Chatterjee
+            {creator.name}
           </div>
           
           <div style={{ fontSize: 32, color: "#555", maxWidth: 700, lineHeight: 1.4 }}>
-            Exploring beautiful cafés, boutique hospitality, fashion moments, and city nights through a soft luxury lens.
+            {creator.positioning}
           </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <div style={{ width: 40, height: 1, background: "#c8a96a" }} />
-          <div style={{ color: "#c8a96a", fontSize: 20, letterSpacing: 4 }}>@IVA_MANA5</div>
+          <div style={{ color: "#c8a96a", fontSize: 20, letterSpacing: 4 }}>{creator.handle}</div>
         </div>
       </div>
     ),

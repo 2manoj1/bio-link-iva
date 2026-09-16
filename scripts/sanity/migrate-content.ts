@@ -5,6 +5,7 @@ import { writeClient } from './utils/client';
 import { siteContentDefaults, mediaKitDefaults } from '../../lib/site-content-defaults';
 import pageCopy from '../../sanity/data/page-copy.json';
 
+const siteFields = Object.fromEntries(Object.entries(siteContentDefaults).filter(([key]) => !['creator', 'otherStats', 'collaborationTypes'].includes(key)));
 const apply = process.argv.includes('--apply');
 function keyed(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(item => item && typeof item === 'object' ? { _key: randomUUID(), ...keyed(item) as object } : item);
@@ -34,7 +35,7 @@ async function main() {
   const existing = await writeClient.fetch<{_id:string;slug?:string}[]>('*[_type in ["blogPost","siteContent","pageCopy"]]{_id,"slug":slug.current}');
   const docs: Record<string,unknown>[] = [];
   for(const [id,type,fields] of [
-    ['singleton-site-content','siteContent',siteContentDefaults],
+    ['singleton-site-content','siteContent',siteFields],
     ['singleton-page-copy','pageCopy',pageCopy],
   ] as const) {
     if (!existing.some(doc=>doc._id===id || doc._id===`drafts.${id}`)) docs.push({_id:id,_type:type,...keyed(fields) as object});
@@ -53,11 +54,11 @@ async function main() {
   if(!apply) { console.log('Dry run. Use --apply to create missing content.'); return; }
   if(!writeClient.config().token) throw new Error('Missing SANITY_WRITE_TOKEN');
   let tx=writeClient.transaction();
-  for (const [id, fields] of [['singleton-site-content',siteContentDefaults],['singleton-page-copy',pageCopy]] as const) {
+  for (const [id, fields] of [['singleton-site-content',siteFields],['singleton-page-copy',pageCopy]] as const) {
     if(existing.some(doc=>doc._id===id)) tx=tx.patch(id,patch=>patch.setIfMissing(keyed(fields) as Record<string,unknown>));
   }
   for(const doc of docs) tx=doc._id ? tx.createIfNotExists(doc as {_id:string;_type:string}) : tx.create(doc as {_type:string});
-  const extraMedia = Object.fromEntries(Object.entries(mediaKitDefaults).filter(([key])=>!['reportingWindow','dashboardWindow','insights','profileSnapshot','collaborationHighlights'].includes(key)));
+  const extraMedia = Object.fromEntries(Object.entries(mediaKitDefaults).filter(([key])=>!['collaborationMenu','reportingWindow','dashboardWindow','insights','profileSnapshot','collaborationHighlights'].includes(key)));
   tx=tx.patch('singleton-media-kit',patch=>patch.setIfMissing(keyed(extraMedia) as Record<string,unknown>));
   await tx.commit();
   console.log('Created missing CMS content; preserved existing edits.');

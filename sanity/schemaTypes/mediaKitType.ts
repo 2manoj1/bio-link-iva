@@ -7,7 +7,7 @@ export const mediaKitType = defineType({
   title: 'Media Kit',
   type: 'document',
   fields: [
-    ...Object.entries(mediaKitDefaults).filter(([name]) => !["reportingWindow","dashboardWindow","insights","profileSnapshot","collaborationHighlights"].includes(name)).map(([name,value]) => contentField(name,value)),
+    ...Object.entries(mediaKitDefaults).filter(([name]) => !["reportingWindow","dashboardWindow","insights","profileSnapshot","collaborationHighlights","collaborationMenu"].includes(name)).map(([name,value]) => contentField(name,value)),
     defineField({
       name: 'reportingWindow',
       title: 'Reporting Window',

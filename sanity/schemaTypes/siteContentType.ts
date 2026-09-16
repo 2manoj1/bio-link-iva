@@ -5,6 +5,6 @@ import { contentField } from './contentFields';
 export const siteContentType = defineType({
   name: 'siteContent', title: 'Site settings & content', type: 'document', icon: Settings,
   description: 'Shared identity, contact details, navigation, imagery, affiliate settings, collaboration options, city guides and editorial content.',
-  fields: Object.entries(siteContentDefaults).map(([name,value]) => contentField(name,value)),
+  fields: Object.entries(siteContentDefaults).filter(([name]) => !['creator','otherStats','collaborationTypes'].includes(name)).map(([name,value]) => contentField(name,value)),
   preview: { prepare: () => ({ title: 'Site settings & content' }) },
 });

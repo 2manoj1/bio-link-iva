@@ -2,9 +2,12 @@ import { defineField, defineType } from 'sanity'
 
 export const instagramStatsType = defineType({
   name: 'instagramStats',
-  title: 'Instagram Stats',
+  title: 'Social metrics',
   type: 'document',
   fields: [
+    defineField({ name: 'metricsUpdatedAt', title: 'Metrics last confirmed', type: 'datetime', description: 'Update this when confirming the counts. Counts are editor-managed, not automatically synced.', validation: rule => rule.required() }),
+    defineField({ name: 'youtubeSubscribers', title: 'YouTube subscribers', type: 'string' }),
+    defineField({ name: 'lovedReelViews', title: 'Most-loved reel views', type: 'string' }),
     defineField({
       name: 'followers',
       title: 'Followers',

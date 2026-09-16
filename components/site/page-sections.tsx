@@ -1,3 +1,4 @@
+import { CreatorFaq } from "./creator-faq";
 import { getPageCopy } from "@/lib/page-copy";
 import { getSiteContent, getFullMediaKit } from '@/lib/site-content';
 import {
@@ -613,7 +614,7 @@ export async function AboutExperience() {
           <Reveal className="max-w-4xl">
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--gold)]">{copy("t_44e9f5e025")}</p>
             <h1 className="mt-5 max-w-5xl text-balance font-serif text-6xl font-medium leading-[0.88] text-[var(--text-strong)] sm:text-7xl md:text-8xl xl:text-[7.5rem]">{copy("t_d3fcbade1c")}</h1>
-            <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)] md:text-lg md:leading-9">{copy("t_70ca4a1fb7")}</p>
+            <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-[var(--text-body)] md:text-lg md:leading-9">{creator.description}</p>
             <p className="mt-8 max-w-xl border-l border-[var(--gold)]/55 pl-5 font-serif text-3xl italic leading-tight text-[var(--champagne)] md:text-4xl">{copy("t_7d1f71c26a")}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
@@ -659,7 +660,7 @@ export async function AboutExperience() {
         <Container className="relative mt-12">
           <Reveal className="grid gap-0 overflow-hidden rounded-md border border-[var(--border-soft)] bg-[var(--surface-glass)] shadow-luxury-md backdrop-blur-md md:grid-cols-3">
             {[
-              { icon: MapPin, label: copy("t_92f3c59ede"), value: copy("t_a19b5baeec") },
+              { icon: MapPin, label: copy("t_92f3c59ede"), value: creator.location },
               { icon: Sparkles, label: copy("t_4d78ec7d11"), value: copy("t_d68d5a3205") },
               { icon: Music, label: copy("t_3a12015d49"), value: copy("t_0c97242665") },
             ].map(({ icon: Icon, label, value }) => (
@@ -737,6 +738,7 @@ export async function AboutExperience() {
           </Reveal>
         </Container>
       </section>
+      <CreatorFaq />
     </PageShell>
   );
 }

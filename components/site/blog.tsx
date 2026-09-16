@@ -8,7 +8,6 @@ import { ArticleProgress } from "@/components/site/article-progress";
 import { JsonLd } from "@/components/site/json-ld";
 import type { BlogPost } from "@/lib/blog";
 import { getPublishedBlogPosts, getPublishedRelatedPosts } from "@/lib/cms-blog";
-import { siteUrl } from "@/lib/brand-data";
 import { Container, EditorialHeader, PageShell, SectionHeader } from "./luxury-ui";
 import { Reveal, Stagger, StaggerItem } from "./reveal";
 
@@ -110,6 +109,7 @@ export async function BlogArticleExperience({ post }: { post: BlogPost }) {
   const { creator } = await getSiteContent();
   const relatedPosts = await getPublishedRelatedPosts(post);
   const Content = post.Content;
+  const siteUrl = creator.websiteUrl;
   const articleUrl = `${siteUrl}/blog/${post.slug}`;
 
   const articleJsonLd = {
@@ -119,24 +119,17 @@ export async function BlogArticleExperience({ post }: { post: BlogPost }) {
     description: post.description,
     image: new URL(post.image, siteUrl).href,
     datePublished: new Date(post.publishedAt).toISOString(),
-    dateModified: new Date(post.publishedAt).toISOString(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": articleUrl,
     },
     author: {
       "@type": "Person",
+      "@id": `${siteUrl}/#person`,
       name: creator.name,
       url: creator.websiteUrl,
     },
-    publisher: {
-      "@type": "Organization",
-      name: creator.name,
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/icon.png`,
-      },
-    },
+    publisher: { "@type": "Person", "@id": `${siteUrl}/#person`, name: creator.name },
   };
 
   const breadcrumbJsonLd = {

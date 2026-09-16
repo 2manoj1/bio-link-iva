@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { siteUrl } from "@/lib/brand-data";
+import { getCreatorIdentity } from "@/lib/creator-identity";
 
 export const runtime = "nodejs";
 
@@ -10,7 +10,8 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const creator = await getCreatorIdentity();
   return new ImageResponse(
     (
       <div
@@ -44,8 +45,8 @@ export default function AppleIcon() {
 
         {/* Brighter, more vibrant image */}
         <img
-          alt="Iva Chatterjee"
-          src={`${siteUrl}/iva/editorial-saree-portrait.jpeg`}
+          alt={creator.name}
+          src={new URL(creator.profileImage, creator.websiteUrl).href}
           width={180}
           height={180}
           style={{

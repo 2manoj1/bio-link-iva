@@ -1,13 +1,12 @@
+import { getCreatorIdentity } from './creator-identity';
+import { getSocialMetrics } from './social-metrics';
 import { unstable_rethrow } from 'next/navigation';
 import { getSiteContent } from './site-content';
-import type { InstagramStats, MediaKit, PremiumExperience } from '../types/cms';
+import type { MediaKit, PremiumExperience } from '../types/cms';
 import { cache } from 'react';
-import { creatorProfileQuery } from '../sanity/queries';
 import { client } from '../sanity/client';
-import { instagramStatsQuery, mediaKitQuery, premiumExperiencesQuery } from '../sanity/queries';
+import { mediaKitQuery, premiumExperiencesQuery } from '../sanity/queries';
 import {
-  demographics,
-  instagramProfile,
   mediaKit,
   topContent,
   visualStories,
@@ -25,44 +24,12 @@ import {
 } from '../sanity/queries';
 
 export async function getInstagramStats() {
-  try {
-    const sanityStats = await client.fetch<InstagramStats | null>(
-      instagramStatsQuery,
-      {},
-      { next: { revalidate: 60, tags: ['sanity-content'] } }
-    );
-
-    if (!sanityStats) {
-      return {
-        followers: instagramProfile.followers,
-        posts: instagramProfile.posts,
-        following: instagramProfile.following,
-        views: "2.7M",
-        demographicsAge: demographics.age,
-        demographicsGender: demographics.gender,
-      };
-    }
-
-    return {
-      followers: sanityStats.followers ?? instagramProfile.followers,
-      posts: sanityStats.posts ?? instagramProfile.posts,
-      following: sanityStats.following ?? instagramProfile.following,
-      views: sanityStats.views ?? "2.7M",
-      demographicsAge: sanityStats.demographicsAge ?? demographics.age,
-      demographicsGender: sanityStats.demographicsGender ?? demographics.gender,
-    };
-  } catch (error) {
-    unstable_rethrow(error);
-    console.error("Error fetching Instagram stats from Sanity:", error);
-    return {
-      followers: instagramProfile.followers,
-      posts: instagramProfile.posts,
-      following: instagramProfile.following,
-      views: "2.7M",
-      demographicsAge: demographics.age,
-      demographicsGender: demographics.gender,
-    };
-  }
+  const metrics = await getSocialMetrics();
+  return {
+    followers: metrics?.followers || '—', posts: metrics?.posts || '—', following: metrics?.following || '—',
+    views: metrics?.views || '—', demographicsAge: metrics?.demographicsAge ?? [],
+    demographicsGender: metrics?.demographicsGender ?? [], metricsUpdatedAt: metrics?.metricsUpdatedAt,
+  };
 }
 
 export async function getMediaKitData() {
@@ -155,11 +122,11 @@ export async function getTrustedBrands() {
     if (Array.isArray(sanityData)) {
       return sanityData;
     }
-    return trustedBrands;
+    return [];
   } catch (error) {
     unstable_rethrow(error);
     console.error("Error fetching Trusted Brands from Sanity:", error);
-    return trustedBrands;
+    return [];
   }
 }
 
@@ -217,16 +184,6 @@ export async function getLiveStats() {
 
 
 export const getCreatorProfile = cache(async () => {
-  const stats = await getInstagramStats();
-  try {
-    const profile = await client.fetch<Partial<typeof instagramProfile> | null>(
-      creatorProfileQuery, {}, { next: { revalidate: 60, tags: ['sanity-content'] } }
-    );
-    const defined = Object.fromEntries(Object.entries(profile ?? {}).filter(([, value]) => value != null));
-    return { ...instagramProfile, ...defined, ...stats } as typeof instagramProfile;
-  } catch (error) {
-    unstable_rethrow(error);
-    console.error('Error fetching creator profile from Sanity:', error);
-    return { ...instagramProfile, ...stats };
-  }
+  const [profile, stats] = await Promise.all([getCreatorIdentity(), getInstagramStats()]);
+  return { ...profile, ...stats };
 });
